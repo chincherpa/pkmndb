@@ -95,7 +95,12 @@ with tab1:
     # print(f'{angriff2_schaden = }')
 
   with col3:
-    kp_range = st.slider('KP', int(df['KP'].min()), int(df['KP'].max()), (int(df['KP'].min()), int(df['KP'].max())), step=10)
+    kp_min = int(df['KP'].min())
+    kp_max = int(df['KP'].max()
+    iStep = 10
+    if kp_min == kp_max:
+      kp_max += iStep
+    kp_range = st.slider('KP', kp_min, kp_max, (kp_min, kp_max), step=iStep)
     # print(f'{kp_range = }')
     set_filter = st.multiselect('Set', sorted(df['Set'].unique()))
     # print(f'{set_filter = }')
