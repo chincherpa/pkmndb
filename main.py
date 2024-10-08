@@ -96,7 +96,7 @@ with tab1:
 
   with col3:
     kp_min = int(df['KP'].min())
-    kp_max = int(df['KP'].max()
+    kp_max = int(df['KP'].max())
     iStep = 10
     if kp_min == kp_max:
       kp_max += iStep
