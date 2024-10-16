@@ -7,47 +7,47 @@ st.set_page_config(page_title='pkmndb', page_icon='🐲', layout="wide")
 
 # Existing initializations
 if 'num_images' not in st.session_state:
-    st.session_state.num_images = 20
+  st.session_state.num_images = 20
 
 # Modified initialization for selected cards
 if 'selected_cards' not in st.session_state:
-    st.session_state.selected_cards = {}
+  st.session_state.selected_cards = {}
 
 # Function to load more images
 def load_more():
-    st.session_state.num_images += 20
+  st.session_state.num_images += 20
 
 # Load data function (unchanged)
 @st.cache_data
 def load_data():
-    df = pd.read_csv('pokemon_karten.csv', sep=';', encoding='utf-8')
-    df['KP'] = pd.to_numeric(df['KP'], errors='coerce')
-    numeric_columns = ['KP', 'Angriff 1 Schaden', 'Angriff 2 Schaden']
-    df[numeric_columns] = df[numeric_columns].fillna(0)
-    object_columns = df.select_dtypes(include=['object']).columns
-    df[object_columns] = df[object_columns].astype(str)
-    return df
+  df = pd.read_csv('pokemon_karten.csv', sep=';', encoding='utf-8')
+  df['KP'] = pd.to_numeric(df['KP'], errors='coerce')
+  numeric_columns = ['KP', 'Angriff 1 Schaden', 'Angriff 2 Schaden']
+  df[numeric_columns] = df[numeric_columns].fillna(0)
+  object_columns = df.select_dtypes(include=['object']).columns
+  df[object_columns] = df[object_columns].astype(str)
+  return df
 
 # Modified function for saving selections
 def save_selection():
-    selection_name = st.session_state.selection_name
-    if selection_name and st.session_state.selected_cards:
-        with open(f"{selection_name}.pkl", "wb") as f:
-            pickle.dump(st.session_state.selected_cards, f)
-        st.success(f"Selection '{selection_name}' saved successfully!")
-    else:
-        st.error("Please enter a name for your selection and select at least one card.")
+  selection_name = st.session_state.selection_name
+  if selection_name and st.session_state.selected_cards:
+    with open(f"{selection_name}.pkl", "wb") as f:
+      pickle.dump(st.session_state.selected_cards, f)
+    st.success(f"Selection '{selection_name}' saved successfully!")
+  else:
+    st.error("Please enter a name for your selection and select at least one card.")
 
 def load_saved_selections():
-    saved_selections = [f for f in os.listdir() if f.endswith('.pkl')]
-    return [os.path.splitext(f)[0] for f in saved_selections]
+  saved_selections = [f for f in os.listdir() if f.endswith('.pkl')]
+  return [os.path.splitext(f)[0] for f in saved_selections]
 
 # New function to update card quantity
 def update_card_quantity(card_name, quantity):
-    if quantity > 0:
-        st.session_state.selected_cards[card_name] = quantity
-    elif card_name in st.session_state.selected_cards:
-        del st.session_state.selected_cards[card_name]
+  if quantity > 0:
+    st.session_state.selected_cards[card_name] = quantity
+  elif card_name in st.session_state.selected_cards:
+    del st.session_state.selected_cards[card_name]
 
 # Load data
 df_orig = load_data()
@@ -68,6 +68,8 @@ with tab1:
       df['Angriff 2 Name'].str.contains(search_term, case=False, na=False) | \
       df['Angriff 2 Name EN'].str.contains(search_term, case=False, na=False)
     df = df[mask]
+
+  st.divider()
 
   # Filter
   col1, col2, col3 = st.columns(3)
@@ -145,29 +147,44 @@ with tab1:
         df['Fähigkeit Text'].str.contains(search_term_cap_2, case=False, na=False)
       df = df[mask]
 
-  st.dataframe(df)
+  # st.dataframe(df)
+  event = st.dataframe(
+    df,
+    # column_config=column_configuration,
+    use_container_width=True,
+    hide_index=True,
+    on_select="rerun",
+    selection_mode="multi-row",
+  )
 
-  if not df.empty:
-    on = st.checkbox("zeige Karten")
-    if on:
-      st.write(f"Anzeigen von {min(st.session_state.num_images, len(df))} Karten:")
-      cols = st.columns(4)
-      for i in range(min(st.session_state.num_images, len(df))):
-        card = df.iloc[i]
-        with cols[i % 4]:
-          quantity = st.number_input(f"{card['Name']} '{card['Name EN']}' {card['Set']} {card['#']}", min_value=0, value=st.session_state.selected_cards.get(f"{card['Name']} {card['Set']} {card['#']}", 0), key=f"quantity_{i}", max_value=4)
-          st.image(card['URL'], width=400)
-          update_card_quantity(f"{card['Name']}|{card['Set']}|{card['#']}", quantity)
+  st.header("Selected cards")
+  selected_cards = event.selection.rows
+  filtered_df = df.iloc[selected_cards]
+  st.dataframe(
+    filtered_df,
+    # column_config=column_configuration,
+    use_container_width=True,
+  )
 
-      if st.session_state.num_images < len(df):
-        if st.button('Mehr laden'):
-          load_more()
-        st.write(f"Angezeigt: {min(st.session_state.num_images, len(df))} von {len(df)} Karten")
+  if not filtered_df.empty:
+    st.write(f"Anzeigen von {min(st.session_state.num_images, len(filtered_df))} Karten:")
+    cols = st.columns(4)
+    for i in range(min(st.session_state.num_images, len(filtered_df))):
+      card = filtered_df.iloc[i]
+      with cols[i % 4]:
+        quantity = st.number_input(f"{card['Name']} '{card['Name EN']}' {card['Set']} {card['#']}", min_value=0, value=st.session_state.selected_cards.get(f"{card['Name']} {card['Set']} {card['#']}", 0), key=f"quantity_{i}", max_value=4)
+        st.image(card['URL'], width=400)
+        update_card_quantity(f"{card['Name']}|{card['Set']}|{card['#']}", quantity)
+
+    if st.session_state.num_images < len(filtered_df):
+      if st.button('Mehr laden'):
+        load_more()
+      st.write(f"Angezeigt: {min(st.session_state.num_images, len(filtered_df))} von {len(filtered_df)} Karten")
 
     # Save selection
     st.subheader("Auswahl speichern")
     col_save, _ = st.columns([2,3])
-    col_save.text_input("Geben Sie einen Namen für Ihre Auswahl ein:", key="selection_name")
+    col_save.text_input("Name für die Auswahl:", key="selection_name")
     st.button("Auswahl speichern", on_click=save_selection)
 
     # Display current selection
@@ -184,7 +201,7 @@ with tab2:
   saved_selections = load_saved_selections()
   col_saved, _ = st.columns([2,3])
   selected_save = col_saved.selectbox("Wählen Sie eine gespeicherte Auswahl:", saved_selections)
-  print(f'\n{"#"*10}\n{"#"*10} {selected_save = }\n{"#"*10}\n')
+  print(f'\n{"#"*80}\n{selected_save = }\n')
 
   if selected_save:
     with open(f"{selected_save}.pkl", "rb") as f:
