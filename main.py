@@ -144,68 +144,68 @@ with tab1:
       df['Angriff 2 Name EN'].str.contains(search_term, case=False, na=False)
     df = df[mask]
 
-  st.divider()
+#  st.divider()
+  with st.expander:
+    # Filter
+    col1, col2, col3 = st.columns(3)
+  
+    with col1:
+      kartentyp_options = ['Alle'] + sorted(df['Kartentyp'].unique().tolist())
+      kartentyp = st.selectbox('Kartentyp', kartentyp_options)
+      # print(f'{kartentyp = }')
+      angriff1_kosten_options = sorted(df['Angriff 1 Kosten'].unique().tolist())  # ['Alle'] + 
+      angriff1_kosten = st.multiselect('Angriff 1 Kosten', angriff1_kosten_options)
+      # print(f'{angriff1_kosten = }')
+      angriff1_schaden_options = sorted(df['Angriff 1 Schaden'].unique().tolist())  # ['Alle'] + 
+      angriff1_schaden = st.multiselect('Angriff 1 Schaden', angriff1_schaden_options)
+      # print(f'{angriff1_schaden = }')
+  
+    with col2:
+      typ_options = ['Alle'] + sorted(df['Typ'].unique().tolist())
+      typ = st.selectbox('Typ', typ_options)
+      # print(f'{typ = }')
+      angriff2_kosten_options = sorted(df['Angriff 2 Kosten'].unique().tolist())  # ['Alle'] + 
+      angriff2_kosten = st.multiselect('Angriff 2 Kosten', angriff2_kosten_options)
+      # print(f'{angriff2_kosten = }')
+      angriff2_schaden_options = sorted(df['Angriff 2 Schaden'].unique().tolist())  # ['Alle'] + 
+      angriff2_schaden = st.multiselect('Angriff 2 Schaden', angriff2_schaden_options)
+      # print(f'{angriff2_schaden = }')
+  
+    with col3:
+      kp_min = int(df['KP'].min())
+      kp_max = int(df['KP'].max())
+      iStep = 10
+      if kp_min == kp_max:
+        kp_max += iStep
+      kp_range = st.slider('KP', kp_min, kp_max, (kp_min, kp_max), step=iStep)
+      # print(f'{kp_range = }')
+      set_filter = st.multiselect('Set', sorted(df['Set'].unique()))
+      # print(f'{set_filter = }')
+      regulation = st.multiselect('Regulation', df['Regulation'].unique())
+      # print(f'{regulation = }')
 
-  # Filter
-  col1, col2, col3 = st.columns(3)
-
-  with col1:
-    kartentyp_options = ['Alle'] + sorted(df['Kartentyp'].unique().tolist())
-    kartentyp = st.selectbox('Kartentyp', kartentyp_options)
-    # print(f'{kartentyp = }')
-    angriff1_kosten_options = sorted(df['Angriff 1 Kosten'].unique().tolist())  # ['Alle'] + 
-    angriff1_kosten = st.multiselect('Angriff 1 Kosten', angriff1_kosten_options)
-    # print(f'{angriff1_kosten = }')
-    angriff1_schaden_options = sorted(df['Angriff 1 Schaden'].unique().tolist())  # ['Alle'] + 
-    angriff1_schaden = st.multiselect('Angriff 1 Schaden', angriff1_schaden_options)
-    # print(f'{angriff1_schaden = }')
-
-  with col2:
-    typ_options = ['Alle'] + sorted(df['Typ'].unique().tolist())
-    typ = st.selectbox('Typ', typ_options)
-    # print(f'{typ = }')
-    angriff2_kosten_options = sorted(df['Angriff 2 Kosten'].unique().tolist())  # ['Alle'] + 
-    angriff2_kosten = st.multiselect('Angriff 2 Kosten', angriff2_kosten_options)
-    # print(f'{angriff2_kosten = }')
-    angriff2_schaden_options = sorted(df['Angriff 2 Schaden'].unique().tolist())  # ['Alle'] + 
-    angriff2_schaden = st.multiselect('Angriff 2 Schaden', angriff2_schaden_options)
-    # print(f'{angriff2_schaden = }')
-
-  with col3:
-    kp_min = int(df['KP'].min())
-    kp_max = int(df['KP'].max())
-    iStep = 10
-    if kp_min == kp_max:
-      kp_max += iStep
-    kp_range = st.slider('KP', kp_min, kp_max, (kp_min, kp_max), step=iStep)
-    # print(f'{kp_range = }')
-    set_filter = st.multiselect('Set', sorted(df['Set'].unique()))
-    # print(f'{set_filter = }')
-    regulation = st.multiselect('Regulation', df['Regulation'].unique())
-    # print(f'{regulation = }')
-
-  # Anwenden der Filter
-  if kartentyp != 'Alle':
-    df = df[df['Kartentyp'] == kartentyp]
-  if typ != 'Alle':
-    df = df[df['Typ'] == typ]
-  df = df[(df['KP'] >= kp_range[0]) & (df['KP'] <= kp_range[1])]
-  if angriff1_kosten:
-    # df = df[df['Angriff 1 Kosten'] == angriff1_kosten]
-    df = df[df['Angriff 1 Kosten'].isin(angriff1_kosten)]
-  if angriff1_schaden:
-    # df = df[df['Angriff 1 Schaden'] == float(angriff1_schaden)]
-    df = df[df['Angriff 1 Schaden'].isin(angriff1_schaden)]
-  if angriff2_kosten:
-    # df = df[df['Angriff 2 Kosten'] == angriff2_kosten]
-    df = df[df['Angriff 2 Kosten'].isin(angriff2_kosten)]
-  if angriff2_schaden:
-    # df = df[df['Angriff 2 Schaden'] == float(angriff2_schaden)]
-    df = df[df['Angriff 1 Schaden'].isin(angriff2_schaden)]
-  if set_filter:
-    df = df[df['Set'].isin(set_filter)]
-  if regulation:
-    df = df[df['Regulation'].isin(regulation)]
+    # Anwenden der Filter
+    if kartentyp != 'Alle':
+      df = df[df['Kartentyp'] == kartentyp]
+    if typ != 'Alle':
+      df = df[df['Typ'] == typ]
+    df = df[(df['KP'] >= kp_range[0]) & (df['KP'] <= kp_range[1])]
+    if angriff1_kosten:
+      # df = df[df['Angriff 1 Kosten'] == angriff1_kosten]
+      df = df[df['Angriff 1 Kosten'].isin(angriff1_kosten)]
+    if angriff1_schaden:
+      # df = df[df['Angriff 1 Schaden'] == float(angriff1_schaden)]
+      df = df[df['Angriff 1 Schaden'].isin(angriff1_schaden)]
+    if angriff2_kosten:
+      # df = df[df['Angriff 2 Kosten'] == angriff2_kosten]
+      df = df[df['Angriff 2 Kosten'].isin(angriff2_kosten)]
+    if angriff2_schaden:
+      # df = df[df['Angriff 2 Schaden'] == float(angriff2_schaden)]
+      df = df[df['Angriff 1 Schaden'].isin(angriff2_schaden)]
+    if set_filter:
+      df = df[df['Set'].isin(set_filter)]
+    if regulation:
+      df = df[df['Regulation'].isin(regulation)]
 
   st.metric('Karten', len(df))
   col, _ = st.columns([2,3])
