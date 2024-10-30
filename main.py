@@ -145,7 +145,7 @@ with tab1:
     df = df[mask]
 
 #  st.divider()
-  with st.expander:
+  with st.expander('Filter'):
     # Filter
     col1, col2, col3 = st.columns(3)
   
