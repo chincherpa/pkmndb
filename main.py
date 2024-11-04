@@ -133,9 +133,11 @@ tab1, tab2, tab3 = st.tabs(['Kartenauswahl', 'Gespeicherte Auswahlen', 'Import']
 with tab1:
   # Existing search functionality
   col_search, _ = st.columns([2,3])
-  # search_term = col_search.text_input('Suche nach Namen oder Angriffen:')
+  search_term_evolves_from = st_keyup("Suche nach: 'Entwickelt sich aus'")
   search_term = st_keyup('Suche nach Namen oder Angriffen:')
-  if search_term:
+  if search_term_evolves_from:
+    mask = df['Entwickelt sich aus'].str.contains(search_term_evolves_from, case=False, na=False)
+  elif search_term:
     mask = df['Name'].str.contains(search_term, case=False, na=False) | \
       df['Name EN'].str.contains(search_term, case=False, na=False) | \
       df['Angriff 1 Name'].str.contains(search_term, case=False, na=False) | \
