@@ -144,7 +144,7 @@ with tab1:
       df['Angriff 1 Name EN'].str.contains(search_term, case=False, na=False) | \
       df['Angriff 2 Name'].str.contains(search_term, case=False, na=False) | \
       df['Angriff 2 Name EN'].str.contains(search_term, case=False, na=False)
-    df = df[mask]
+  df = df[mask]
 
 #  st.divider()
   with st.expander('Filter'):
