@@ -137,6 +137,7 @@ with tab1:
   search_term = st_keyup('Suche nach Namen oder Angriffen:')
   if search_term_evolves_from:
     mask = df['Entwickelt sich aus'].str.contains(search_term_evolves_from, case=False, na=False)
+    df = df[mask]
   elif search_term:
     mask = df['Name'].str.contains(search_term, case=False, na=False) | \
       df['Name EN'].str.contains(search_term, case=False, na=False) | \
@@ -144,7 +145,7 @@ with tab1:
       df['Angriff 1 Name EN'].str.contains(search_term, case=False, na=False) | \
       df['Angriff 2 Name'].str.contains(search_term, case=False, na=False) | \
       df['Angriff 2 Name EN'].str.contains(search_term, case=False, na=False)
-  df = df[mask]
+    df = df[mask]
 
 #  st.divider()
   with st.expander('Filter'):
