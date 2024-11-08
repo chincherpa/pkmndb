@@ -120,7 +120,8 @@ def parse_card_entries(text):
 
   return results
 
-lang = st.selectbox('Language', ['english', 'deutsch'])
+col_lang, _ = st.columns([1,10])
+lang = col_lang.selectbox('Language', ['english', 'deutsch'])
 
 # Load data
 df_orig = load_data(lang)
@@ -138,8 +139,9 @@ tab1, tab2, tab3 = st.tabs(['Card selection', 'Saved selections', 'Import'])
 with tab1:
   # Existing search functionality
   col_search, _ = st.columns([2,3])
-  search_term_evolves_from = st_keyup("Find in: 'Evolves from'")
-  search_term = st_keyup('Find in names or attacks:')
+  with col_search:
+    search_term_evolves_from = st_keyup("Find in: 'Evolves from'")
+    search_term = st_keyup('Find in names or attacks:')
   if search_term_evolves_from:
     mask = df['Evolves from'].str.contains(search_term_evolves_from, case=False, na=False)
     df = df[mask]
