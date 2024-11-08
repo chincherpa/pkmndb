@@ -6,6 +6,8 @@ import os
 
 from st_keyup import st_keyup
 
+from config import dConfig
+
 st.set_page_config(page_title='pkmndb', page_icon='🐲', layout="wide")
 
 # st.markdown("""
@@ -33,10 +35,11 @@ def load_more():
 
 # Load data function (unchanged)
 @st.cache_data
-def load_data():
-  df = pd.read_csv('pokemon_karten.csv', sep=';', encoding='utf-8')
-  df['KP'] = pd.to_numeric(df['KP'], errors='coerce')
-  numeric_columns = ['KP', 'Angriff 1 Schaden', 'Angriff 2 Schaden']
+def load_data(lang):
+  df = pd.read_csv(dConfig[lang]['file'], sep=';', encoding=dConfig[lang]['encoding'])
+  df[dConfig[lang]['hp']] = pd.to_numeric(df[dConfig[lang]['hp']], errors='coerce')
+  numeric_columns = [dConfig[lang]['hp'], 'Attack 1 damage', 'Attack 2 damage']
+
   df[numeric_columns] = df[numeric_columns].fillna(0)
   object_columns = df.select_dtypes(include=['object']).columns
   df[object_columns] = df[object_columns].astype(str)
@@ -117,8 +120,10 @@ def parse_card_entries(text):
 
   return results
 
+lang = st.selectbox('Language', ['english', 'deutsch'])
+
 # Load data
-df_orig = load_data()
+df_orig = load_data(lang)
 df = df_orig
 
 # Reset Button
@@ -128,23 +133,28 @@ if bReset:
   st.session_state.selected_cards = {}
 
 # Create tabs
-tab1, tab2, tab3 = st.tabs(['Kartenauswahl', 'Gespeicherte Auswahlen', 'Import'])
+tab1, tab2, tab3 = st.tabs(['Card selection', 'Saved selections', 'Import'])
 
 with tab1:
   # Existing search functionality
   col_search, _ = st.columns([2,3])
-  search_term_evolves_from = st_keyup("Suche nach: 'Entwickelt sich aus'")
-  search_term = st_keyup('Suche nach Namen oder Angriffen:')
+  search_term_evolves_from = st_keyup("Find in: 'Evolves from'")
+  search_term = st_keyup('Find in names or attacks:')
   if search_term_evolves_from:
-    mask = df['Entwickelt sich aus'].str.contains(search_term_evolves_from, case=False, na=False)
+    mask = df['Evolves from'].str.contains(search_term_evolves_from, case=False, na=False)
     df = df[mask]
   elif search_term:
-    mask = df['Name'].str.contains(search_term, case=False, na=False) | \
-      df['Name EN'].str.contains(search_term, case=False, na=False) | \
-      df['Angriff 1 Name'].str.contains(search_term, case=False, na=False) | \
-      df['Angriff 1 Name EN'].str.contains(search_term, case=False, na=False) | \
-      df['Angriff 2 Name'].str.contains(search_term, case=False, na=False) | \
-      df['Angriff 2 Name EN'].str.contains(search_term, case=False, na=False)
+    if lang == 'english':
+      mask = df['Name'].str.contains(search_term, case=False, na=False) | \
+        df['Attack 1 Name'].str.contains(search_term, case=False, na=False) | \
+        df['Attack 2 Name'].str.contains(search_term, case=False, na=False)
+    elif lang == 'deutsch':
+      mask = df['Name'].str.contains(search_term, case=False, na=False) | \
+        df['Name EN'].str.contains(search_term, case=False, na=False) | \
+        df['Attack 1 Name'].str.contains(search_term, case=False, na=False) | \
+        df['Attack 1 Name EN'].str.contains(search_term, case=False, na=False) | \
+        df['Attack 2 Name'].str.contains(search_term, case=False, na=False) | \
+        df['Attack 2 Name EN'].str.contains(search_term, case=False, na=False)
     df = df[mask]
 
 #  st.divider()
@@ -153,34 +163,34 @@ with tab1:
     col1, col2, col3 = st.columns(3)
   
     with col1:
-      kartentyp_options = ['Alle'] + sorted(df['Kartentyp'].unique().tolist())
-      kartentyp = st.selectbox('Kartentyp', kartentyp_options)
-      # print(f'{kartentyp = }')
-      angriff1_kosten_options = sorted(df['Angriff 1 Kosten'].unique().tolist())  # ['Alle'] + 
-      angriff1_kosten = st.multiselect('Angriff 1 Kosten', angriff1_kosten_options)
-      # print(f'{angriff1_kosten = }')
-      angriff1_schaden_options = sorted(df['Angriff 1 Schaden'].unique().tolist())  # ['Alle'] + 
-      angriff1_schaden = st.multiselect('Angriff 1 Schaden', angriff1_schaden_options)
-      # print(f'{angriff1_schaden = }')
+      Cardtype_options = ['All'] + sorted(df['Cardtype'].unique().tolist())
+      cardtype = st.selectbox('Cardtype', Cardtype_options)
+      # print(f'{Cardtype = }')
+      attack1_cost_options = sorted(df['Attack 1 cost'].unique().tolist())
+      attack1_cost = st.multiselect('Attack 1 cost', attack1_cost_options)
+      # print(f'{attack1_cost = }')
+      attack1_damage_options = sorted(df['Attack 1 damage'].unique().tolist())
+      attack1_damage = st.multiselect('Attack 1 damage', attack1_damage_options)
+      # print(f'{attack1_damage = }')
   
     with col2:
-      typ_options = ['Alle'] + sorted(df['Typ'].unique().tolist())
+      typ_options = ['All'] + sorted(df['Typ'].unique().tolist())
       typ = st.selectbox('Typ', typ_options)
       # print(f'{typ = }')
-      angriff2_kosten_options = sorted(df['Angriff 2 Kosten'].unique().tolist())  # ['Alle'] + 
-      angriff2_kosten = st.multiselect('Angriff 2 Kosten', angriff2_kosten_options)
-      # print(f'{angriff2_kosten = }')
-      angriff2_schaden_options = sorted(df['Angriff 2 Schaden'].unique().tolist())  # ['Alle'] + 
-      angriff2_schaden = st.multiselect('Angriff 2 Schaden', angriff2_schaden_options)
-      # print(f'{angriff2_schaden = }')
+      attack2_cost_options = sorted(df['Attack 2 cost'].unique().tolist())
+      attack2_cost = st.multiselect('Attack 2 cost', attack2_cost_options)
+      # print(f'{attack2_cost = }')
+      attack2_damage_options = sorted(df['Attack 2 damage'].unique().tolist())
+      attack2_damage = st.multiselect('Attack 2 damage', attack2_damage_options)
+      # print(f'{attack2_damage = }')
   
     with col3:
-      kp_min = int(df['KP'].min())
-      kp_max = int(df['KP'].max())
+      kp_min = int(df[dConfig[lang]['hp']].min())
+      kp_max = int(df[dConfig[lang]['hp']].max())
       iStep = 10
       if kp_min == kp_max:
         kp_max += iStep
-      kp_range = st.slider('KP', kp_min, kp_max, (kp_min, kp_max), step=iStep)
+      kp_range = st.slider(dConfig[lang]['hp'], kp_min, kp_max, (kp_min, kp_max), step=iStep)
       # print(f'{kp_range = }')
       set_filter = st.multiselect('Set', sorted(df['Set'].unique()))
       # print(f'{set_filter = }')
@@ -188,23 +198,23 @@ with tab1:
       # print(f'{regulation = }')
 
     # Anwenden der Filter
-    if kartentyp != 'Alle':
-      df = df[df['Kartentyp'] == kartentyp]
-    if typ != 'Alle':
+    if cardtype != 'All':
+      df = df[df['Cardtype'] == cardtype]
+    if typ != 'All':
       df = df[df['Typ'] == typ]
-    df = df[(df['KP'] >= kp_range[0]) & (df['KP'] <= kp_range[1])]
-    if angriff1_kosten:
-      # df = df[df['Angriff 1 Kosten'] == angriff1_kosten]
-      df = df[df['Angriff 1 Kosten'].isin(angriff1_kosten)]
-    if angriff1_schaden:
-      # df = df[df['Angriff 1 Schaden'] == float(angriff1_schaden)]
-      df = df[df['Angriff 1 Schaden'].isin(angriff1_schaden)]
-    if angriff2_kosten:
-      # df = df[df['Angriff 2 Kosten'] == angriff2_kosten]
-      df = df[df['Angriff 2 Kosten'].isin(angriff2_kosten)]
-    if angriff2_schaden:
-      # df = df[df['Angriff 2 Schaden'] == float(angriff2_schaden)]
-      df = df[df['Angriff 1 Schaden'].isin(angriff2_schaden)]
+    df = df[(df[dConfig[lang]['hp']] >= kp_range[0]) & (df[dConfig[lang]['hp']] <= kp_range[1])]
+    if attack1_cost:
+      # df = df[df['Attack 1 cost'] == attack1_cost]
+      df = df[df['Attack 1 cost'].isin(attack1_cost)]
+    if attack1_damage:
+      # df = df[df['Attack 1 damage'] == float(attack1_damage)]
+      df = df[df['Attack 1 damage'].isin(attack1_damage)]
+    if attack2_cost:
+      # df = df[df['Attack 2 cost'] == attack2_cost]
+      df = df[df['Attack 2 cost'].isin(attack2_cost)]
+    if attack2_damage:
+      # df = df[df['Attack 2 damage'] == float(attack2_damage)]
+      df = df[df['Attack 1 damage'].isin(attack2_damage)]
     if set_filter:
       df = df[df['Set'].isin(set_filter)]
     if regulation:
@@ -212,17 +222,17 @@ with tab1:
 
   st.metric('Karten', len(df))
   col, _ = st.columns([2,3])
-  search_term_cap = col.text_input('Suche in Fähigkeit:')
+  search_term_cap = col.text_input('Find in Ability:')
   if search_term_cap:
-    mask = df['Fähigkeit'].str.contains(search_term_cap, case=False, na=False) | \
-      df['Fähigkeit Text'].str.contains(search_term_cap, case=False, na=False)
+    mask = df['Ability'].str.contains(search_term_cap, case=False, na=False) | \
+      df['Ability Text'].str.contains(search_term_cap, case=False, na=False)
     df = df[mask]
 
     col2, _ = st.columns([2,3])
-    search_term_cap_2 = col2.text_input('Suche in Fähigkeit 2:')
+    search_term_cap_2 = col2.text_input('Find in Ability 2:')
     if search_term_cap_2:
-      mask = df['Fähigkeit'].str.contains(search_term_cap_2, case=False, na=False) | \
-        df['Fähigkeit Text'].str.contains(search_term_cap_2, case=False, na=False)
+      mask = df['Ability'].str.contains(search_term_cap_2, case=False, na=False) | \
+        df['Ability Text'].str.contains(search_term_cap_2, case=False, na=False)
       df = df[mask]
 
   # st.dataframe(df)
@@ -251,13 +261,17 @@ with tab1:
   #   st.session_state.selected_cards = {}
 
   if not filtered_df.empty:
-    st.write(f"Anzeigen von {min(st.session_state.num_images, len(filtered_df))} Karten:")
+    st.write(f"Show {min(st.session_state.num_images, len(filtered_df))} cards:")
     cols = st.columns(4)
     for i in range(min(st.session_state.num_images, len(filtered_df))):
       card = filtered_df.iloc[i]
       with cols[i % 4]:
         col_num, col_link = st.columns(2)
-        quantity = col_num.number_input(f"{card['Name']} '{card['Name EN']}' {card['Set']} {card['#']}", min_value=0, value=st.session_state.selected_cards.get(f"{card['Name']} {card['Set']} {card['#']}", 0), key=f"quantity_{i}", max_value=4)
+        if lang == 'english':
+          quantity = col_num.number_input(f"{card['Name']} {card['Set']} {card['#']}", min_value=0, value=st.session_state.selected_cards.get(f"{card['Name']} {card['Set']} {card['#']}", 0), key=f"quantity_{i}", max_value=4)
+        if lang == 'deutsch':
+          quantity = col_num.number_input(f"{card['Name']} '{card['Name EN']}' {card['Set']} {card['#']}", min_value=0, value=st.session_state.selected_cards.get(f"{card['Name']} {card['Set']} {card['#']}", 0), key=f"quantity_{i}", max_value=4)
+
         url = f'https://limitlesstcg.com/cards/de/{card['Set']}/{card['#']}'
         col_link.link_button('go to card on limitlessTCG', url)
         st.image(card['URL'], width=400)
@@ -265,7 +279,7 @@ with tab1:
         update_card_quantity(f"{card['Name']}|{card['Set']}|{card['#']}", quantity)
 
     if st.session_state.num_images < len(filtered_df):
-      if st.button('Mehr laden'):
+      if st.button('load more'):
         load_more()
       st.write(f"Angezeigt: {min(st.session_state.num_images, len(filtered_df))} von {len(filtered_df)} Karten")
 
@@ -286,35 +300,35 @@ with tab1:
 
 with tab2:
   st.header("Gespeicherte Auswahlen anzeigen")
-  saved_selections = load_saved_selections()  # list of files
-  col_saved, _ = st.columns([2,3])
-  selected_save = col_saved.selectbox("Wählen Sie eine gespeicherte Auswahl:", saved_selections)
-  print(f'|{selected_save}|', 'selected_save bool', bool(selected_save), type(selected_save))
+  # saved_selections = load_saved_selections()  # list of files
+  # col_saved, _ = st.columns([2,3])
+  # selected_save = col_saved.selectbox("Wählen Sie eine gespeicherte Auswahl:", saved_selections)
+  # print(f'|{selected_save}|', 'selected_save bool', bool(selected_save), type(selected_save))
 
-  if selected_save:
-    loaded_selection = load_saved_selection(f"{selected_save}.txt")
-    st.write(f"Karten in '{selected_save}':")
-    for card, quantity in loaded_selection.items():
-      st.write(f"{card}: {quantity}")
+  # if selected_save:
+  #   loaded_selection = load_saved_selection(f"{selected_save}.txt")
+  #   st.write(f"Karten in '{selected_save}':")
+  #   for card, quantity in loaded_selection.items():
+  #     st.write(f"{card}: {quantity}")
 
-    # Display the selected cards
-    cols = st.columns(4)
-    for i, (card_id, quantity) in enumerate(loaded_selection.items()):
-      print(f'{card_id = }')
-      card_name, card_set, card_num = card_id.split('|')
-      mask = df_orig['Name'].str.contains(card_name, case=False, na=False) & \
-        df_orig['Set'].str.contains(card_set, case=False, na=False) & \
-        df_orig['#'].str.contains(card_num, case=False, na=False)
+  #   # Display the selected cards
+  #   cols = st.columns(4)
+  #   for i, (card_id, quantity) in enumerate(loaded_selection.items()):
+  #     print(f'{card_id = }')
+  #     card_name, card_set, card_num = card_id.split('|')
+  #     mask = df_orig['Name'].str.contains(card_name, case=False, na=False) & \
+  #       df_orig['Set'].str.contains(card_set, case=False, na=False) & \
+  #       df_orig['#'].str.contains(card_num, case=False, na=False)
 
-      card = df_orig[mask].iloc[0]
-      with cols[i % 4]:
-        st.write(f"{card['Name']} '{card['Name EN']}' {card['Set']} {card['#']}")
-        # col_quan, col_del = cols = st.columns(2)
-        st.write(f"Anzahl: {quantity}")
-        st.image(card['URL'], width=300)
-        bDelete = st.button(f'remove {card_id}')
-        if bDelete:
-          print('removeing this card')
+  #     card = df_orig[mask].iloc[0]
+  #     with cols[i % 4]:
+  #       st.write(f"{card['Name']} '{card['Name EN']}' {card['Set']} {card['#']}")
+  #       # col_quan, col_del = cols = st.columns(2)
+  #       st.write(f"Anzahl: {quantity}")
+  #       st.image(card['URL'], width=300)
+  #       bDelete = st.button(f'remove {card_id}')
+  #       if bDelete:
+  #         print('removing this card')
 
 with tab3:
     input_text = st.text_area('input import')
@@ -343,8 +357,8 @@ with tab3:
           print('removing this card')
       iCounter += 1
 
-print('st.session_state')
-print(st.session_state)
-print(st.session_state.selected_cards)
-st.write(st.session_state)
-st.write(st.session_state.selected_cards)
+# print('st.session_state')
+# print(st.session_state)
+# print(st.session_state.selected_cards)
+# st.write(st.session_state)
+# st.write(st.session_state.selected_cards)
