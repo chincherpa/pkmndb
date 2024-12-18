@@ -1,0 +1,189 @@
+Setup
+OpponentsName chose heads for the opening coin flip.
+OpponentsName won the coin toss.
+OpponentsName decided to go first.
+OpponentsName drew 7 cards for the opening hand.
+- 7 drawn cards.
+ElButze drew 7 cards for the opening hand.
+- 7 drawn cards.
+   • Professor's Research, Applin, Iono, Buddy-Buddy Poffin, Teal Mask Ogerpon ex, Bug Catching Set, Ultra Ball
+OpponentsName played Chien-Pao ex to the Active Spot.
+OpponentsName played Pidgey to the Bench.
+ElButze played Teal Mask Ogerpon ex to the Active Spot.
+
+Turn # 1 - OpponentsName's Turn
+OpponentsName drew a card.
+OpponentsName played Trekking Shoes.
+- OpponentsName drew a card.
+OpponentsName attached Basic Water Energy to Chien-Pao ex in the Active Spot.
+OpponentsName's Chien-Pao ex used Shivery Chill.
+- OpponentsName drew 2 cards.
+   • Basic Water Energy, Basic Water Energy
+- OpponentsName shuffled their deck.
+OpponentsName ended their turn.
+
+Turn # 2 - ElButze's Turn
+ElButze drew Basic Grass Energy.
+ElButze played Applin to the Bench.
+ElButze played Buddy-Buddy Poffin.
+- ElButze drew Applin and played it to the Bench.
+- ElButze shuffled their deck.
+ElButze's Teal Mask Ogerpon ex used Teal Dance.
+- ElButze attached Basic Grass Energy to Teal Mask Ogerpon ex in the Active Spot.
+- ElButze drew Rare Candy.
+ElButze played Bug Catching Set.
+- ElButze drew 2 cards.
+   • Basic Grass Energy, Basic Grass Energy
+- ElButze shuffled their deck.
+ElButze attached Basic Grass Energy to Teal Mask Ogerpon ex in the Active Spot.
+ElButze played Iono.
+- ElButze shuffled their hand.
+- ElButze put 4 cards on the bottom of their deck.
+   • Basic Grass Energy, Rare Candy, Ultra Ball, Professor's Research
+- OpponentsName shuffled their hand.
+- ElButze put 7 cards on the bottom of their deck.
+- ElButze drew 6 cards.
+   • Basic Grass Energy, Nest Ball, Superior Energy Retrieval, Basic Grass Energy, Teal Mask Ogerpon ex, Basic Grass Energy
+- ElButze drew 6 cards.
+ElButze played Teal Mask Ogerpon ex to the Bench.
+ElButze's Teal Mask Ogerpon ex used Teal Dance.
+- ElButze attached Basic Grass Energy to Teal Mask Ogerpon ex on the Bench.
+- ElButze drew Lumineon V.
+ElButze played Nest Ball.
+- ElButze drew Teal Mask Ogerpon ex and played it to the Bench.
+- ElButze shuffled their deck.
+ElButze's Teal Mask Ogerpon ex used Teal Dance.
+- ElButze attached Basic Grass Energy to Teal Mask Ogerpon ex on the Bench.
+- ElButze drew Basic Grass Energy.
+ElButze ended their turn.
+
+Turn # 3 - OpponentsName's Turn
+OpponentsName drew a card.
+OpponentsName played Frigibax to the Bench.
+OpponentsName played Trekking Shoes.
+- OpponentsName drew a card.
+OpponentsName played Irida.
+- OpponentsName drew 2 cards.
+   • Baxcalibur, Rare Candy
+- OpponentsName shuffled their deck.
+OpponentsName played Chien-Pao ex to the Bench.
+OpponentsName played Rare Candy.
+- OpponentsName evolved Pidgey to Pidgeot ex on the Bench.
+OpponentsName's Pidgeot ex used Quick Search.
+- OpponentsName drew a card.
+- OpponentsName shuffled their deck.
+OpponentsName attached Basic Water Energy to Chien-Pao ex in the Active Spot.
+OpponentsName's Chien-Pao ex used Shivery Chill.
+- OpponentsName drew 2 cards.
+   • Basic Water Energy, Basic Water Energy
+- OpponentsName shuffled their deck.
+OpponentsName's Chien-Pao ex used Hail Blade on ElButze’s Teal Mask Ogerpon ex for 120 damage.
+- Damage breakdown:
+   • 2 selected Energy: 120 damage
+
+- 2 cards were discarded from OpponentsName's Chien-Pao ex.
+   • Basic Water Energy, Basic Water Energy
+
+Turn # 4 - ElButze's Turn
+ElButze drew Crispin.
+ElButze's Teal Mask Ogerpon ex used Teal Dance.
+- ElButze attached Basic Grass Energy to Teal Mask Ogerpon ex in the Active Spot.
+- ElButze drew Boss's Orders.
+ElButze's Teal Mask Ogerpon ex used Teal Dance.
+- ElButze attached Basic Grass Energy to Teal Mask Ogerpon ex on the Bench.
+- ElButze drew Hydrapple ex.
+ElButze played Boss's Orders.
+- OpponentsName's Frigibax was switched with OpponentsName's Chien-Pao ex to become the Active Pokémon.
+OpponentsName's Frigibax is now in the Active Spot.
+ElButze's Teal Mask Ogerpon ex used Myriad Leaf Shower on OpponentsName’s Frigibax for 120 damage.
+- Damage breakdown:
+   • Base damage: 30 damage
+   • 3 attached Energy: 90 damage
+   • Total damage: 120 damage
+
+OpponentsName's Frigibax was Knocked Out!
+ElButze took a Prize card.
+Basic Grass Energy was added to ElButze's hand.
+OpponentsName's Chien-Pao ex is now in the Active Spot.
+
+Turn # 5 - OpponentsName's Turn
+OpponentsName drew a card.
+OpponentsName played Nest Ball.
+- OpponentsName drew Pidgey and played it to the Bench.
+- OpponentsName shuffled their deck.
+OpponentsName played Irida.
+- OpponentsName drew 2 cards.
+   • Chien-Pao ex, Rare Candy
+- OpponentsName shuffled their deck.
+OpponentsName played Chien-Pao ex to the Bench.
+OpponentsName attached Basic Water Energy to Chien-Pao ex in the Active Spot.
+OpponentsName's Chien-Pao ex used Shivery Chill.
+- OpponentsName drew 2 cards.
+   • Basic Water Energy, Basic Water Energy
+- OpponentsName shuffled their deck.
+OpponentsName's Pidgeot ex used Quick Search.
+- OpponentsName drew a card.
+- OpponentsName shuffled their deck.
+OpponentsName attached Powerglass to Chien-Pao ex in the Active Spot.
+Powerglass was activated.
+- OpponentsName attached Basic Water Energy to Chien-Pao ex in the Active Spot.
+OpponentsName ended their turn.
+
+Turn # 6 - ElButze's Turn
+ElButze drew Hydrapple ex.
+ElButze's Teal Mask Ogerpon ex used Teal Dance.
+- ElButze attached Basic Grass Energy to Teal Mask Ogerpon ex in the Active Spot.
+- ElButze drew Basic Grass Energy.
+ElButze played Crispin.
+- ElButze drew Basic Metal Energy.
+- ElButze attached Basic Grass Energy to Teal Mask Ogerpon ex in the Active Spot.
+- ElButze shuffled their deck.
+ElButze attached Basic Metal Energy to Applin on the Bench.
+ElButze's Teal Mask Ogerpon ex used Teal Dance.
+- ElButze attached Basic Grass Energy to Teal Mask Ogerpon ex on the Bench.
+- ElButze drew Basic Grass Energy.
+ElButze's Teal Mask Ogerpon ex used Teal Dance.
+- ElButze attached Basic Grass Energy to Teal Mask Ogerpon ex on the Bench.
+- ElButze drew Rare Candy.
+ElButze played Rare Candy.
+- ElButze evolved Applin to Hydrapple ex on the Bench.
+ElButze's Teal Mask Ogerpon ex used Myriad Leaf Shower on OpponentsName’s Chien-Pao ex for 240 damage.
+- Damage breakdown:
+   • Base damage: 30 damage
+   • 7 attached Energy: 210 damage
+   • Total damage: 240 damage
+
+OpponentsName's Chien-Pao ex was Knocked Out!
+- 3 cards were discarded from OpponentsName's Chien-Pao ex.
+   • Basic Water Energy, Basic Water Energy, Powerglass
+ElButze took 2 Prize cards.
+Boss's Orders was added to ElButze's hand.
+Nest Ball was added to ElButze's hand.
+OpponentsName's Pidgeot ex is now in the Active Spot.
+
+Turn # 7 - OpponentsName's Turn
+OpponentsName drew a card.
+OpponentsName played Rare Candy.
+- OpponentsName evolved Pidgey to Pidgeot ex on the Bench.
+OpponentsName attached Basic Water Energy to Chien-Pao ex on the Bench.
+OpponentsName played Arven.
+- OpponentsName drew 2 cards.
+   • Super Rod, Powerglass
+- OpponentsName shuffled their deck.
+OpponentsName's Pidgeot ex used Quick Search.
+- OpponentsName drew a card.
+- OpponentsName shuffled their deck.
+OpponentsName played Super Rod.
+- OpponentsName shuffled 3 cards into their deck.
+   • Chien-Pao ex, Frigibax, Basic Water Energy
+OpponentsName ended their turn.
+
+Turn # 8 - ElButze's Turn
+ElButze drew Night Stretcher.
+ElButze retreated Teal Mask Ogerpon ex to the Bench.
+- Basic Grass Energy was discarded from ElButze's Teal Mask Ogerpon ex.
+ElButze's Hydrapple ex is now in the Active Spot.
+ElButze played Night Stretcher.
+- ElButze moved ElButze's Basic Grass Energy to their hand.
+ElButze attached Basic Grass Energy to Hydrapple ex in the Active Spot.
+Opponent conceded. ElButze wins.

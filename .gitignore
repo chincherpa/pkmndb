@@ -1,5 +1,5 @@
 *.pyc
-.venv
-*.txt
-.__pycache__
 *.xlsx
+venv/
+__pycache__/
+battlelogs/
