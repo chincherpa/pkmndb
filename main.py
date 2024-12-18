@@ -6,6 +6,7 @@ import os
 
 from st_keyup import st_keyup
 
+import battlelog_viewer
 from config import dConfig
 
 st.set_page_config(page_title='pkmndb', page_icon='🐲', layout="wide")
@@ -120,26 +121,29 @@ def parse_card_entries(text):
 
   return results
 
-lang = st.selectbox('Language', ['english', 'deutsch'])
+col_lang, col_reset = st.columns([1,5])
+lang = col_lang.selectbox('Language', ['english', 'deutsch'])
 
 # Load data
 df_orig = load_data(lang)
 df = df_orig
 
 # Reset Button
-bReset = st.button('Reset')
+bReset = col_reset.button('Reset')
 if bReset:
   # del st.session_state['selected_cards']
   st.session_state.selected_cards = {}
 
 # Create tabs
-tab1, tab2, tab3 = st.tabs(['Card selection', 'Saved selections', 'Import'])
+tab1, tab2, tab3, tab4 = st.tabs(['Card selection', 'Saved selections', 'Import', 'Battle log viewer'])
 
 with tab1:
   # Existing search functionality
-  col_search, _ = st.columns([2,3])
-  search_term_evolves_from = st_keyup("Find in: 'Evolves from'")
-  search_term = st_keyup('Find in names or attacks:')
+  col_search_evo, col_search_names = st.columns(2)
+  with col_search_evo:
+    search_term_evolves_from = st_keyup("Find in: 'Evolves from'")
+  with col_search_names:
+    search_term = st_keyup('Find in names or attacks:')
   if search_term_evolves_from:
     mask = df['Evolves from'].str.contains(search_term_evolves_from, case=False, na=False)
     df = df[mask]
@@ -163,8 +167,8 @@ with tab1:
     col1, col2, col3 = st.columns(3)
   
     with col1:
-      Cardtype_options = ['All'] + sorted(df['Cardtype'].unique().tolist())
-      cardtype = st.selectbox('Cardtype', Cardtype_options)
+      lCardtype_options = ['All'] + sorted(df['Cardtype'].unique().tolist())
+      cardtype = st.selectbox('Cardtype', lCardtype_options)
       # print(f'{Cardtype = }')
       attack1_cost_options = sorted(df['Attack 1 cost'].unique().tolist())
       attack1_cost = st.multiselect('Attack 1 cost', attack1_cost_options)
@@ -200,6 +204,7 @@ with tab1:
     # Anwenden der Filter
     if cardtype != 'All':
       df = df[df['Cardtype'] == cardtype]
+      # df = df[df['Cardtype'].isin(cardtype)]
     if typ != 'All':
       df = df[df['Typ'] == typ]
     df = df[(df[dConfig[lang]['hp']] >= kp_range[0]) & (df[dConfig[lang]['hp']] <= kp_range[1])]
@@ -221,19 +226,27 @@ with tab1:
       df = df[df['Regulation'].isin(regulation)]
 
   st.metric('Karten', len(df))
-  col, _ = st.columns([2,3])
-  search_term_cap = col.text_input('Find in Ability:')
+  col, col2 = st.columns([2,3])
+  with col:
+    search_term_cap = st_keyup('Find in Ability:')
+    search_term_att_eff = st_keyup('Find in attack effect:')
+
   if search_term_cap:
     mask = df['Ability'].str.contains(search_term_cap, case=False, na=False) | \
-      df['Ability Text'].str.contains(search_term_cap, case=False, na=False)
+      df['Ability text'].str.contains(search_term_cap, case=False, na=False)
     df = df[mask]
-
-    col2, _ = st.columns([2,3])
-    search_term_cap_2 = col2.text_input('Find in Ability 2:')
+    with col2:
+      search_term_cap_2 = st_keyup('and...')
     if search_term_cap_2:
       mask = df['Ability'].str.contains(search_term_cap_2, case=False, na=False) | \
-        df['Ability Text'].str.contains(search_term_cap_2, case=False, na=False)
+        df['Ability text'].str.contains(search_term_cap_2, case=False, na=False)
       df = df[mask]
+
+  if search_term_att_eff:
+    mask = df['Effect 1'].str.contains(search_term_att_eff, case=False, na=False) | \
+      df['Effect 2'].str.contains(search_term_att_eff, case=False, na=False)
+    df = df[mask]
+
 
   # st.dataframe(df)
   event = st.dataframe(
@@ -356,6 +369,10 @@ with tab3:
         if bDelete:
           print('removing this card')
       iCounter += 1
+
+with tab4:
+  battlelog_viewer.main()
+
 
 # print('st.session_state')
 # print(st.session_state)
