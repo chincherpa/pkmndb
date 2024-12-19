@@ -123,7 +123,7 @@ def parse_card_entries(text):
 # Battlelog viewer START
 def get_language(text):
     global language_battlelog
-    language_battlelog = ['English', 'German'][text.split('\n')[0] == 'Vorbereitung']
+    language_battlelog = ['english', 'german'][text.split('\n')[0] == 'Vorbereitung']
 
 def load_saved_battlogs():
     saved_selections = ['']
