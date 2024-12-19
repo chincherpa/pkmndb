@@ -6,7 +6,7 @@ import os
 
 from st_keyup import st_keyup
 
-from config import dConfig, lImportant_Actions, dTranslations
+from config import lImportant_Actions, dTranslations
 
 st.set_page_config(page_title='pkmndb', page_icon='🐲', layout="wide")
 
@@ -35,10 +35,10 @@ def load_more():
 
 # Load data function (unchanged)
 @st.cache_data
-def load_data(lang):
-  df = pd.read_csv(dConfig[lang]['file'], sep=';', encoding=dConfig[lang]['encoding'])
-  df[dConfig[lang]['hp']] = pd.to_numeric(df[dConfig[lang]['hp']], errors='coerce')
-  numeric_columns = [dConfig[lang]['hp'], 'Attack 1 damage', 'Attack 2 damage']
+def load_data(language):
+  df = pd.read_csv(dTranslations[language]['file'], sep=';', encoding=dTranslations[language]['encoding'])
+  df[dTranslations[language]['hp']] = pd.to_numeric(df[dTranslations[language]['hp']], errors='coerce')
+  numeric_columns = [dTranslations[language]['hp'], 'Attack 1 damage', 'Attack 2 damage']
 
   df[numeric_columns] = df[numeric_columns].fillna(0)
   object_columns = df.select_dtypes(include=['object']).columns
@@ -122,8 +122,8 @@ def parse_card_entries(text):
 
 # Battlelog viewer START
 def get_language(text):
-    global sLanguage
-    sLanguage = ['English', 'German'][text.split('\n')[0] == 'Vorbereitung']
+    global language_battlelog
+    language_battlelog = ['English', 'German'][text.split('\n')[0] == 'Vorbereitung']
 
 def load_saved_battlogs():
     saved_selections = ['']
@@ -135,8 +135,8 @@ def extract_players(preparation_text):
     lines = preparation_text.split('\n')
 
     for line in lines:
-        if dTranslations[sLanguage]['player_pattern'] in line:
-            player = line.split(dTranslations[sLanguage]['player_pattern'])[0].strip()
+        if dTranslations[language_battlelog]['player_pattern'] in line:
+            player = line.split(dTranslations[language_battlelog]['player_pattern'])[0].strip()
             players.append(player)
     print(f'Found these {players = }')
     return players
@@ -164,7 +164,7 @@ def get_winner(text):
     last_line = find_last_item(text.split('\n'))
     print(f'{last_line = }')
     # Suche nach dem Muster
-    match = re.search(dTranslations[sLanguage]['winner_pattern'], text)
+    match = re.search(dTranslations[language_battlelog]['winner_pattern'], text)
     if match:
         winner = match.group(1)
         print(f'{winner = }')
@@ -182,7 +182,7 @@ def extract_turn_info(turn_text):
     # Extract turn number and player
     turn_header = turn_text.split('\n')[0]
     turn_num = int(re.search(r'Turn # (\d+)', turn_header).group(1))
-    player = re.search(dTranslations[sLanguage]['turn_pattern'], turn_header).group(1)
+    player = re.search(dTranslations[language_battlelog]['turn_pattern'], turn_header).group(1)
 
     # Extract actions
     actions = [line.strip() for line in turn_text.split('\n')[1:] if line.strip()]
@@ -197,9 +197,9 @@ def format_action(action, player_colors):
     """Format action text with colored player names and appropriate styling"""
     colored_text = color_player_names(action, player_colors)
 
-    if dTranslations[sLanguage]['knockout'] in action:
+    if dTranslations[language_battlelog]['knockout'] in action:
         return f"**🔥 {colored_text}**"
-    elif dTranslations[sLanguage]['win'] in action:
+    elif dTranslations[language_battlelog]['win'] in action:
         return f"### 🏆 {colored_text}"
     elif any(key in action.lower() for key in ['ist jetzt in der aktiven position', 'is now in the Active Spot']):
         return f' 🆕 {action}'
@@ -222,10 +222,10 @@ def format_action(action, player_colors):
 # Battlelog viewer END
 
 col_lang, col_reset = st.columns([1,5])
-lang = col_lang.selectbox('Language', ['english', 'deutsch'])
+language_cards = col_lang.selectbox('Language', ['english', 'german'])
 
 # Load data
-df_orig = load_data(lang)
+df_orig = load_data(language_cards)
 df = df_orig
 
 # Reset Button
@@ -289,12 +289,12 @@ with tab1:
       # print(f'{attack2_damage = }')
   
     with col3:
-      kp_min = int(df[dConfig[lang]['hp']].min())
-      kp_max = int(df[dConfig[lang]['hp']].max())
+      kp_min = int(df[dTranslations[language_cards]['hp']].min())
+      kp_max = int(df[dTranslations[language_cards]['hp']].max())
       iStep = 10
       if kp_min == kp_max:
         kp_max += iStep
-      kp_range = st.slider(dConfig[lang]['hp'], kp_min, kp_max, (kp_min, kp_max), step=iStep)
+      kp_range = st.slider(dTranslations[language_cards]['hp'], kp_min, kp_max, (kp_min, kp_max), step=iStep)
       # print(f'{kp_range = }')
       set_filter = st.multiselect('Set', sorted(df['Set'].unique()))
       # print(f'{set_filter = }')
@@ -307,7 +307,7 @@ with tab1:
       # df = df[df['Cardtype'].isin(cardtype)]
     if typ != 'All':
       df = df[df['Typ'] == typ]
-    df = df[(df[dConfig[lang]['hp']] >= kp_range[0]) & (df[dConfig[lang]['hp']] <= kp_range[1])]
+    df = df[(df[dTranslations[language_cards]['hp']] >= kp_range[0]) & (df[dTranslations[language_cards]['hp']] <= kp_range[1])]
     if attack1_cost:
       # df = df[df['Attack 1 cost'] == attack1_cost]
       df = df[df['Attack 1 cost'].isin(attack1_cost)]
@@ -409,7 +409,7 @@ with tab1:
     st.write('ende')
 
   else:
-    st.write('Keine Karten gefunden, die den Filterkriterien entsprechen.')
+    st.write(dTranslations[language_cards]['no_cards_found'])
 
 with tab2:
   st.header('to be done...')
@@ -478,7 +478,7 @@ with tab3:
       iCounter += 1
 
 with tab4:
-  st.title('Pokemon Trading Card Game - Match Viewer')
+  st.title('Pokemon Trading Card Game - Battlelog Viewer')
 
   game_log = ''
 
@@ -500,8 +500,6 @@ with tab4:
       print(battlelogfile)
       with open(battlelogfile, 'r', encoding='utf-8') as _battlelog:
         game_log = _battlelog.read()
-    else:
-      st.warning("Bitte laden Sie ein Spielprotokoll hoch.")
   else:
     game_log = st.text_area('Battlelog here')
 
@@ -535,13 +533,13 @@ with tab4:
           ''', unsafe_allow_html=True)
 
     # Display preparation phase with colored player names
-    with st.expander(f"📝 {dTranslations[sLanguage]['setup']}", expanded=True):
+    with st.expander(f"📝 {dTranslations[language_battlelog]['setup']}", expanded=True):
       for line in preparation.split('\n'):
         if line.strip():
           st.markdown(color_player_names(line, player_colors), unsafe_allow_html=True)
 
     # Create tabs for different views
-    tab1, tab2 = st.tabs([f"🎮 {dTranslations[sLanguage]['gameplay']}", f"📊 {dTranslations[sLanguage]['statistics']}"])
+    tab1, tab2 = st.tabs([f"🎮 {dTranslations[language_battlelog]['gameplay']}", f"📊 {dTranslations[language_battlelog]['statistics']}"])
 
     with tab1:
       # Display turns
@@ -555,11 +553,11 @@ with tab4:
         <div style="background: linear-gradient(to right, {light_color}, white);
               padding: 15px; border-radius: 10px; margin: 10px 0;
               border-left: 5px solid {color};">
-          <h3>{dTranslations[sLanguage]['turn']} {turn_info['turn_number']} - <span style='color: {color}'>{player}</span></h3>
+          <h3>{dTranslations[language_battlelog]['turn']} {turn_info['turn_number']} - <span style='color: {color}'>{player}</span></h3>
         </div>
         """, unsafe_allow_html=True)
 
-        with st.expander(f'{dTranslations[sLanguage]['turn']} {turn_info['turn_number']}', True):
+        with st.expander(f'{dTranslations[language_battlelog]['turn']} {turn_info['turn_number']}', True):
           # Display actions with colored player names
           for action in turn_info['actions']:
             st.markdown(format_action(action, player_colors), unsafe_allow_html=True)
@@ -571,46 +569,46 @@ with tab4:
       col1, col2, col3 = st.columns(3)
 
       with col1:
-        st.metric(dTranslations[sLanguage]['total_turns'], total_turns)
+        st.metric(dTranslations[language_battlelog]['total_turns'], total_turns)
 
       with col2:
         knockout_count = sum(1 for turn in turns for action in turn.split('\n') 
-                  if dTranslations[sLanguage]['knockout'] in action)
-        st.metric(dTranslations[sLanguage]['knockout_pokemon'], knockout_count)
+                  if dTranslations[language_battlelog]['knockout'] in action)
+        st.metric(dTranslations[language_battlelog]['knockout_pokemon'], knockout_count)
 
       with col3:
         energy_count = sum(1 for turn in turns for action in turn.split('\n') 
-                if dTranslations[sLanguage]['energy'] in action)
-        st.metric(dTranslations[sLanguage]['played_energies'], energy_count)
+                if dTranslations[language_battlelog]['energy'] in action)
+        st.metric(dTranslations[language_battlelog]['played_energies'], energy_count)
 
       # Add a timeline of major events with colored player names
-      st.subheader(dTranslations[sLanguage]['events'])
+      st.subheader(dTranslations[language_battlelog]['events'])
       events = []
       for turn in turns:
         turn_info = extract_turn_info(turn)
         for action in turn_info['actions']:
           if any(key in action for key in lImportant_Actions):
-            events.append(f"{dTranslations[sLanguage]['turn']} {turn_info['turn_number']}: {action}")
+            events.append(f"{dTranslations[language_battlelog]['turn']} {turn_info['turn_number']}: {action}")
 
       for event in events:
         st.markdown(color_player_names(event, player_colors), unsafe_allow_html=True)
 
       # Add player statistics
-      st.subheader(dTranslations[sLanguage]['player_stistics'])
+      st.subheader(dTranslations[language_battlelog]['player_stistics'])
       cols = st.columns(len(players))
 
       for i, (player, color) in enumerate(player_colors.items()):
         player_turns = [turn for turn in turns if extract_turn_info(turn)['player'] == player]
         player_knockouts = sum(1 for turn in player_turns
                   for action in turn.split('\n')
-                  if dTranslations[sLanguage]['knockout'] in action)
+                  if dTranslations[language_battlelog]['knockout'] in action)
 
         with cols[i]:
           st.markdown(f'''
           <div style="padding: 10px; border-radius: 5px; border: 2px solid {color};">
             <h4 style="color: {color}">{player}</h4>
-            <p>{dTranslations[sLanguage]['turns_played']}: {len(player_turns)}</p>
-            <p>{dTranslations[sLanguage]['knockout_pokemon']}: {player_knockouts}</p>
+            <p>{dTranslations[language_battlelog]['turns_played']}: {len(player_turns)}</p>
+            <p>{dTranslations[language_battlelog]['knockout_pokemon']}: {player_knockouts}</p>
           </div>
           ''', unsafe_allow_html=True)
 
