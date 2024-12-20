@@ -248,11 +248,11 @@ with tab1:
     mask = df['Evolves from'].str.contains(search_term_evolves_from, case=False, na=False)
     df = df[mask]
   elif search_term:
-    if lang == 'english':
+    if language_cards == 'english':
       mask = df['Name'].str.contains(search_term, case=False, na=False) | \
         df['Attack 1 Name'].str.contains(search_term, case=False, na=False) | \
         df['Attack 2 Name'].str.contains(search_term, case=False, na=False)
-    elif lang == 'deutsch':
+    elif language_cards == 'deutsch':
       mask = df['Name'].str.contains(search_term, case=False, na=False) | \
         df['Name EN'].str.contains(search_term, case=False, na=False) | \
         df['Attack 1 Name'].str.contains(search_term, case=False, na=False) | \
@@ -312,7 +312,7 @@ with tab1:
       df = df[df['Cardtype'] == cardtype]
       # df = df[df['Cardtype'].isin(cardtype)]
     if _type != 'All':
-      df = df[df['Typ'] == _type]
+      df = df[df['Type'] == _type]
     df = df[(df[dTranslations[language_cards]['hp']] >= kp_range[0]) & (df[dTranslations[language_cards]['hp']] <= kp_range[1])]
     if attack1_cost:
       # df = df[df['Attack 1 cost'] == attack1_cost]
@@ -388,9 +388,9 @@ with tab1:
       card = filtered_df.iloc[i]
       with cols[i % 4]:
         col_num, col_link = st.columns(2)
-        if lang == 'english':
+        if language_cards == 'english':
           quantity = col_num.number_input(f"{card['Name']} {card['Set']} {card['#']}", min_value=0, value=st.session_state.selected_cards.get(f"{card['Name']} {card['Set']} {card['#']}", 0), key=f"quantity_{i}", max_value=4)
-        elif lang == 'deutsch':
+        elif language_cards == 'deutsch':
           quantity = col_num.number_input(f"{card['Name']} '{card['Name EN']}' {card['Set']} {card['#']}", min_value=0, value=st.session_state.selected_cards.get(f"{card['Name']} {card['Set']} {card['#']}", 0), key=f"quantity_{i}", max_value=4)
 
         url = f'https://limitlesstcg.com/cards/de/{card['Set']}/{card['#']}'
@@ -463,20 +463,20 @@ with tab3:
       print(f'{lCard = }')
       quan, card_name, card_set, card_num = lCard
       print(quan, card_name, card_set, card_num)
-      if lang == 'english':
+      if language_cards == 'english':
         mask = df_orig['Name'].str.contains(card_name, case=False, na=False) & \
           df_orig['Set'].str.contains(card_set, case=False, na=False) & \
           df_orig['#'].str.contains(card_num, case=False, na=False)
-      elif lang == 'deutsch':
+      elif language_cards == 'deutsch':
         mask = df_orig['Name EN'].str.contains(card_name, case=False, na=False) & \
           df_orig['Set'].str.contains(card_set, case=False, na=False) & \
           df_orig['#'].str.contains(card_num, case=False, na=False)
 
       card = df_orig[mask].iloc[0]
       with cols[iCounter % 4]:
-        if lang == 'english':
+        if language_cards == 'english':
           st.text(f"{quan} cards\t{card['Name']}\n{card['Set']} {card['#']}")
-        elif lang == 'deutsch':
+        elif language_cards == 'deutsch':
           st.text(f"{quan}\t{card['Name']}\n{card['Name EN']} {card['Set']} {card['#']}")
 
         st.image(card['URL'], width=300)
