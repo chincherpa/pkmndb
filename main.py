@@ -267,7 +267,7 @@ with tab1:
     col1, col2, col3 = st.columns(3)
   
     with col1:
-      lCardtype_options = ['All'] + sorted(df['Cardtype'].unique().tolist())
+      lCardtype_options = ['All', 'Pokemon'] + sorted(df['Cardtype'].unique().tolist())
       cardtype = st.selectbox('Cardtype', lCardtype_options)
       # print(f'{Cardtype = }')
       attack1_cost_options = sorted(df['Attack 1 cost'].unique().tolist())
@@ -276,10 +276,12 @@ with tab1:
       attack1_damage_options = sorted(df['Attack 1 damage'].unique().tolist())
       attack1_damage = st.multiselect('Attack 1 damage', attack1_damage_options)
       # print(f'{attack1_damage = }')
-  
+      lWeakness_options = ['Choose an option'] + sorted(df['Weakness'].unique().tolist())
+      weakness = st.selectbox('Weakness', lWeakness_options)
+
     with col2:
-      typ_options = ['All'] + sorted(df['Typ'].unique().tolist())
-      typ = st.selectbox('Typ', typ_options)
+      typ_options = ['All'] + sorted(df['Type'].unique().tolist())
+      _type = st.selectbox('Type', typ_options)
       # print(f'{typ = }')
       attack2_cost_options = sorted(df['Attack 2 cost'].unique().tolist())
       attack2_cost = st.multiselect('Attack 2 cost', attack2_cost_options)
@@ -301,8 +303,12 @@ with tab1:
       regulation = st.multiselect('Regulation', df['Regulation'].unique())
       # print(f'{regulation = }')
 
-    # Anwenden der Filter
-    if cardtype != 'All':
+    # Applying the filters
+
+    # cardtype == 'Pokemon' = Show all Pokemon crads
+    if cardtype == 'Pokemon':
+      df = df[df['Cardtype'].isin(['Basic', 'Stage 1', 'Stage 2'])]
+    elif cardtype != 'All':
       df = df[df['Cardtype'] == cardtype]
       # df = df[df['Cardtype'].isin(cardtype)]
     if typ != 'All':
@@ -323,6 +329,8 @@ with tab1:
     if set_filter:
       df = df[df['Set'].isin(set_filter)]
     if regulation:
+      df = df[df['Regulation'].isin(regulation)]
+    if weakness != 'Choose an option':
       df = df[df['Regulation'].isin(regulation)]
 
   st.metric('Karten', len(df))
