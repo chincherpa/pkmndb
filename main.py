@@ -311,8 +311,8 @@ with tab1:
     elif cardtype != 'All':
       df = df[df['Cardtype'] == cardtype]
       # df = df[df['Cardtype'].isin(cardtype)]
-    if typ != 'All':
-      df = df[df['Typ'] == typ]
+    if _type != 'All':
+      df = df[df['Typ'] == _type]
     df = df[(df[dTranslations[language_cards]['hp']] >= kp_range[0]) & (df[dTranslations[language_cards]['hp']] <= kp_range[1])]
     if attack1_cost:
       # df = df[df['Attack 1 cost'] == attack1_cost]
