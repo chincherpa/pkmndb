@@ -17,7 +17,6 @@ dTranslations = {
     'file': 'cards_de.csv',
     'encoding': 'mbcs',
     'hp': 'KP',
-    'no_cards_found': 'Keine Karten gefunden, die den Filterkriterien entsprechen.',
 
     # Battlelog Viewer
     'energy': 'Energie',
@@ -41,7 +40,6 @@ dTranslations = {
     'file': 'cards_en.csv',
     'encoding': 'utf-8',
     'hp': 'HP',
-    'no_cards_found': 'No cards found that match the filter criteria.',
 
     # Battlelog Viewer
     'energy': 'Energy',

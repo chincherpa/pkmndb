@@ -235,10 +235,11 @@ if bReset:
   st.session_state.selected_cards = {}
 
 # Create tabs
-tab1, tab2, tab3, tab4 = st.tabs(['Card selection', 'Saved selections', 'Import', 'Battle log viewer'])
+# saved for later
+# tab1, tab2, tab3, tab4 = st.tabs(['Card selection', 'Saved selections', 'Import', 'Battle log viewer'])
+tab1, tab4 = st.tabs(['Card selection', 'Battle log viewer'])
 
 with tab1:
-  # Existing search functionality
   col_search_evo, col_search_names = st.columns(2)
   with col_search_evo:
     search_term_evolves_from = st_keyup("Find in: 'Evolves from'")
@@ -261,7 +262,6 @@ with tab1:
         df['Attack 2 Name EN'].str.contains(search_term, case=False, na=False)
     df = df[mask]
 
-#  st.divider()
   with st.expander('Filter'):
     # Filter
     col1, col2, col3 = st.columns(3)
@@ -355,7 +355,6 @@ with tab1:
       df['Effect 2'].str.contains(search_term_att_eff, case=False, na=False)
     df = df[mask]
 
-  # st.dataframe(df)
   event = st.dataframe(
     df,
     # column_config=column_configuration,
@@ -367,10 +366,9 @@ with tab1:
 
   st.header("Selected cards")
   selected_cards = event.selection.rows
-  filtered_df = df.iloc[selected_cards]
+  df_selected_cards = df.iloc[selected_cards]
   st.dataframe(
-    filtered_df,
-    # column_config=column_configuration,
+    df_selected_cards,
     use_container_width=True,
   )
 
@@ -380,11 +378,12 @@ with tab1:
   #   # del st.session_state['selected_cards']
   #   st.session_state.selected_cards = {}
 
-  if not filtered_df.empty:
-    st.write(f"Show {min(st.session_state.num_images, len(filtered_df))} cards:")
+  if not df_selected_cards.empty:
+    st.write(f"Show {min(st.session_state.num_images, len(df_selected_cards))} cards:")
+    iWidth = 400  # st.slider('size', 100, 600, 400, 50)
     cols = st.columns(4)
-    for i in range(min(st.session_state.num_images, len(filtered_df))):
-      card = filtered_df.iloc[i]
+    for i in range(min(st.session_state.num_images, len(df_selected_cards))):
+      card = df_selected_cards.iloc[i]
       with cols[i % 4]:
         col_num, col_link = st.columns(2)
         if language_cards == 'english':
@@ -394,95 +393,13 @@ with tab1:
 
         url = f'https://limitlesstcg.com/cards/de/{card['Set']}/{card['#']}'
         col_link.link_button('go to card on limitlessTCG', url)
-        st.image(card['URL'], width=400)
-        # st.link_button('go to card on limitlessTCG', url)
+        st.image(card['URL'], width=iWidth)
         update_card_quantity(f"{card['Name']}|{card['Set']}|{card['#']}", quantity)
 
-    if st.session_state.num_images < len(filtered_df):
+    if st.session_state.num_images < len(df_selected_cards):
       if st.button('load more'):
         load_more()
-      st.write(f"Angezeigt: {min(st.session_state.num_images, len(filtered_df))} von {len(filtered_df)} Karten")
-
-    # Save selection
-    st.subheader("Auswahl speichern")
-    col_save, _ = st.columns([2,3])
-    print(col_save.text_input("Name für die Auswahl:", key="selection_name"))
-    st.button("Auswahl speichern", on_click=save_selection)
-
-    # Display current selection
-    st.subheader("Aktuelle Auswahl")
-    for card, quantity in st.session_state.selected_cards.items():
-      st.write(f"{card}: {quantity}")
-    st.write('ende')
-
-  else:
-    st.write(dTranslations[language_cards]['no_cards_found'])
-
-with tab2:
-  st.header('to be done...')
-  # st.header('Gespeicherte Auswahlen anzeigen')
-  # saved_selections = load_saved_selections()  # list of files
-  # col_saved, _ = st.columns([2,3])
-  # selected_save = col_saved.selectbox('Wählen Sie eine gespeicherte Auswahl:', saved_selections)
-  # print(f'|{selected_save}|', 'selected_save bool', bool(selected_save), type(selected_save))
-
-  # if selected_save:
-  #   loaded_selection = load_saved_selection(f'{selected_save}.txt')
-  #   st.write(f'Karten in '{selected_save}':')
-  #   for card, quantity in loaded_selection.items():
-  #     st.write(f'{card}: {quantity}')
-
-  #   # Display the selected cards
-  #   cols = st.columns(4)
-  #   for i, (card_id, quantity) in enumerate(loaded_selection.items()):
-  #     print(f'{card_id = }')
-  #     card_name, card_set, card_num = card_id.split('|')
-  #     mask = df_orig['Name'].str.contains(card_name, case=False, na=False) & \
-  #       df_orig['Set'].str.contains(card_set, case=False, na=False) & \
-  #       df_orig['#'].str.contains(card_num, case=False, na=False)
-
-  #     card = df_orig[mask].iloc[0]
-  #     with cols[i % 4]:
-  #       st.write(f"{card['Name']} '{card['Name EN']}' {card['Set']} {card['#']}")
-  #       # col_quan, col_del = cols = st.columns(2)
-  #       st.write(f'Anzahl: {quantity}')
-  #       st.image(card['URL'], width=300)
-  #       bDelete = st.button(f'remove {card_id}')
-  #       if bDelete:
-  #         print('removing this card')
-
-with tab3:
-    input_text = st.text_area('Import decklist')
-    parsed_cards = parse_card_entries(input_text)
-
-    iCounter = 0
-    cols = st.columns(4)
-    for lCard in parsed_cards:
-      # Display the selected cards
-      print(f'{lCard = }')
-      quan, card_name, card_set, card_num = lCard
-      print(quan, card_name, card_set, card_num)
-      if language_cards == 'english':
-        mask = df_orig['Name'].str.contains(card_name, case=False, na=False) & \
-          df_orig['Set'].str.contains(card_set, case=False, na=False) & \
-          df_orig['#'].str.contains(card_num, case=False, na=False)
-      elif language_cards == 'deutsch':
-        mask = df_orig['Name EN'].str.contains(card_name, case=False, na=False) & \
-          df_orig['Set'].str.contains(card_set, case=False, na=False) & \
-          df_orig['#'].str.contains(card_num, case=False, na=False)
-
-      card = df_orig[mask].iloc[0]
-      with cols[iCounter % 4]:
-        if language_cards == 'english':
-          st.text(f"{quan} cards\t{card['Name']}\n{card['Set']} {card['#']}")
-        elif language_cards == 'deutsch':
-          st.text(f"{quan}\t{card['Name']}\n{card['Name EN']} {card['Set']} {card['#']}")
-
-        st.image(card['URL'], width=300)
-        bDelete = st.button(f'remove {card_name} {card_set} {card_num}')
-        if bDelete:
-          print('removing this card')
-      iCounter += 1
+      st.write(f"Angezeigt: {min(st.session_state.num_images, len(df_selected_cards))} von {len(df_selected_cards)} Karten")
 
 with tab4:
   st.title('Pokemon Trading Card Game - Battlelog Viewer')
