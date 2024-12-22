@@ -229,7 +229,7 @@ tab1, tab4 = st.tabs(['Card selection', 'Battle log viewer'])
 with tab1:
   with st.expander('...'):
     col_lang, col_reset = st.columns([1,5])
-    language_cards = col_lang.selectbox('Language', ['english', 'german'])
+    language_cards = col_lang.selectbox('Language of cards', ['english', 'german'])
 
     # Reset Button
     bReset = col_reset.button('Reset')
