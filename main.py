@@ -221,10 +221,6 @@ def format_action(action, player_colors):
         return f'- {colored_text}'
 # Battlelog viewer END
 
-# Load data
-df_orig = load_data(language_cards)
-df = df_orig
-
 # Create tabs
 # saved for later
 # tab1, tab2, tab3, tab4 = st.tabs(['Card selection', 'Saved selections', 'Import', 'Battle log viewer'])
@@ -240,6 +236,10 @@ with tab1:
     if bReset:
       # del st.session_state['selected_cards']
       st.session_state.selected_cards = {} 
+
+  # Load data
+  df_orig = load_data(language_cards)
+  df = df_orig
 
   col_search_evo, col_search_names = st.columns(2)
   with col_search_evo:
