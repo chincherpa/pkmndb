@@ -231,14 +231,15 @@ df = df_orig
 tab1, tab4 = st.tabs(['Card selection', 'Battle log viewer'])
 
 with tab1:
-  col_lang, col_reset = st.columns([1,5])
-  language_cards = col_lang.selectbox('Language', ['english', 'german'])
+  with st.expander('...'):
+    col_lang, col_reset = st.columns([1,5])
+    language_cards = col_lang.selectbox('Language', ['english', 'german'])
 
-  # Reset Button
-  bReset = col_reset.button('Reset')
-  if bReset:
-    # del st.session_state['selected_cards']
-    st.session_state.selected_cards = {} 
+    # Reset Button
+    bReset = col_reset.button('Reset')
+    if bReset:
+      # del st.session_state['selected_cards']
+      st.session_state.selected_cards = {} 
 
   col_search_evo, col_search_names = st.columns(2)
   with col_search_evo:
