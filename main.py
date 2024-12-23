@@ -227,7 +227,7 @@ def format_action(action, player_colors):
 tab1, tab4 = st.tabs(['Card selection', 'Battle log viewer'])
 
 with tab1:
-  with st.expander('...'):
+  with st.expander('select cards language'):
     col_lang, col_reset = st.columns([1,5])
     language_cards = col_lang.selectbox('Language of cards', ['english', 'german'])
 
