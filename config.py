@@ -15,7 +15,7 @@ lImportant_Actions = [
 dTranslations = {
   'german': {
     'file': 'cards_de.csv',
-    'encoding': 'mbcs',
+    'encoding': 'cp1252',
     'hp': 'KP',
 
     # Battlelog Viewer
