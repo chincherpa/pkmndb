@@ -36,8 +36,6 @@ def load_more():
 # Load data function (unchanged)
 @st.cache_data
 def load_data(language):
-  st.write(f'{language = }')
-  st.write(f"file = {dTranslations[language]['file']}")
   df = pd.read_csv(dTranslations[language]['file'], sep=';', encoding=dTranslations[language]['encoding'])
   df[dTranslations[language]['hp']] = pd.to_numeric(df[dTranslations[language]['hp']], errors='coerce')
   numeric_columns = [dTranslations[language]['hp'], 'Attack 1 damage', 'Attack 2 damage']
