@@ -10,6 +10,7 @@ lImportant_Actions = [
   'evolved',
   "Boss's Orders",
   'Prize card',
+  'Sudden Death',
   ]
 
 dTranslations = {

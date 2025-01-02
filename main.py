@@ -217,6 +217,8 @@ def format_action(action, player_colors):
         return f' ➕ {action}'
     elif any(key in action.lower() for key in ['entwickelt', 'energie', 'eingesetzt', 'evolved', 'energy', 'used']):
         return f'- 🎯 {colored_text}'
+    elif any(key in action.lower() for key in ['sudden death']):
+        return f'- 🎯 {colored_text}'
     else:
         return f'- {colored_text}'
 # Battlelog viewer END
@@ -444,18 +446,15 @@ with tab4:
     cols = st.columns(2)
     for i, (player, color) in enumerate(player_colors.items()):
       with cols[i]:
+        background = "white"
         if player == winner:
-          st.markdown(f'''
-          <div style="padding: 10px; border-radius: 5px; border: 2px solid {color};">
-            <h4 style="color: {color}">{player}</h4>
-          </div>
-          ''', unsafe_allow_html=True)
-        else:
-          st.markdown(f'''
-          <div style="padding: 10px; border-radius: 5px; border: 2px solid {color}; background-color:gold">
-            <h4 style="color: {color}">{player}</h4>
-          </div>
-          ''', unsafe_allow_html=True)
+          background = "gold"
+
+        st.markdown(f'''
+        <div style="padding: 10px; border-radius: 5px; border: 2px solid {color}; background-color:{background}">
+          <h4 style="color: {color}">{player}</h4>
+        </div>
+        ''', unsafe_allow_html=True)
 
     # Display preparation phase with colored player names
     with st.expander(f"📝 {dTranslations[language_battlelog]['setup']}", expanded=True):
