@@ -8,18 +8,7 @@ from st_keyup import st_keyup
 
 import config as c
 
-st.set_page_config(page_title='pkmndb', page_icon='🐲', layout="wide")
-
-# st.markdown("""
-#   div.stButton > button:first-child {
-#     background-color: #00cc00;
-#     color:white;
-#     font-size:20px;
-#     height:3em;
-#     width:30em;
-#     border-radius:10px 10px 10px 10px;
-#   }
-# """, unsafe_allow_html=True)
+st.set_page_config(page_title='pkmndb', page_icon='🐲', layout='wide')
 
 # Existing initializations
 if 'num_images' not in st.session_state:
@@ -49,16 +38,16 @@ def save_selection():
     selection_name = st.session_state.selection_name
     print(f'{selection_name = }')
     if selection_name and st.session_state.selected_cards:
-        with open(f"{selection_name}.txt", "w") as f:
+        with open(f'{selection_name}.txt', 'w') as f:
     #with open('readme.txt', 'w') as f:
     #  f.write('readme')
             for card, quantity in st.session_state.selected_cards.items():
                 f.write(f'{quantity} {card}\n')
         st.success(f"Selection '{selection_name}' saved successfully!")
     elif selection_name:
-        st.error("Please select at least one card.")
+        st.error('Please select at least one card.')
     elif st.session_state.selected_cards:
-        st.error("Please enter a name.")
+        st.error('Please enter a name.')
 
 def load_saved_selection(textfile):
     with open(f'saved_selections/{textfile}', 'r') as f:
@@ -94,7 +83,7 @@ def format_pokemon_card_line(line):
     second_last_word = words[-2]
     
     # Erstelle den neuen String mit | als Trenner für die letzten beiden Elemente
-    new_line = ' '.join(words[:-2]) + f"|{second_last_word}|{last_word}"
+    new_line = ' '.join(words[:-2]) + f'|{second_last_word}|{last_word}'
     
     return new_line
 
@@ -142,7 +131,7 @@ def extract_players(preparation_text):
 
 def get_player_colors(players):
     """Assign colors to players"""
-    colors = ["#FF4B00", "#4B8BFF"]  # Rot und Blau
+    colors = ['#FF4B00', '#4B8BFF']  # Rot und Blau
     return {player: color for player, color in zip(players, colors)}
 
 def color_player_names(text, player_colors):
@@ -184,9 +173,9 @@ def get_winner(text):
 
 def parse_game_log(log_text):
     # Split into preparation and turns
-    parts = log_text.split("\n\nTurn #")
+    parts = log_text.split('\n\nTurn #')
     preparation = parts[0]
-    turns = ["Turn #" + turn for turn in parts[1:]]
+    turns = ['Turn #' + turn for turn in parts[1:]]
 
     return preparation, turns
 
@@ -260,7 +249,7 @@ language_cards = col_lang.selectbox('Language', ['english', 'german'])
 df = load_data(language_cards)
 
 # Reset Button
-bReset = col_reset.button('Reset')
+bReset = col_reset.button('Reset', key='reset')
 if bReset:
   # del st.session_state['selected_cards']
   st.session_state.selected_cards = {}
@@ -285,11 +274,12 @@ with tab1:
   df_orig = load_data(language_cards)
   df = df_orig
 
-  col_search_evo, col_search_names = st.columns(2)
-  with col_search_evo:
-    search_term_evolves_from = st_keyup("Find in: 'Evolves from'")
+  col_search_names, col_search_evo = st.columns(2)
   with col_search_names:
     search_term = st_keyup('Find in names or attacks:')
+  with col_search_evo:
+    search_term_evolves_from = st_keyup("Find in 'Evolves from'")
+
   if search_term_evolves_from:
     mask = df['Evolves from'].str.contains(search_term_evolves_from, case=False, na=False)
     df = df[mask]
@@ -319,27 +309,41 @@ with tab1:
       attack1_damage_options = sorted(df['Attack 1 damage'].unique().tolist())
       attack1_damage = st.multiselect('Attack 1 damage', attack1_damage_options)
       lWeakness_options = ['Choose an option'] + sorted(df['Weakness'].unique().tolist())
-      weakness = st.selectbox('Weakness', lWeakness_options)
+      weakness_filter = st.selectbox('Weakness', lWeakness_options)
 
     with col2:
       typ_options = ['All'] + sorted(df['Type'].unique().tolist())
-      _type = st.selectbox('Type', typ_options)
+      type_filter = st.selectbox('Type', typ_options)
       attack2_cost_options = sorted(df['Attack 2 cost'].unique().tolist())
       attack2_cost = st.multiselect('Attack 2 cost', attack2_cost_options)
       attack2_damage_options = sorted(df['Attack 2 damage'].unique().tolist())
       attack2_damage = st.multiselect('Attack 2 damage', attack2_damage_options)
   
     with col3:
+      set_filter = st.multiselect('Set', sorted(df['Set'].unique()))
+      regulation_filter = st.multiselect('Regulation', df['Regulation'].unique())
       kp_min = int(df[c.dTranslations[language_cards]['hp']].min())
       kp_max = int(df[c.dTranslations[language_cards]['hp']].max())
       iStep = 10
       if kp_min == kp_max:
         kp_max += iStep
       kp_range = st.slider(c.dTranslations[language_cards]['hp'], kp_min, kp_max, (kp_min, kp_max), step=iStep)
-      set_filter = st.multiselect('Set', sorted(df['Set'].unique()))
-      regulation = st.multiselect('Regulation', df['Regulation'].unique())
 
     # Applying the filters
+    dFilters = {
+      'cardtype': cardtype,
+      'attack1_cost': attack1_cost,
+      'attack1_damage': attack1_damage,
+      'weakness_filter': weakness_filter,
+      'type_filter': type_filter,
+      'attack2_cost': attack2_cost,
+      'attack2_damage': attack2_damage,
+      'set_filter': set_filter,
+      'regulation_filter': regulation_filter,
+      'kp_range': kp_range
+    }
+    if st.checkbox('Show filter'):
+      st.write(dFilters)
 
     # cardtype == 'Pokemon' = Show all Pokemon crads
     if cardtype == 'Pokemon':
@@ -347,8 +351,8 @@ with tab1:
     elif cardtype != 'All':
       df = df[df['Cardtype'] == cardtype]
       # df = df[df['Cardtype'].isin(cardtype)]
-    if _type != 'All':
-      df = df[df['Type'] == _type]
+    if type_filter != 'All':
+      df = df[df['Type'] == type_filter]
     df = df[(df[c.dTranslations[language_cards]['hp']] >= kp_range[0]) & (df[c.dTranslations[language_cards]['hp']] <= kp_range[1])]
     if attack1_cost:
       # df = df[df['Attack 1 cost'] == attack1_cost]
@@ -364,10 +368,10 @@ with tab1:
       df = df[df['Attack 1 damage'].isin(attack2_damage)]
     if set_filter:
       df = df[df['Set'].isin(set_filter)]
-    if regulation:
-      df = df[df['Regulation'].isin(regulation)]
-    if weakness != 'Choose an option':
-      df = df[df['Regulation'].isin(regulation)]
+    if regulation_filter:
+      df = df[df['Regulation'].isin(regulation_filter)]
+    if weakness_filter != 'Choose an option':
+      df = df[df['Weakness'] == weakness_filter]
 
   st.metric('Found cards', len(df))
   col, col2 = st.columns([2,3])
@@ -396,11 +400,11 @@ with tab1:
     # column_config=column_configuration,
     use_container_width=True,
     hide_index=True,
-    on_select="rerun",
-    selection_mode="multi-row",
+    on_select='rerun',
+    selection_mode='multi-row',
   )
 
-  st.header("Selected cards")
+  st.header('Selected cards')
   selected_cards = event.selection.rows
   df_selected_cards = df.iloc[selected_cards]
   st.dataframe(
@@ -415,7 +419,7 @@ with tab1:
   #   st.session_state.selected_cards = {}
 
   if not df_selected_cards.empty:
-    st.write(f"Show {min(st.session_state.num_images, len(df_selected_cards))} cards:")
+    st.write(f'Show {min(st.session_state.num_images, len(df_selected_cards))} cards:')
     iWidth = 400  # st.slider('size', 100, 600, 400, 50)
     cols = st.columns(4)
     for i in range(min(st.session_state.num_images, len(df_selected_cards))):
@@ -435,7 +439,7 @@ with tab1:
     if st.session_state.num_images < len(df_selected_cards):
       if st.button('load more'):
         load_more()
-      st.write(f"Angezeigt: {min(st.session_state.num_images, len(df_selected_cards))} von {len(df_selected_cards)} Karten")
+      st.write(f'Angezeigt: {min(st.session_state.num_images, len(df_selected_cards))} von {len(df_selected_cards)} Karten')
 
 with tab4:
   st.title('Pokemon Trading Card Game - Battlelog Viewer')
@@ -447,11 +451,11 @@ with tab4:
     col1, col2 = st.columns(2)
     with col1:
       # File uploader for the game log
-      uploaded_file = st.file_uploader("Upload battlelog", type=['txt'])
+      uploaded_file = st.file_uploader('Upload battlelog', type=['txt'])
 
     with col2:
       saved_battlogs = load_saved_battlogs()
-      selected_battlog = st.selectbox("Choose battlelog", saved_battlogs)
+      selected_battlog = st.selectbox('Choose battlelog', saved_battlogs)
 
     if uploaded_file is not None:
       game_log = uploaded_file.getvalue().decode('utf-8')
@@ -501,7 +505,7 @@ with tab4:
         turn_info = extract_turn_info(turn)
         player = turn_info['player']
         color = player_colors[player]
-        light_color = f"{color}22"  # Add transparency for lighter background
+        light_color = f'{color}22'  # Add transparency for lighter background
 
         st.markdown(f"""
         <div style="background: linear-gradient(to right, {light_color}, white);
@@ -584,64 +588,64 @@ with tab4:
           st.markdown(f'{color_player_names_events(event, player_colors)}', unsafe_allow_html=True)
 
 
-# Function to display the image on hover
-def display_image_on_hover(image_url, i):
-    # Generate unique class names for each image
-    hover_class = f'hoverable_{i}'
-    tooltip_class = f'tooltip_{i}'
-    image_popup_class = f'image-popup_{i}'
+# # Function to display the image on hover
+# def display_image_on_hover(image_url, i):
+#     # Generate unique class names for each image
+#     hover_class = f'hoverable_{i}'
+#     tooltip_class = f'tooltip_{i}'
+#     image_popup_class = f'image-popup_{i}'
 
-    # Define the unique CSS for each image
-    hover_css = f'''
-        .{hover_class} {{
-            position: relative;
-            display: inline-block;
-            cursor: pointer;
-        }}
-        .{hover_class} .{tooltip_class} {{
-            opacity: 0;
-            position: absolute;
-            bottom: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            transition: opacity 0.5s;
-            background-color: rgba(0, 0, 0, 0.8);
-            color: #fff;
-            padding: 4px;
-            border-radius: 4px;
-            text-align: center;
-            white-space: nowrap;
-        }}
-        .{hover_class}:hover .{tooltip_class} {{
-            opacity: 1;
-        }}
-        .{image_popup_class} {{
-            position: absolute;
-            display: none;
-            background-image: none;
-            width: 200px;
-            height: 200px;
-        }}
-        .{hover_class}:hover .{image_popup_class} {{
-            display: block;
-            background-image: url({image_url});
-            background-size: cover;
-            z-index: 999;
-        }}
-    '''
-    tooltip_css = f"<style>{hover_css}</style>"
+#     # Define the unique CSS for each image
+#     hover_css = f'''
+#         .{hover_class} {{
+#             position: relative;
+#             display: inline-block;
+#             cursor: pointer;
+#         }}
+#         .{hover_class} .{tooltip_class} {{
+#             opacity: 0;
+#             position: absolute;
+#             bottom: 100%;
+#             left: 50%;
+#             transform: translateX(-50%);
+#             transition: opacity 0.5s;
+#             background-color: rgba(0, 0, 0, 0.8);
+#             color: #fff;
+#             padding: 4px;
+#             border-radius: 4px;
+#             text-align: center;
+#             white-space: nowrap;
+#         }}
+#         .{hover_class}:hover .{tooltip_class} {{
+#             opacity: 1;
+#         }}
+#         .{image_popup_class} {{
+#             position: absolute;
+#             display: none;
+#             background-image: none;
+#             width: 200px;
+#             height: 200px;
+#         }}
+#         .{hover_class}:hover .{image_popup_class} {{
+#             display: block;
+#             background-image: url({image_url});
+#             background-size: cover;
+#             z-index: 999;
+#         }}
+#     '''
+#     tooltip_css = f"<style>{hover_css}</style>"
 
-    # Define the html for each image
-    image_hover = f'''
-        <div class="{hover_class}">
-            <a href="{image_url}">{image_url}</a>
-            <div class="{tooltip_class}">Image {i}</div>
-            <div class="{image_popup_class}"></div>
-        </div>
-    '''
+#     # Define the html for each image
+#     image_hover = f'''
+#         <div class="{hover_class}">
+#             <a href="{image_url}">{image_url}</a>
+#             <div class="{tooltip_class}">Image {i}</div>
+#             <div class="{image_popup_class}"></div>
+#         </div>
+#     '''
     
-    # Write the dynamic HTML and CSS to the content container
-    st.markdown(f'<p>{image_hover}{tooltip_css}</p>', unsafe_allow_html=True)
+#     # Write the dynamic HTML and CSS to the content container
+#     st.markdown(f'<p>{image_hover}{tooltip_css}</p>', unsafe_allow_html=True)
 
 # st.image("https://limitlesstcg.nyc3.digitaloceanspaces.com/tpci/ASR/ASR_018_R_EN_XS.png")
 # st.markdown(
