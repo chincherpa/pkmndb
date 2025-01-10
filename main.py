@@ -244,9 +244,8 @@ col_lang, col_reset = st.columns([1,5])
 language_cards = col_lang.selectbox('Language', ['english', 'german'])
 
 # Load data
-# df_orig = load_data(language_cards)
-# df = df_orig
 df = load_data(language_cards)
+lUniqueNames = df['Name'].unique().tolist()
 
 # Reset Button
 bReset = col_reset.button('Reset', key='reset')
@@ -470,8 +469,6 @@ with tab4:
   if game_log:
     get_language(game_log)
 
-    lUniqueNames = df['Name'].unique().tolist()
-
     # Parse the game log
     preparation, turns = parse_game_log(game_log)
     winner = get_winner(game_log)
@@ -529,9 +526,7 @@ with tab4:
                 elif f'{sName} V' in sLine:
                   sName_final = f'{sName} V'
                 sLine = sLine.replace(sName_final, f'**:blue-background[{sName_final}]**')
-                # print(sLine)
-                # df_log = df[df['Name'].str.contains(sName_final, case=False, na=False)]
-                # print(len(df_log))
+                break
             st.markdown(sLine, unsafe_allow_html=True)
 
     with tab2:
