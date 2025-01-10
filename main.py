@@ -6,7 +6,7 @@ import os
 
 from st_keyup import st_keyup
 
-from config import lImportant_Actions, dTranslations
+import config as c
 
 st.set_page_config(page_title='pkmndb', page_icon='🐲', layout="wide")
 
@@ -36,9 +36,9 @@ def load_more():
 # Load data function (unchanged)
 @st.cache_data
 def load_data(language):
-  df = pd.read_csv(dTranslations[language]['file'], sep=';', encoding=dTranslations[language]['encoding'])
-  df[dTranslations[language]['hp']] = pd.to_numeric(df[dTranslations[language]['hp']], errors='coerce')
-  numeric_columns = [dTranslations[language]['hp'], 'Attack 1 damage', 'Attack 2 damage']
+  df = pd.read_csv(c.dTranslations[language]['file'], sep=';', encoding=c.dTranslations[language]['encoding'])
+  df[c.dTranslations[language]['hp']] = pd.to_numeric(df[c.dTranslations[language]['hp']], errors='coerce')
+  numeric_columns = [c.dTranslations[language]['hp'], 'Attack 1 damage', 'Attack 2 damage']
 
   df[numeric_columns] = df[numeric_columns].fillna(0)
   object_columns = df.select_dtypes(include=['object']).columns
@@ -127,7 +127,7 @@ def get_language(text):
 
 def load_saved_battlogs():
     saved_selections = ['']
-    saved_selections = saved_selections + [f'{battlelog}.txt' for battlelog in os.listdir('battlelogs') if battlelog.endswith('.txt')]
+    saved_selections = saved_selections + [f'{battlelog}.txt' for battlelog in os.listdir(c.sBattlelogs_Folder) if battlelog.endswith('.txt')]
     return [os.path.splitext(f)[0] for f in saved_selections]
 
 def extract_players(preparation_text):
@@ -135,15 +135,14 @@ def extract_players(preparation_text):
     lines = preparation_text.split('\n')
 
     for line in lines:
-        if dTranslations[language_battlelog]['player_pattern'] in line:
-            player = line.split(dTranslations[language_battlelog]['player_pattern'])[0].strip()
+        if c.dTranslations[language_battlelog]['player_pattern'] in line:
+            player = line.split(c.dTranslations[language_battlelog]['player_pattern'])[0].strip()
             players.append(player)
-    print(f'Found these {players = }')
     return players
 
 def get_player_colors(players):
     """Assign colors to players"""
-    colors = ["#FF4B4B", "#4B8BFF"]  # Rot und Blau
+    colors = ["#FF4B00", "#4B8BFF"]  # Rot und Blau
     return {player: color for player, color in zip(players, colors)}
 
 def color_player_names(text, player_colors):
@@ -151,6 +150,21 @@ def color_player_names(text, player_colors):
     for player, color in player_colors.items():
         text = text.replace(player, f"<span style='color: {color}; font-weight: bold;'>{player}</span>")
     return text
+
+def color_player_names_events(text, player_colors, sKey=None):
+  """Replace player names with colored versions"""
+  if ':' not in text:
+    return text
+
+  text_turn, text_text = text.split(':')
+  if sKey is not None:
+    color = c.dImportant_Actions_colors[sKey]
+    text_text = text_text.replace(sKey, f"<span style='color: {color}; font-weight: bold;'>{sKey}</span>")
+
+  for player, player_color in player_colors.items():
+    text_text = text_text.replace(player, f"<span style='color: {player_color}; font-weight: bold;'>{player}</span>")
+
+  return f'<p><u>{text_turn}:</u> {text_text}</p>'
 
 def find_last_item(lst):
     """
@@ -162,12 +176,10 @@ def find_last_item(lst):
 def get_winner(text):
     winner = 'not found'
     last_line = find_last_item(text.split('\n'))
-    print(f'{last_line = }')
     # Suche nach dem Muster
-    match = re.search(dTranslations[language_battlelog]['winner_pattern'], text)
+    match = re.search(c.dTranslations[language_battlelog]['winner_pattern'], text)
     if match:
         winner = match.group(1)
-        print(f'{winner = }')
     return winner
 
 def parse_game_log(log_text):
@@ -182,7 +194,7 @@ def extract_turn_info(turn_text):
     # Extract turn number and player
     turn_header = turn_text.split('\n')[0]
     turn_num = int(re.search(r'Turn # (\d+)', turn_header).group(1))
-    player = re.search(dTranslations[language_battlelog]['turn_pattern'], turn_header).group(1)
+    player = re.search(c.dTranslations[language_battlelog]['turn_pattern'], turn_header).group(1)
 
     # Extract actions
     actions = [line.strip() for line in turn_text.split('\n')[1:] if line.strip()]
@@ -194,37 +206,69 @@ def extract_turn_info(turn_text):
     }
 
 def format_action(action, player_colors):
-    """Format action text with colored player names and appropriate styling"""
-    colored_text = color_player_names(action, player_colors)
+  """Format action text with colored player names and appropriate styling"""
+  formatted_text = color_player_names(action, player_colors)
+  action_lower = action.lower()
 
-    if dTranslations[language_battlelog]['knockout'] in action:
-        return f"**🔥 {colored_text}**"
-    elif dTranslations[language_battlelog]['win'] in action:
-        return f"### 🏆 {colored_text}"
-    elif any(key in action.lower() for key in ['ist jetzt in der aktiven position', 'is now in the Active Spot']):
-        return f' 🆕 {action}'
-    elif any(key in action.lower() for key in ['schadenspunkte', 'damage']):
-        return f' 🗡️ {action}'
-    elif any(key in action.lower() for key in ['preiskarte', 'prize card']):
-        return f' 🏅 {action}'
-    elif any(key in action.lower() for key in ['ablagestapel', 'discarded']):
-        return f' 📥 {action}'
-    elif any(key in action.lower() for key in ['gespielt', 'played']):
-        return f' 🎫 {action}'
-    elif any(key in action.lower() for key in ['gemischt', 'shuffled']):
-        return f' 🌀 {action}'
-    elif any(key in action.lower() for key in ['hinzugefügt', 'gezogen', 'drew', 'drawn']):
-        return f' ➕ {action}'
-    elif any(key in action.lower() for key in ['entwickelt', 'energie', 'eingesetzt', 'evolved', 'energy', 'used']):
-        return f'- 🎯 {colored_text}'
+  # Define action patterns and their corresponding emojis/formats
+  patterns = {
+    'knockout': '🪦',
+    'win': '🏆',
+    'damage': '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;⚡',
+    ('ist jetzt in der aktiven position', 'is now in the Active Spot'): '🆕',
+    ('XXX', 'breakdown'): '💥',
+    ('schadenspunkte', 'damage'): '🗡️',
+    ('preiskarte', 'prize card'): '🏅',
+    ('ablagestapel', 'discarded'): '📥',
+    ('gespielt', 'played'): '🃏',
+    ('gemischt', 'shuffled'): '🌀',
+    ('hinzugefügt', 'gezogen', 'drew', 'drawn', 'added'): '➕',
+    ('entwickelt', 'energie', 'evolved', 'energy'): '🎯',
+    ('eingesetzt', 'used'): '⚙️',
+    ('XXX', "didn't take an action in time"): '⏳',
+    ('XXX', 'ended their turn'): '🔚',
+  }
+
+  # Check for special cases first
+  if '• ' in action and c.dTranslations[language_battlelog]['damage'] in action:
+    pattern = patterns['damage']
+  elif c.dTranslations[language_battlelog]['knockout'] in action:
+    pattern = patterns['knockout']
+  elif c.dTranslations[language_battlelog]['win'] in action:
+    pattern = patterns['win']
+  else:
+    # Check other patterns
+    for keys, pattern in patterns.items():
+      if isinstance(keys, str):
+        continue  # Skip the special cases we handled above
+      if any(key in action_lower for key in keys):
+        break
     else:
-        return f'- {colored_text}'
+      # Default pattern if no match found
+      return formatted_text
+
+  return f'{pattern} {formatted_text}'
+
 # Battlelog viewer END
+
+col_lang, col_reset = st.columns([1,5])
+language_cards = col_lang.selectbox('Language', ['english', 'german'])
+
+# Load data
+# df_orig = load_data(language_cards)
+# df = df_orig
+df = load_data(language_cards)
+
+# Reset Button
+bReset = col_reset.button('Reset')
+if bReset:
+  # del st.session_state['selected_cards']
+  st.session_state.selected_cards = {}
 
 # Create tabs
 # saved for later
 # tab1, tab2, tab3, tab4 = st.tabs(['Card selection', 'Saved selections', 'Import', 'Battle log viewer'])
-tab1, tab4 = st.tabs(['Card selection', 'Battle log viewer'])
+tab1, tab4 = st.tabs(['Card selection', 'Battlelog viewer'])
 
 with tab1:
   with st.expander('select cards language'):
@@ -270,39 +314,30 @@ with tab1:
     with col1:
       lCardtype_options = ['All', 'Pokemon'] + sorted(df['Cardtype'].unique().tolist())
       cardtype = st.selectbox('Cardtype', lCardtype_options)
-      # print(f'{Cardtype = }')
       attack1_cost_options = sorted(df['Attack 1 cost'].unique().tolist())
       attack1_cost = st.multiselect('Attack 1 cost', attack1_cost_options)
-      # print(f'{attack1_cost = }')
       attack1_damage_options = sorted(df['Attack 1 damage'].unique().tolist())
       attack1_damage = st.multiselect('Attack 1 damage', attack1_damage_options)
-      # print(f'{attack1_damage = }')
       lWeakness_options = ['Choose an option'] + sorted(df['Weakness'].unique().tolist())
       weakness = st.selectbox('Weakness', lWeakness_options)
 
     with col2:
       typ_options = ['All'] + sorted(df['Type'].unique().tolist())
       _type = st.selectbox('Type', typ_options)
-      # print(f'{typ = }')
       attack2_cost_options = sorted(df['Attack 2 cost'].unique().tolist())
       attack2_cost = st.multiselect('Attack 2 cost', attack2_cost_options)
-      # print(f'{attack2_cost = }')
       attack2_damage_options = sorted(df['Attack 2 damage'].unique().tolist())
       attack2_damage = st.multiselect('Attack 2 damage', attack2_damage_options)
-      # print(f'{attack2_damage = }')
   
     with col3:
-      kp_min = int(df[dTranslations[language_cards]['hp']].min())
-      kp_max = int(df[dTranslations[language_cards]['hp']].max())
+      kp_min = int(df[c.dTranslations[language_cards]['hp']].min())
+      kp_max = int(df[c.dTranslations[language_cards]['hp']].max())
       iStep = 10
       if kp_min == kp_max:
         kp_max += iStep
-      kp_range = st.slider(dTranslations[language_cards]['hp'], kp_min, kp_max, (kp_min, kp_max), step=iStep)
-      # print(f'{kp_range = }')
+      kp_range = st.slider(c.dTranslations[language_cards]['hp'], kp_min, kp_max, (kp_min, kp_max), step=iStep)
       set_filter = st.multiselect('Set', sorted(df['Set'].unique()))
-      # print(f'{set_filter = }')
       regulation = st.multiselect('Regulation', df['Regulation'].unique())
-      # print(f'{regulation = }')
 
     # Applying the filters
 
@@ -314,7 +349,7 @@ with tab1:
       # df = df[df['Cardtype'].isin(cardtype)]
     if _type != 'All':
       df = df[df['Type'] == _type]
-    df = df[(df[dTranslations[language_cards]['hp']] >= kp_range[0]) & (df[dTranslations[language_cards]['hp']] <= kp_range[1])]
+    df = df[(df[c.dTranslations[language_cards]['hp']] >= kp_range[0]) & (df[c.dTranslations[language_cards]['hp']] <= kp_range[1])]
     if attack1_cost:
       # df = df[df['Attack 1 cost'] == attack1_cost]
       df = df[df['Attack 1 cost'].isin(attack1_cost)]
@@ -421,7 +456,7 @@ with tab4:
     if uploaded_file is not None:
       game_log = uploaded_file.getvalue().decode('utf-8')
     elif selected_battlog:
-      battlelogfile = rf'battlelogs\{selected_battlog}'
+      battlelogfile = rf'{c.sBattlelogs_Folder}\{selected_battlog}'
       print(battlelogfile)
       with open(battlelogfile, 'r', encoding='utf-8') as _battlelog:
         game_log = _battlelog.read()
@@ -430,6 +465,8 @@ with tab4:
 
   if game_log:
     get_language(game_log)
+
+    lUniqueNames = df['Name'].unique().tolist()
 
     # Parse the game log
     preparation, turns = parse_game_log(game_log)
@@ -444,99 +481,197 @@ with tab4:
     cols = st.columns(2)
     for i, (player, color) in enumerate(player_colors.items()):
       with cols[i]:
-        if player == winner:
-          st.markdown(f'''
-          <div style="padding: 10px; border-radius: 5px; border: 2px solid {color};">
-            <h4 style="color: {color}">{player}</h4>
-          </div>
-          ''', unsafe_allow_html=True)
-        else:
-          st.markdown(f'''
-          <div style="padding: 10px; border-radius: 5px; border: 2px solid {color}; background-color:gold">
-            <h4 style="color: {color}">{player}</h4>
-          </div>
-          ''', unsafe_allow_html=True)
-
-    # Display preparation phase with colored player names
-    with st.expander(f"📝 {dTranslations[language_battlelog]['setup']}", expanded=True):
-      for line in preparation.split('\n'):
-        if line.strip():
-          st.markdown(color_player_names(line, player_colors), unsafe_allow_html=True)
+        background = 'background-color:gold;' if player == winner else ''
+        st.markdown(f'''<div style="text-align: center; padding: 10px; border-radius: 5px; border: 2px solid {color}; {background}">
+                    <h4 style="color: {color}">{player}</h4></div>''',
+                    unsafe_allow_html=True)
 
     # Create tabs for different views
-    tab1, tab2 = st.tabs([f"🎮 {dTranslations[language_battlelog]['gameplay']}", f"📊 {dTranslations[language_battlelog]['statistics']}"])
+    tab1, tab2 = st.tabs([f"🎮 {c.dTranslations[language_battlelog]['gameplay']}", f"📊 {c.dTranslations[language_battlelog]['statistics']}"])
 
     with tab1:
+      # Display preparation phase with colored player names
+      with st.expander(f"📝 {c.dTranslations[language_battlelog]['setup']}", expanded=False):
+        for line in preparation.split('\n'):
+          if line.strip():
+            st.markdown(color_player_names(line, player_colors), unsafe_allow_html=True)
+
       # Display turns
       for turn in turns:
         turn_info = extract_turn_info(turn)
         player = turn_info['player']
         color = player_colors[player]
         light_color = f"{color}22"  # Add transparency for lighter background
-        
+
         st.markdown(f"""
         <div style="background: linear-gradient(to right, {light_color}, white);
               padding: 15px; border-radius: 10px; margin: 10px 0;
               border-left: 5px solid {color};">
-          <h3>{dTranslations[language_battlelog]['turn']} {turn_info['turn_number']} - <span style='color: {color}'>{player}</span></h3>
+          <h3>{c.dTranslations[language_battlelog]['turn']} {turn_info['turn_number']} - <span style='color: {color}'>{player}</span></h3>
         </div>
         """, unsafe_allow_html=True)
 
-        with st.expander(f'{dTranslations[language_battlelog]['turn']} {turn_info['turn_number']}', True):
+        with st.expander(f'{c.dTranslations[language_battlelog]['turn']} {turn_info['turn_number']}', True):
           # Display actions with colored player names
           for action in turn_info['actions']:
-            st.markdown(format_action(action, player_colors), unsafe_allow_html=True)
+            sLine = format_action(action, player_colors)
+            for sName in lUniqueNames:
+              if sName in sLine:
+                sName_final = sName
+                if f'{sName} ex' in sLine:
+                  sName_final = f'{sName} ex'
+                elif f'{sName} VSTAR' in sLine:
+                  sName_final = f'{sName} VSTAR'
+                elif f'{sName} V' in sLine:
+                  sName_final = f'{sName} V'
+                sLine = sLine.replace(sName_final, f'**:blue-background[{sName_final}]**')
+                # print(sLine)
+                # df_log = df[df['Name'].str.contains(sName_final, case=False, na=False)]
+                # print(len(df_log))
+            st.markdown(sLine, unsafe_allow_html=True)
 
     with tab2:
       # Calculate statistics
       total_turns = len(turns)
 
       col1, col2, col3 = st.columns(3)
-
       with col1:
-        st.metric(dTranslations[language_battlelog]['total_turns'], total_turns)
+        st.metric(c.dTranslations[language_battlelog]['total_turns'], total_turns)
 
       with col2:
-        knockout_count = sum(1 for turn in turns for action in turn.split('\n') 
-                  if dTranslations[language_battlelog]['knockout'] in action)
-        st.metric(dTranslations[language_battlelog]['knockout_pokemon'], knockout_count)
+        knockout_count = sum(1 for turn in turns for action in turn.split('\n')
+                  if c.dTranslations[language_battlelog]['knockout'] in action)
+        st.metric('Knocked out Pokemons', knockout_count)
 
       with col3:
-        energy_count = sum(1 for turn in turns for action in turn.split('\n') 
-                if dTranslations[language_battlelog]['energy'] in action)
-        st.metric(dTranslations[language_battlelog]['played_energies'], energy_count)
+        st.metric('x', 0)
 
       # Add a timeline of major events with colored player names
-      st.subheader(dTranslations[language_battlelog]['events'])
+      st.header(c.dTranslations[language_battlelog]['events'])
       events = []
       for turn in turns:
         turn_info = extract_turn_info(turn)
         for action in turn_info['actions']:
-          if any(key in action for key in lImportant_Actions):
-            events.append(f"{dTranslations[language_battlelog]['turn']} {turn_info['turn_number']}: {action}")
-
-      for event in events:
-        st.markdown(color_player_names(event, player_colors), unsafe_allow_html=True)
+          if any(key in action for key in c.lImportant_Actions):
+            events.append(f"{c.dTranslations[language_battlelog]['turn']} {turn_info['turn_number']}: {action}")
 
       # Add player statistics
-      st.subheader(dTranslations[language_battlelog]['player_stistics'])
+      st.subheader(c.dTranslations[language_battlelog]['player_stistics'])
       cols = st.columns(len(players))
 
       for i, (player, color) in enumerate(player_colors.items()):
         player_turns = [turn for turn in turns if extract_turn_info(turn)['player'] == player]
-        player_knockouts = sum(1 for turn in player_turns
+        player_knockouts = sum(1 for turn in turns
                   for action in turn.split('\n')
-                  if dTranslations[language_battlelog]['knockout'] in action)
+                  if player in action and c.dTranslations[language_battlelog]['knockout'] in action)
 
         with cols[i]:
           st.markdown(f'''
           <div style="padding: 10px; border-radius: 5px; border: 2px solid {color};">
             <h4 style="color: {color}">{player}</h4>
-            <p>{dTranslations[language_battlelog]['turns_played']}: {len(player_turns)}</p>
-            <p>{dTranslations[language_battlelog]['knockout_pokemon']}: {player_knockouts}</p>
+            <p>{c.dTranslations[language_battlelog]['turns_played']} {len(player_turns)} turns</p>
+            <p>{c.dTranslations[language_battlelog]['knockout_pokemon']} {player_knockouts} Pokemons</p>
           </div>
-          ''', unsafe_allow_html=True)
+          <p></p>''', unsafe_allow_html=True)
 
+      st.subheader('events')
+      for event in events:
+        for sKey in c.dImportant_Actions_colors.keys():
+          if sKey in event:
+            st.markdown(color_player_names_events(event, player_colors, sKey), unsafe_allow_html=True)
+            break
+        else:
+          st.markdown(f'{color_player_names_events(event, player_colors)}', unsafe_allow_html=True)
+
+
+# Function to display the image on hover
+def display_image_on_hover(image_url, i):
+    # Generate unique class names for each image
+    hover_class = f'hoverable_{i}'
+    tooltip_class = f'tooltip_{i}'
+    image_popup_class = f'image-popup_{i}'
+
+    # Define the unique CSS for each image
+    hover_css = f'''
+        .{hover_class} {{
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+        }}
+        .{hover_class} .{tooltip_class} {{
+            opacity: 0;
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: opacity 0.5s;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+            padding: 4px;
+            border-radius: 4px;
+            text-align: center;
+            white-space: nowrap;
+        }}
+        .{hover_class}:hover .{tooltip_class} {{
+            opacity: 1;
+        }}
+        .{image_popup_class} {{
+            position: absolute;
+            display: none;
+            background-image: none;
+            width: 200px;
+            height: 200px;
+        }}
+        .{hover_class}:hover .{image_popup_class} {{
+            display: block;
+            background-image: url({image_url});
+            background-size: cover;
+            z-index: 999;
+        }}
+    '''
+    tooltip_css = f"<style>{hover_css}</style>"
+
+    # Define the html for each image
+    image_hover = f'''
+        <div class="{hover_class}">
+            <a href="{image_url}">{image_url}</a>
+            <div class="{tooltip_class}">Image {i}</div>
+            <div class="{image_popup_class}"></div>
+        </div>
+    '''
+    
+    # Write the dynamic HTML and CSS to the content container
+    st.markdown(f'<p>{image_hover}{tooltip_css}</p>', unsafe_allow_html=True)
+
+# st.image("https://limitlesstcg.nyc3.digitaloceanspaces.com/tpci/ASR/ASR_018_R_EN_XS.png")
+# st.markdown(
+#     """
+#     <style>
+#     img {
+#         cursor: pointer;
+#         transition: all 5s ease-in-out;
+#     }
+#     img:hover {
+#         transform: scale(2);
+#     }
+#     </style>
+#     """,
+#     unsafe_allow_html=True,
+# )
+
+# st.markdown("*Streamlit* is **really** ***cool***.")
+# st.markdown('''
+#     :red[Streamlit] :orange[can] :green[write] :blue[text] :violet[in]
+#     :gray[pretty] :rainbow[colors] and :blue-background[highlight] text.''')
+# st.markdown("Here's a bouquet &mdash;\
+#             :tulip::cherry_blossom::rose::hibiscus::sunflower::blossom:")
+
+# multi = '''If you end a line with two spaces,
+# a soft return is used for the next line.
+
+# Two (or more) newline characters in a row will result in a hard return.
+# '''
+# st.markdown(multi)
 
 # print('st.session_state')
 # print(st.session_state)

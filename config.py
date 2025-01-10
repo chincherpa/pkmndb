@@ -1,3 +1,5 @@
+sBattlelogs_Folder = 'battlelogs_others'
+
 lImportant_Actions = [
   'kampfunfähig',
   'gewonnen',
@@ -8,9 +10,28 @@ lImportant_Actions = [
   'Knocked Out',
   'wins',
   'evolved',
-  "Boss's Orders",
-  'Prize card',
+  # "Boss's Orders",
+  'Prize card.',
+  'Prize cards.',
+  'Entering Sudden Death.',
+  'conceded.',
   ]
+
+dImportant_Actions_colors = {
+  # 'kampfunfähig': 'red',
+  # 'gewonnen': 'red',
+  # 'entwickelt': 'red',
+  # 'Befehl vom Boss': 'red',
+  # 'Preiskarte': 'red',
+
+  'Knocked Out': 'red',
+  'wins': 'gold',
+  # 'evolved': 'red',
+  # "Boss's Orders": 'red',
+  'Prize card.': 'gold',
+  'Prize cards.': 'gold',
+  'Entering Sudden Death.': 'black',
+}
 
 dTranslations = {
   'german': {
@@ -20,9 +41,10 @@ dTranslations = {
 
     # Battlelog Viewer
     'energy': 'Energie',
+    'damage': 'Schaden',
     'events': 'Wichtige Ereignisse',
     'gameplay': 'Spielverlauf',
-    'knockout_pokemon': 'Kampfunfähige Pokemon',
+    'knockout_pokemon': 'Verlor',
     'knockout': 'wurde kampfunfähig gemacht!',
     'played_energies': 'Energiekarten gespielt',
     'player_pattern': ' hat für die Starthand',
@@ -43,9 +65,10 @@ dTranslations = {
 
     # Battlelog Viewer
     'energy': 'Energy',
+    'damage': 'damage',
     'events': 'Important events',
     'gameplay': 'Game play',
-    'knockout_pokemon': 'Knocked out Pokemon',
+    'knockout_pokemon': 'Lost',
     'knockout': 'was Knocked Out!',
     'played_energies': 'Attached energies',
     'player_pattern': ' drew 7 cards for the opening hand',
@@ -55,7 +78,7 @@ dTranslations = {
     'total_turns': 'Total turns',
     'turn_pattern': r"(\w+)'s Turn",
     'turn': 'Turn',
-    'turns_played': 'Played turns',
+    'turns_played': 'Played',
     'winner_pattern': r'\b(\w+)\b(?=\s*wins)',
     'win': 'wins',
   },
