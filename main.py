@@ -275,9 +275,9 @@ with tab1:
 
   col_search_names, col_search_evo = st.columns(2)
   with col_search_names:
-    search_term = st_keyup('Find in names or attacks:')
+    search_term = st_keyup('Find in names or attacks:', key='names')
   with col_search_evo:
-    search_term_evolves_from = st_keyup("Find in 'Evolves from'")
+    search_term_evolves_from = st_keyup("Find in 'Evolves from'", key='evolves')
 
   if search_term_evolves_from:
     mask = df['Evolves from'].str.contains(search_term_evolves_from, case=False, na=False)
