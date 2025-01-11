@@ -376,7 +376,7 @@ with tab1:
   col, col2 = st.columns([2,3])
   with col:
     search_term_cap = st_keyup('Find in Ability:')
-    search_term_att_eff = st_keyup('Find in attack effect:')
+    search_term_att_eff = st_keyup('Find in attack effect:', key='att_eff')
 
   if search_term_cap:
     mask = df['Ability'].str.contains(search_term_cap, case=False, na=False) | \
