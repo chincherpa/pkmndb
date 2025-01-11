@@ -515,19 +515,24 @@ with tab4:
         with st.expander(f'{c.dTranslations[language_battlelog]['turn']} {turn_info['turn_number']}', True):
           # Display actions with colored player names
           for action in turn_info['actions']:
-            sLine = format_action(action, player_colors)
-            for sName in lUniqueNames:
-              if sName in sLine:
-                sName_final = sName
-                if f'{sName} ex' in sLine:
-                  sName_final = f'{sName} ex'
-                elif f'{sName} VSTAR' in sLine:
-                  sName_final = f'{sName} VSTAR'
-                elif f'{sName} V' in sLine:
-                  sName_final = f'{sName} V'
-                sLine = sLine.replace(sName_final, f'**:blue-background[{sName_final}]**')
-                break
-            st.markdown(sLine, unsafe_allow_html=True)
+            if 'Sudden Death' in action or 'Sudden-Death' in action:
+              st.markdown(f'''<div style="text-align: center; border-radius: 5px; background-color:black;">
+                    <h4 style="color: white">{action}</h4></div>''',
+                    unsafe_allow_html=True)
+            else:
+              sLine = format_action(action, player_colors)
+              for sName in lUniqueNames:
+                if sName in sLine:
+                  sName_final = sName
+                  if f'{sName} ex' in sLine:
+                    sName_final = f'{sName} ex'
+                  elif f'{sName} VSTAR' in sLine:
+                    sName_final = f'{sName} VSTAR'
+                  elif f'{sName} V' in sLine:
+                    sName_final = f'{sName} V'
+                  sLine = sLine.replace(sName_final, f'**:blue-background[{sName_final}]**')
+                  break
+              st.markdown(sLine, unsafe_allow_html=True)
 
     with tab2:
       # Calculate statistics

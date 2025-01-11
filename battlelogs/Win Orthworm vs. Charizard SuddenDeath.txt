@@ -1,0 +1,495 @@
+Setup
+19APE09 chose tails for the opening coin flip.
+19APE09 won the coin toss.
+19APE09 decided to go first.
+19APE09 drew 7 cards for the opening hand.
+- 7 drawn cards.
+ElButze drew 7 cards for the opening hand.
+- 7 drawn cards.
+   • Iono, Metang, Metang, Zamazenta, Boss's Orders, Basic Metal Energy, Basic Metal Energy
+19APE09 played Bidoof to the Active Spot.
+ElButze played Zamazenta to the Active Spot.
+
+Turn # 1 - 19APE09's Turn
+19APE09 drew a card.
+19APE09 attached Basic Fire Energy to Bidoof in the Active Spot.
+19APE09 ended their turn.
+
+Turn # 2 - ElButze's Turn
+ElButze drew Town Store.
+ElButze played Town Store to the Stadium spot.
+ElButze attached Basic Metal Energy to Zamazenta in the Active Spot.
+ElButze played Iono.
+- ElButze shuffled their hand.
+- ElButze put 4 cards on the bottom of their deck.
+   • Boss's Orders, Metang, Metang, Basic Metal Energy
+- 19APE09 shuffled their hand.
+- ElButze put 6 cards on the bottom of their deck.
+- ElButze drew 6 cards.
+   • Rotom V, Metang, Buddy-Buddy Poffin, Nest Ball, Nest Ball, Basic Metal Energy
+- ElButze drew 6 cards.
+ElButze played Rotom V to the Bench.
+ElButze played Nest Ball.
+- ElButze drew Latias ex and played it to the Bench.
+- ElButze shuffled their deck.
+ElButze played Buddy-Buddy Poffin.
+- ElButze drew 2 cards and played them to the Bench.
+   • Beldum, Beldum
+- ElButze shuffled their deck.
+ElButze played Nest Ball.
+- ElButze drew Orthworm ex and played it to the Bench.
+- ElButze shuffled their deck.
+ElButze retreated Zamazenta to the Bench.
+ElButze's Orthworm ex is now in the Active Spot.
+ElButze's Rotom V used Instant Charge.
+- ElButze drew 3 cards.
+   • Nest Ball, Basic Metal Energy, Beldum
+
+Turn # 3 - 19APE09's Turn
+19APE09 drew a card.
+19APE09 played Nest Ball.
+- 19APE09 drew Growlithe and played it to the Bench.
+- 19APE09 shuffled their deck.
+19APE09 played Charmander to the Bench.
+19APE09 played Town Store.
+- ElButze drew Exp. Share.
+- 19APE09 shuffled their deck.
+19APE09 played Switch.
+- 19APE09's Charmander was switched with 19APE09's Bidoof to become the Active Pokémon.
+19APE09's Charmander is now in the Active Spot.
+19APE09 attached Basic Fire Energy to Charmander in the Active Spot.
+19APE09 attached Exp. Share to Charmander in the Active Spot.
+19APE09's Charmander used Tail on Fire on ElButze’s Orthworm ex for 20 damage. ElButze's Orthworm ex took 10 more damage because of Fire Weakness.
+- Damage breakdown:
+   • Base damage: 10 damage
+   • Weakness to Fire: 10 damage
+   • Total damage: 20 damage
+
+- 19APE09 attached Basic Fire Energy to Charmander in the Active Spot.
+- 19APE09 shuffled their deck.
+
+Turn # 4 - ElButze's Turn
+ElButze drew Super Rod.
+ElButze attached Basic Metal Energy to Orthworm ex in the Active Spot.
+ElButze played Town Store.
+- ElButze drew Deluxe Bomb.
+- ElButze shuffled their deck.
+ElButze attached Deluxe Bomb to Orthworm ex in the Active Spot.
+ElButze evolved Beldum to Metang on the Bench.
+ElButze's Metang used Metal Maker.
+- ElButze attached Basic Metal Energy to Metang on the Bench.
+- ElButze attached Basic Metal Energy to Orthworm ex in the Active Spot.
+- ElButze shuffled their cards.
+ElButze's Rotom V used Instant Charge.
+- ElButze drew 3 cards.
+   • Orthworm ex, Basic Metal Energy, Ultra Ball
+
+Turn # 5 - 19APE09's Turn
+19APE09 drew a card.
+19APE09 played Rare Candy.
+- 19APE09 evolved Charmander to Charizard ex in the Active Spot.
+19APE09's Rare Candy used Infernal Reign.
+- 19APE09 attached Basic Fire Energy to Growlithe on the Bench.
+- 19APE09 attached Basic Fire Energy to Growlithe on the Bench.
+- 19APE09 attached Basic Fire Energy to Growlithe on the Bench.
+- 19APE09 shuffled their deck.
+19APE09 evolved Growlithe to Arcanine ex on the Bench.
+19APE09 played Town Store.
+- ElButze drew Defiance Band.
+- 19APE09 shuffled their deck.
+19APE09 attached Defiance Band to Arcanine ex on the Bench.
+19APE09 played Professor's Research.
+- 19APE09 drew 7 cards.
+19APE09 played Growlithe to the Bench.
+19APE09 attached Basic Fire Energy to Arcanine ex on the Bench.
+19APE09's Charizard ex used Burning Darkness on ElButze’s Orthworm ex for 180 damage.
+- Damage breakdown:
+   • Base damage: 180 damage
+   • 0 Prize cards: 0 damage
+   • Total damage: 180 damage
+
+19APE09's Charizard ex used Pummeling Payback.
+- 19APE09 put 4 damage counters on ElButze's Charizard ex.
+Charizard ex was activated.
+- 19APE09 put 12 damage counters on ElButze's Charizard ex.
+- Deluxe Bomb was discarded from ElButze's Orthworm ex.
+
+Turn # 6 - ElButze's Turn
+ElButze drew Capturing Aroma.
+ElButze played Capturing Aroma.
+- ElButze flipped a coin and it landed on heads.
+- ElButze drew Metang.
+- ElButze shuffled their deck.
+ElButze evolved Beldum to Metang on the Bench.
+ElButze's Metang used Metal Maker.
+- ElButze attached Basic Metal Energy to Orthworm ex in the Active Spot.
+- ElButze attached Basic Metal Energy to Orthworm ex in the Active Spot.
+- ElButze shuffled their cards.
+ElButze's Metang used Metal Maker.
+- ElButze attached Basic Metal Energy to Zamazenta on the Bench.
+- ElButze shuffled their cards.
+ElButze attached Basic Metal Energy to Zamazenta on the Bench.
+ElButze played Town Store.
+- ElButze shuffled their deck.
+ElButze's Orthworm ex used Rock Tomb on 19APE09’s Charizard ex for 150 damage.
+
+Turn # 7 - 19APE09's Turn
+19APE09 drew a card.
+19APE09 evolved Bidoof to Bibarel on the Bench.
+19APE09 played Ultra Ball.
+- 19APE09 discarded 2 cards.
+   • Professor's Research, Charizard
+- 19APE09 drew Charmander.
+- 19APE09 shuffled their deck.
+19APE09 played Charmander to the Bench.
+19APE09 played Town Store.
+- 19APE09 shuffled their deck.
+19APE09 played Super Rod.
+- 19APE09 shuffled Charizard into their deck.
+19APE09 played Professor's Research.
+- 19APE09 drew 7 cards.
+19APE09 played Nest Ball.
+- 19APE09 drew Growlithe and played it to the Bench.
+- 19APE09 shuffled their deck.
+19APE09 attached Basic Fire Energy to Charmander on the Bench.
+19APE09's Charizard ex used Burning Darkness on ElButze’s Orthworm ex for 180 damage.
+- Damage breakdown:
+   • Base damage: 180 damage
+   • 0 Prize cards: 0 damage
+   • Total damage: 180 damage
+
+ElButze's Orthworm ex was Knocked Out!
+- 4 cards were discarded from ElButze's Orthworm ex.
+   • Basic Metal Energy, Basic Metal Energy, Basic Metal Energy, Basic Metal Energy
+19APE09's Charizard ex was Knocked Out!
+- 4 cards were discarded from 19APE09's Charizard ex.
+   • Basic Fire Energy, Basic Fire Energy, Charmander, Exp. Share
+19APE09's Charizard ex used Pummeling Payback.
+- 19APE09 put 8 damage counters on ElButze's Charizard ex.
+ElButze took 2 Prize cards.
+Metang was added to ElButze's hand.
+Iono was added to ElButze's hand.
+19APE09 took 2 Prize cards.
+A card was added to 19APE09's hand.
+A card was added to 19APE09's hand.
+ElButze's Zamazenta is now in the Active Spot.
+19APE09's Growlithe is now in the Active Spot.
+
+Turn # 8 - ElButze's Turn
+ElButze drew Arven.
+ElButze played Orthworm ex to the Bench.
+ElButze played Super Rod.
+- ElButze shuffled 3 cards into their deck.
+   • Basic Metal Energy, Basic Metal Energy, Basic Metal Energy
+ElButze attached Basic Metal Energy to Orthworm ex on the Bench.
+ElButze's Metang used Metal Maker.
+- ElButze attached Basic Metal Energy to Orthworm ex on the Bench.
+- ElButze attached Basic Metal Energy to Orthworm ex on the Bench.
+- ElButze shuffled their cards.
+ElButze's Metang used Metal Maker.
+- ElButze attached Basic Metal Energy to Orthworm ex on the Bench.
+- ElButze attached Basic Metal Energy to Orthworm ex on the Bench.
+- ElButze shuffled their cards.
+ElButze retreated Zamazenta to the Bench.
+ElButze's Orthworm ex is now in the Active Spot.
+ElButze played Town Store.
+- ElButze drew Heavy Baton.
+- ElButze shuffled their deck.
+ElButze attached Heavy Baton to Orthworm ex in the Active Spot.
+ElButze's Orthworm ex used Rock Tomb on 19APE09’s Growlithe for 150 damage.
+19APE09's Growlithe was Knocked Out!
+ElButze took a Prize card.
+Beldum was added to ElButze's hand.
+19APE09's Arcanine ex is now in the Active Spot.
+
+Turn # 9 - 19APE09's Turn
+19APE09 drew a card.
+19APE09 attached Basic Fire Energy to Charmander on the Bench.
+19APE09 played Mela.
+- 19APE09 attached Basic Fire Energy to Arcanine ex in the Active Spot.
+19APE09 evolved Charmander to Charmeleon on the Bench.
+19APE09 played Town Store.
+- 19APE09 shuffled their deck.
+19APE09's Arcanine ex used Bright Flame on ElButze’s Orthworm ex for 560 damage. ElButze's Orthworm ex took 280 more damage because of Fire Weakness.
+- Damage breakdown:
+   • Base damage: 250 damage
+   • (Pokémon Tool) Defiance Band: 30 damage
+   • Weakness to Fire: 280 damage
+   • Total damage: 560 damage
+
+- 2 cards were discarded from 19APE09's Arcanine ex.
+   • Basic Fire Energy, Basic Fire Energy
+ElButze's Orthworm ex was Knocked Out!
+- 6 cards were discarded from ElButze's Orthworm ex.
+   • Basic Metal Energy, Basic Metal Energy, Basic Metal Energy, Basic Metal Energy, Basic Metal Energy, Heavy Baton
+19APE09's Arcanine ex used Pummeling Payback.
+- 19APE09 put 10 damage counters on ElButze's Arcanine ex.
+19APE09 took 2 Prize cards.
+A card was added to 19APE09's hand.
+A card was added to 19APE09's hand.
+ElButze's Zamazenta is now in the Active Spot.
+
+Turn # 10 - ElButze's Turn
+ElButze drew Iono.
+ElButze played Nest Ball.
+- ElButze drew Orthworm ex and played it to the Bench.
+- ElButze shuffled their deck.
+ElButze played Iono.
+- ElButze shuffled their hand.
+- ElButze put 6 cards on the bottom of their deck.
+   • Beldum, Arven, Beldum, Ultra Ball, Iono, Metang
+- 19APE09 shuffled their hand.
+- ElButze put 7 cards on the bottom of their deck.
+- ElButze drew 3 cards.
+   • Basic Metal Energy, Basic Metal Energy, Super Rod
+- ElButze drew 2 cards.
+ElButze played Super Rod.
+- ElButze shuffled 3 cards into their deck.
+   • Basic Metal Energy, Basic Metal Energy, Basic Metal Energy
+ElButze attached Basic Metal Energy to Orthworm ex on the Bench.
+ElButze's Metang used Metal Maker.
+- ElButze shuffled their cards.
+ElButze's Metang used Metal Maker.
+- ElButze attached Basic Metal Energy to Orthworm ex on the Bench.
+- ElButze shuffled their cards.
+ElButze's Zamazenta used Retaliate on 19APE09’s Arcanine ex for 220 damage.
+- Damage breakdown:
+   • Base damage: 100 damage
+   • Pokémon Knocked Out: 120 damage
+   • Total damage: 220 damage
+
+19APE09's Arcanine ex was Knocked Out!
+- 5 cards were discarded from 19APE09's Arcanine ex.
+   • Basic Fire Energy, Basic Fire Energy, Basic Fire Energy, Growlithe, Defiance Band
+ElButze took 2 Prize cards.
+Bravery Charm was added to ElButze's hand.
+Super Rod was added to ElButze's hand.
+19APE09's Charmeleon is now in the Active Spot.
+
+Turn # 11 - 19APE09's Turn
+19APE09 drew a card.
+19APE09 played Ultra Ball.
+- 19APE09 discarded 2 cards.
+   • Boss's Orders, Arcanine ex
+- 19APE09 drew Charizard.
+- 19APE09 shuffled their deck.
+19APE09 evolved Charmeleon to Charizard in the Active Spot.
+19APE09's Bibarel used Industrious Incisors.
+- 19APE09 drew 5 cards.
+19APE09 attached Basic Fire Energy to Charizard in the Active Spot.
+19APE09 played Mela.
+- 19APE09 attached Basic Fire Energy to Charizard in the Active Spot.
+- 19APE09 drew 3 cards.
+19APE09 played Magma Basin to the Stadium spot.
+- ElButze discarded Town Store.
+19APE09's Charizard used Flare Blitz on ElButze’s Zamazenta for 310 damage. ElButze's Zamazenta took 170 more damage because of Fire Weakness.
+- Damage breakdown:
+   • Base damage: 170 damage
+   • (Ability) Metal Shield: -30 damage
+   • Weakness to Fire: 170 damage
+   • Total damage: 310 damage
+
+- 4 cards were discarded from 19APE09's Charizard.
+   • Basic Fire Energy, Basic Fire Energy, Basic Fire Energy, Basic Fire Energy
+ElButze's Zamazenta was Knocked Out!
+- 3 cards were discarded from ElButze's Zamazenta.
+   • Basic Metal Energy, Basic Metal Energy, Basic Metal Energy
+19APE09 took a Prize card.
+A card was added to 19APE09's hand.
+ElButze's Orthworm ex is now in the Active Spot.
+
+Turn # 12 - ElButze's Turn
+ElButze drew Orthworm ex.
+ElButze attached Basic Metal Energy to Orthworm ex in the Active Spot.
+ElButze played Super Rod.
+- ElButze shuffled 3 cards into their deck.
+   • Basic Metal Energy, Basic Metal Energy, Basic Metal Energy
+ElButze's Metang used Metal Maker.
+- ElButze attached Basic Metal Energy to Orthworm ex in the Active Spot.
+- ElButze shuffled their cards.
+ElButze's Metang used Metal Maker.
+- ElButze attached Basic Metal Energy to Orthworm ex in the Active Spot.
+- ElButze shuffled their cards.
+ElButze attached Bravery Charm to Orthworm ex in the Active Spot.
+ElButze played Orthworm ex to the Bench.
+ElButze's Orthworm ex used Rock Tomb on 19APE09’s Charizard for 150 damage.
+
+Turn # 13 - 19APE09's Turn
+19APE09 drew a card.
+19APE09 played Arven.
+- 19APE09 drew Energy Search.
+- 19APE09 shuffled their deck.
+19APE09 attached Basic Fire Energy to Charizard in the Active Spot.
+19APE09 played Energy Search.
+- 19APE09 shuffled their deck.
+19APE09 played Magma Basin.
+- 19APE09 attached Basic Fire Energy to Growlithe on the Bench.
+- 19APE09 put 2 damage counters on 19APE09's Growlithe.
+19APE09 evolved Growlithe to Arcanine ex on the Bench.
+19APE09 played Switch.
+- 19APE09's Arcanine ex was switched with 19APE09's Charizard to become the Active Pokémon.
+19APE09's Arcanine ex is now in the Active Spot.
+19APE09 played Nest Ball.
+- 19APE09 drew Moltres and played it to the Bench.
+- 19APE09 shuffled their deck.
+19APE09's Bibarel used Industrious Incisors.
+- 19APE09 drew 3 cards.
+19APE09's Arcanine ex used Raging Claws on ElButze’s Orthworm ex for 100 damage. ElButze's Orthworm ex took 50 more damage because of Fire Weakness.
+- Damage breakdown:
+   • Base damage: 30 damage
+   • 2 damage counters: 20 damage
+   • Weakness to Fire: 50 damage
+   • Total damage: 100 damage
+
+19APE09's Arcanine ex used Pummeling Payback.
+- 19APE09 put 10 damage counters on ElButze's Arcanine ex.
+
+Turn # 14 - ElButze's Turn
+ElButze drew Beldum.
+ElButze's Metang used Metal Maker.
+- ElButze shuffled their cards.
+ElButze's Metang used Metal Maker.
+- ElButze attached Basic Metal Energy to Orthworm ex in the Active Spot.
+- ElButze attached Basic Metal Energy to Orthworm ex in the Active Spot.
+- ElButze attached Basic Metal Energy to Orthworm ex in the Active Spot.
+- ElButze shuffled their cards.
+ElButze's Orthworm ex used Rock Tomb on 19APE09’s Arcanine ex for 150 damage.
+
+Turn # 15 - 19APE09's Turn
+19APE09 drew a card.
+19APE09 played Magma Basin.
+- 19APE09 attached Basic Fire Energy to Moltres on the Bench.
+- 19APE09 put 2 damage counters on 19APE09's Moltres.
+19APE09's Arcanine ex used Raging Claws on ElButze’s Orthworm ex for 600 damage. ElButze's Orthworm ex took 300 more damage because of Fire Weakness.
+- Damage breakdown:
+   • Base damage: 30 damage
+   • 27 damage counters: 270 damage
+   • Weakness to Fire: 300 damage
+   • Total damage: 600 damage
+
+ElButze's Orthworm ex was Knocked Out!
+- 9 cards were discarded from ElButze's Orthworm ex.
+   • Basic Metal Energy, Basic Metal Energy, Basic Metal Energy, Basic Metal Energy, Basic Metal Energy, Basic Metal Energy, Basic Metal Energy, Basic Metal Energy, Bravery Charm
+19APE09's Arcanine ex was Knocked Out!
+- 2 cards were discarded from 19APE09's Arcanine ex.
+   • Basic Fire Energy, Growlithe
+19APE09's Arcanine ex used Pummeling Payback.
+- 19APE09 put 16 damage counters on ElButze's Arcanine ex.
+ElButze took a Prize card.
+Basic Metal Energy was added to ElButze's hand.
+19APE09 took a Prize card.
+A card was added to 19APE09's hand.
+Entering Sudden Death.
+
+Setup
+19APE09 chose tails for the opening coin flip.
+ElButze won the coin toss.
+ElButze decided to go first.
+19APE09 drew 7 cards for the opening hand.
+- 7 drawn cards.
+ElButze drew 7 cards for the opening hand.
+- 7 drawn cards.
+   • Basic Metal Energy, Genesect, Buddy-Buddy Poffin, Orthworm ex, Arven, Night Stretcher, Basic Metal Energy
+19APE09 played Charmander to the Active Spot.
+19APE09 played Growlithe to the Bench.
+19APE09 played Moltres to the Bench.
+ElButze played Orthworm ex to the Active Spot.
+ElButze played Genesect to the Bench.
+
+Turn # 1 - ElButze's Turn
+ElButze drew Nest Ball.
+ElButze played Buddy-Buddy Poffin.
+- ElButze drew 2 cards and played them to the Bench.
+   • Beldum, Beldum
+- ElButze shuffled their deck.
+ElButze played Nest Ball.
+- ElButze drew Rotom V and played it to the Bench.
+- ElButze shuffled their deck.
+ElButze attached Basic Metal Energy to Orthworm ex in the Active Spot.
+ElButze's Rotom V used Instant Charge.
+- ElButze drew 3 cards.
+   • Nest Ball, Bravery Charm, Basic Metal Energy
+
+Turn # 2 - 19APE09's Turn
+19APE09 drew a card.
+19APE09 attached Basic Fire Energy to Charmander in the Active Spot.
+19APE09 played Arven.
+- 19APE09 drew 2 cards.
+   • Ultra Ball, Defiance Band
+- 19APE09 shuffled their deck.
+19APE09 played Ultra Ball.
+- 19APE09 discarded 2 cards.
+   • Nest Ball, Basic Fire Energy
+- 19APE09 drew Charmeleon.
+- 19APE09 shuffled their deck.
+19APE09's Charmander used Tail on Fire on ElButze’s Orthworm ex for 20 damage. ElButze's Orthworm ex took 10 more damage because of Fire Weakness.
+- Damage breakdown:
+   • Base damage: 10 damage
+   • Weakness to Fire: 10 damage
+   • Total damage: 20 damage
+
+- 19APE09 attached Basic Fire Energy to Charmander in the Active Spot.
+- 19APE09 shuffled their deck.
+19APE09's Charmander used Pummeling Payback.
+- 19APE09 put 2 damage counters on ElButze's Charmander.
+
+Turn # 3 - ElButze's Turn
+ElButze drew Iono.
+ElButze played Nest Ball.
+- ElButze drew Latias ex and played it to the Bench.
+- ElButze shuffled their deck.
+ElButze attached Bravery Charm to Genesect on the Bench.
+ElButze played Arven.
+- ElButze drew 2 cards.
+   • Ultra Ball, Deluxe Bomb
+- ElButze shuffled their deck.
+ElButze played Ultra Ball.
+- ElButze discarded 2 cards.
+   • Night Stretcher, Basic Metal Energy
+- ElButze drew Metang.
+- ElButze shuffled their deck.
+ElButze evolved Beldum to Metang on the Bench.
+ElButze's Metang used Metal Maker.
+- ElButze shuffled their cards.
+ElButze attached Deluxe Bomb to Orthworm ex in the Active Spot.
+ElButze's Rotom V used Instant Charge.
+- ElButze drew 3 cards.
+   • Basic Metal Energy, Penny, Boss's Orders
+
+Turn # 4 - 19APE09's Turn
+19APE09 drew a card.
+19APE09 played Arven.
+- 19APE09 drew 2 cards.
+   • Switch, Exp. Share
+- 19APE09 shuffled their deck.
+19APE09 evolved Charmander to Charmeleon in the Active Spot.
+19APE09 played Bidoof to the Bench.
+19APE09 played Switch.
+- 19APE09's Moltres was switched with 19APE09's Charmeleon to become the Active Pokémon.
+19APE09's Moltres is now in the Active Spot.
+19APE09 attached Exp. Share to Moltres in the Active Spot.
+19APE09 attached Defiance Band to Charmeleon on the Bench.
+19APE09 ended their turn.
+
+Turn # 5 - ElButze's Turn
+ElButze drew Metang.
+ElButze evolved Beldum to Metang on the Bench.
+ElButze played Iono.
+- ElButze shuffled their hand.
+- ElButze put 4 cards on the bottom of their deck.
+   • Basic Metal Energy, Basic Metal Energy, Penny, Boss's Orders
+- ElButze drew Nest Ball.
+- ElButze drew a card.
+ElButze's Metang used Metal Maker.
+- ElButze attached Basic Metal Energy to Orthworm ex in the Active Spot.
+- ElButze attached Basic Metal Energy to Orthworm ex in the Active Spot.
+- ElButze shuffled their cards.
+ElButze's Metang used Metal Maker.
+- ElButze attached Basic Metal Energy to Orthworm ex in the Active Spot.
+- ElButze shuffled their cards.
+ElButze's Orthworm ex used Rock Tomb on 19APE09’s Moltres for 150 damage.
+19APE09's Moltres was Knocked Out!
+Exp. Share was discarded from 19APE09's Moltres.
+ElButze took a Prize card.
+Full Metal Lab was added to ElButze's hand.
+All Prize cards taken. ElButze wins.
