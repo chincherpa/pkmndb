@@ -1,4 +1,4 @@
-sBattlelogs_Folder = 'battlelogs'
+sBattlelogs_Folder = 'battlelogs_others'
 
 lImportant_Actions = [
   'kampfunfähig',
