@@ -38,6 +38,8 @@ dTranslations = {
     'file': 'cards_de.csv',
     'encoding': 'cp1252',
     'hp': 'KP',
+    'find_in_names': 'Suche in Namen oder Attacken:',
+    'find_in_evolves': "Suche in 'Entwickelt sich aus'",
 
     # Battlelog Viewer
     'energy': 'Energie',
@@ -50,9 +52,11 @@ dTranslations = {
     'player_pattern': ' hat für die Starthand',
     'player_stistics': 'Spieler-Statistiken',
     'setup': 'Spielvorbereitung',
+    'suddendeath': 'Sudden-Death',
     'statistics': 'Statistiken',
     'total_turns': 'Gesamtzüge',
     'turn_pattern': r'Zug von (\w+)',
+    # 'turn_pattern': r'Zug von (.*?)',
     'turn': 'Zug',
     'turns_played': 'Züge gespielt',
     'winner_pattern': r'\b(\w+)\b(?=\s*hat\s*gewonnen)',
@@ -62,6 +66,8 @@ dTranslations = {
     'file': 'cards_en.csv',
     'encoding': 'utf-8',
     'hp': 'HP',
+    'find_in_names': 'Find in names or attacks:',
+    'find_in_evolves': "Find in 'Evolves from'",
 
     # Battlelog Viewer
     'energy': 'Energy',
@@ -74,12 +80,18 @@ dTranslations = {
     'player_pattern': ' drew 7 cards for the opening hand',
     'player_stistics': 'Player statistics',
     'setup': 'Preparation',
+    'suddendeath': 'Sudden Death',
     'statistics': 'Statistics',
     'total_turns': 'Total turns',
-    'turn_pattern': r"(\w+)'s Turn",
+    'turn_pattern': r'Turn # \d+ - (.*?)\'s Turn',  #r"(\w+)'s Turn",
     'turn': 'Turn',
     'turns_played': 'Played',
     'winner_pattern': r'\b(\w+)\b(?=\s*wins)',
     'win': 'wins',
   },
 }
+
+lDecklistKeywords = ['Pokémon:', 'Trainer:', 'Energy:', 'Total Cards:']
+# sDecklistEntryPattern = r'(\d+) .+ ([A-Z]{3}) (\d+)' # without cardname
+sDecklistEntryPattern = r'(\d+) (.+) ([A-Z]{3}) (\d+)'
+

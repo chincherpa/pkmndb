@@ -1,0 +1,43 @@
+Pokémon: 9
+1 Rotom V LOR 177
+2 Hisuian Braviary SIT 149
+2 Munkidori TWM 95
+4 Froslass TWM 53
+2 Rufflet ASR 131 PH
+1 Munkidori SFA 72
+1 Bloodmoon Ursaluna ex TWM 222
+4 Snorunt SIT 41
+1 Mimikyu PR-SV 75
+
+Trainer: 24
+3 Irida ASR 147
+1 Arven SVI 235
+2 Switch Cart ASR 154
+2 Nest Ball PAF 84 PH
+1 Earthen Vessel SFA 96
+1 Calamitous Wasteland PAL 175 PH
+2 Arven PAF 235
+1 Super Rod PAL 276
+3 Iono PAF 237
+1 Iono PAL 269
+1 Penny PAF 239
+1 Technical Machine: Devolution PAR 177
+2 Night Stretcher SFA 61
+1 Pokémon League Headquarters OBF 192 PH
+1 Technical Machine: Evolution PAR 178
+1 Artazon OBF 229
+1 Lost Vacuum LOR 217
+4 Buddy-Buddy Poffin TWM 223
+1 Forest Seal Stone SIT 156
+1 Nest Ball SVI 181
+1 Rescue Board TEF 159
+2 Counter Catcher PAR 264
+1 Neutralization Zone SFA 60
+1 Nest Ball SVI 255
+
+Energy: 2
+4 Basic {D} Energy SFA 98
+2 Luminous Energy PAL 191
+
+Total Cards: 60
+
