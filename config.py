@@ -34,10 +34,9 @@ dImportant_Actions_colors = {
 }
 
 dTranslations = {
-  'german': {
+  'deutsch': {
     'file': 'cards_de.csv',
     'encoding': 'cp1252',
-    'hp': 'KP',
     'find_in_names': 'Suche in Namen oder Attacken:',
     'find_in_evolves': "Suche in 'Entwickelt sich aus'",
 
@@ -65,7 +64,6 @@ dTranslations = {
   'english': {
     'file': 'cards_en.csv',
     'encoding': 'utf-8',
-    'hp': 'HP',
     'find_in_names': 'Find in names or attacks:',
     'find_in_evolves': "Find in 'Evolves from'",
 

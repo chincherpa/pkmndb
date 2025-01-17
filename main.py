@@ -31,8 +31,8 @@ def load_more():
 @st.cache_data
 def load_data(language):
   df = pd.read_csv(c.dTranslations[language]['file'], sep=';', encoding=c.dTranslations[language]['encoding'])
-  df[c.dTranslations[language]['hp']] = pd.to_numeric(df[c.dTranslations[language]['hp']], errors='coerce')
-  numeric_columns = [c.dTranslations[language]['hp'], 'Attack 1 damage', 'Attack 2 damage']
+  df['HP'] = pd.to_numeric(df['HP'], errors='coerce')
+  numeric_columns = ['HP', 'Attack 1 damage', 'Attack 2 damage']
 
   df[numeric_columns] = df[numeric_columns].fillna(0)
   object_columns = df.select_dtypes(include=['object']).columns
@@ -134,7 +134,7 @@ def reset():
 # Battlelog viewer START
 def get_language(text):
     global language_battlelog
-    language_battlelog = ['english', 'german'][text.split('\n')[0] == 'Vorbereitung']
+    language_battlelog = ['english', 'deutsch'][text.split('\n')[0] == 'Vorbereitung']
 
 def load_saved_battlogs():
     saved_selections = ['']
@@ -339,7 +339,8 @@ def export_decklist(dDecklist):
   # pyperclip.copy(text)
 
 col_lang, col_reset = st.columns([1,5])
-language_cards = col_lang.selectbox('Language', ['english', 'german'])
+# language_cards = col_lang.selectbox('Language', ['english', 'deutsch'])
+language_cards = col_lang.selectbox('Language of cards', ['english', 'deutsch'])
 
 # Load data
 df_orig = load_data(language_cards)
@@ -357,10 +358,6 @@ tab1, tab2, tab3 = st.tabs(['Card selection', 'Battlelog viewer', 'Decklist View
 
 # Card search
 with tab1:
-  with st.expander('select cards language'):
-    col_lang, col_reset = st.columns([1,5])
-    language_cards = col_lang.selectbox('Language of cards', ['english', 'german'])
-
   col_search_names, col_search_evo = st.columns(2)
   with col_search_names:
     search_term = st_keyup(c.dTranslations[language_cards]['find_in_names'], key='names')
@@ -410,12 +407,12 @@ with tab1:
       with col3:
         set_filter = st.multiselect('Set', sorted(df['Set'].unique()))
         regulation_filter = st.multiselect('Regulation', df['Regulation'].unique())
-        kp_min = int(df[c.dTranslations[language_cards]['hp']].min())
-        kp_max = int(df[c.dTranslations[language_cards]['hp']].max())
+        kp_min = int(df['HP'].min())
+        kp_max = int(df['HP'].max())
         iStep = 10
         if kp_min == kp_max:
           kp_max += iStep
-        kp_range = st.slider(c.dTranslations[language_cards]['hp'], kp_min, kp_max, (kp_min, kp_max), step=iStep)
+        kp_range = st.slider('HP', kp_min, kp_max, (kp_min, kp_max), step=iStep)
 
       # Applying the filters
       dFilters = {
@@ -440,7 +437,7 @@ with tab1:
         df = df[df['Cardtype'] == cardtype]
       if type_filter != 'All':
         df = df[df['Type'] == type_filter]
-      df = df[(df[c.dTranslations[language_cards]['hp']] >= kp_range[0]) & (df[c.dTranslations[language_cards]['hp']] <= kp_range[1])]
+      df = df[(df['HP'] >= kp_range[0]) & (df['HP'] <= kp_range[1])]
       if attack1_cost:
         df = df[df['Attack 1 cost'].isin(attack1_cost)]
       if attack1_damage:
@@ -494,12 +491,6 @@ with tab1:
       df_selected_cards,
       use_container_width=True,
     )
-
-    # Reset Button
-    bReset = st.button('Reset2')
-    if bReset:
-      del st.session_state['selected_cards']
-    #   st.session_state.selected_cards = {}
 
     if not df_selected_cards.empty:
       st.write(f'Show {min(st.session_state.num_images, len(df_selected_cards))} cards:')
