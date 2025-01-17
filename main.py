@@ -793,9 +793,9 @@ Total Cards: 60
       # st.write(st.session_state['decklist'])
       export_decklist(dDecklist)
 
-print('st.session_state')
-for k, v in st.session_state.items():
-  print(k, f"'{v}'")
+# print('st.session_state')
+# for k, v in st.session_state.items():
+#   print(k, f"'{v}'")
 # print('\n\ndecklist', st.session_state['decklist'])
 # print(st.session_state.selected_cards)
 # st.write(st.session_state)
