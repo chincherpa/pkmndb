@@ -284,7 +284,7 @@ def parse_decklist(decklist_text):
       }
 
     else:
-      st.write(f'Could not parse: {sLine}')
+      st.error(f'Could not parse: {sLine}')
       lNotFound.append(sLine)
 
     iCounter += 1
@@ -298,7 +298,7 @@ def display_decklist(decklist_dict, not_found_cards, num_columns):
   if not_found_cards:
     st.write("Cards not found")
     for card in not_found_cards:
-      st.write(card)
+      st.error(card)
 
   # Create grid layout
   cols = st.columns(num_columns)
@@ -312,7 +312,7 @@ def display_decklist(decklist_dict, not_found_cards, num_columns):
           f"tpci/{dCard['set']}/{dCard['set']}_{dCard['number']:0>3}_R_EN_LG.png"
         )
         st.write(f"{dCard['amount']} {dCard['name']}")
-        st.image(image_url, use_column_width=True)
+        st.image(image_url, use_container_width=True)
       except Exception as e:
         st.error(f"Error displaying card: {dCard['name']}")
         st.write(f"Error details: {str(e)}")
@@ -339,8 +339,9 @@ def export_decklist(dDecklist):
   # pyperclip.copy(text)
 
 col_lang, col_reset = st.columns([1,5])
-# language_cards = col_lang.selectbox('Language', ['english', 'deutsch'])
-language_cards = col_lang.selectbox('Language of cards', ['english', 'deutsch'])
+# language_cards <<<<<= col_lang.selectbox('Language', ['english', 'deutsch'])
+language_cards = st.segmented_control('Cards language', ['english', 'deutsch'], default='english')
+# print(language_cards)
 
 # Load data
 df_orig = load_data(language_cards)
@@ -682,10 +683,10 @@ with tab3:
   if 'bAdded_Card' not in st.session_state:
     st.session_state['bAdded_Card'] = False
   # sDecklist = st.text_area('Paste decklist here')
+  """
+  """
   sDecklist = """Pokémon: 9
 1 Rotom V LOR 177
-  """
-  """
 2 Hisuian Braviary SIT 149
 2 Munkidori TWM 95
 4 Froslass TWM 53
@@ -744,65 +745,49 @@ Total Cards: 60
 
     num_columns = st.slider('Number of columns:', min_value=1, max_value=20, value=8)
 
-    col_decklist1, col_decklist2 = st.columns([5, 1])
-    with col_decklist1:
-      col_temp1, col_search_term_name = st.columns([1, 3])
-      with col_temp1:
-        search_term_name = st_keyup('Find card by name', key='name_decklist')
-        print(f'{search_term_name = }')
-      with col_search_term_name:
-        search_term_name
+    col_search_term_name, _ = st.columns([1, 3])
+    with col_search_term_name:
+      search_term_name = st_keyup('Find card by name', key='name_decklist')
 
+    col_found_cards, col_image_selected_card = st.columns([5, 1])
+    with col_found_cards:
       if search_term_name:
         df_result = df_orig[df_orig['Name'].str.contains(search_term_name, case=False, na=False)]
 
-        event_2 = st.dataframe(
-          df_result,
-          use_container_width=True,
-          hide_index=True,
-          on_select='rerun',
-          selection_mode='single-row',
-        )
+        if not df_result.empty:
+          event_2 = st.dataframe(
+            df_result,
+            use_container_width=True,
+            hide_index=True,
+            on_select='rerun',
+            selection_mode='single-row',
+          )
 
-        with col_decklist2:
-          if selected_card := event_2.selection.rows:
-            df_selected_card = df_result.iloc[selected_card]
-            name = df_selected_card['Name'].iloc[0]
-            set = df_selected_card['Set'].iloc[0]
-            num = df_selected_card['#'].iloc[0]
-            url = df_selected_card['URL'].iloc[0]
-            st.write(f'{name} {set} {num}')
-            st.image(url, width=200)
+          with col_image_selected_card:
+            if selected_card := event_2.selection.rows:
+              df_selected_card = df_result.iloc[selected_card]
+              name = df_selected_card['Name'].iloc[0]
+              set = df_selected_card['Set'].iloc[0]
+              num = df_selected_card['#'].iloc[0]
+              url = df_selected_card['URL'].iloc[0]
+              st.write(f'{name} {set} {num}')
+              st.image(url, width=200)
 
-            # st.write('vor Button')
-            # st.write(dDecklist)
-            if st.button('Add card to decklist'):
-              dDecklist = add_card_to_decklist(dDecklist, name, set, num)
-              st.session_state['bAdded_Card'] = True
-              st.session_state['decklist'] = dDecklist
-              # st.write('nach Button')
-              # st.write(dDecklist)
+              if st.button('Add card to decklist'):
+                dDecklist = add_card_to_decklist(dDecklist, name, set, num)
+                st.session_state['bAdded_Card'] = True
+                st.session_state['decklist'] = dDecklist
+        else:
+          st.error('No cards found')
 
     # Display the decklist
     display_decklist(dDecklist, not_found, num_columns)
-    # st.write('vor Export')
-    # st.write(dDecklist)
-    # if st.button('print session state decklist'):
-    #   st.write(st.session_state['decklist'])
     if st.button('Export decklist'):
-      # st.write(st.session_state['decklist'])
       export_decklist(dDecklist)
 
-print('st.session_state')
-for k, v in st.session_state.items():
-  print(k, f"'{v}'")
-# print('\n\ndecklist', st.session_state['decklist'])
-# print(st.session_state.selected_cards)
-# st.write(st.session_state)
-# st.write(st.session_state.selected_cards)
-
-
-
+# print('st.session_state')
+# for k, v in st.session_state.items():
+#   print(k, f"'{v}'")
 
 
 
