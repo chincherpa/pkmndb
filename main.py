@@ -383,13 +383,6 @@ with tab1:
     df = df[mask]
 
   if not df.empty:
-    cols_TEMP_ex, cols_TEMP_V = st.columns(2)
-    with cols_TEMP_ex:
-      sToggle_ex = st.segmented_control('Include Pokemon ex', ['include', 'exclude'], default='include', key='sToggle_ex')
-      sToggle_ex
-    with cols_TEMP_V:
-      sToggle_V = st.segmented_control('Include Pokemon V', ['include', 'exclude'], default='include', key='sToggle_V')
-      sToggle_V
     with st.expander('Filter'):
       # Filter
       col1, col2, col3 = st.columns(3)
@@ -411,6 +404,15 @@ with tab1:
         attack2_cost = st.multiselect('Attack 2 cost', attack2_cost_options)
         attack2_damage_options = sorted(df['Attack 2 damage'].unique().tolist())
         attack2_damage = st.multiselect('Attack 2 damage', attack2_damage_options)
+        cols_TEMP_ex, cols_TEMP_V = st.columns(2)
+        with cols_TEMP_ex:
+          sToggle_ex = st.segmented_control('Pokemon ex', ['include', 'exclude'], default='include', key='sToggle_ex')
+          if sToggle_ex == 'exclude':
+            df = df[~df['Name'].str.endswith('ex')]
+        with cols_TEMP_V:
+          sToggle_V = st.segmented_control('Pokemon V', ['include', 'exclude'], default='include', key='sToggle_V')
+          if sToggle_V == 'exclude':
+            df = df[~df['Name'].str.endswith(('V', 'VSTAR'))]
     
       with col3:
         set_filter = st.multiselect('Set', sorted(df['Set'].unique()))
