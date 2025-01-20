@@ -404,6 +404,15 @@ with tab1:
         attack2_cost = st.multiselect('Attack 2 cost', attack2_cost_options)
         attack2_damage_options = sorted(df['Attack 2 damage'].unique().tolist())
         attack2_damage = st.multiselect('Attack 2 damage', attack2_damage_options)
+        cols_TEMP_ex, cols_TEMP_V = st.columns(2)
+        with cols_TEMP_ex:
+          sToggle_ex = st.segmented_control('Pokemon ex', ['include', 'exclude'], default='include', key='sToggle_ex')
+          if sToggle_ex == 'exclude':
+            df = df[~df['Name'].str.endswith('ex')]
+        with cols_TEMP_V:
+          sToggle_V = st.segmented_control('Pokemon V', ['include', 'exclude'], default='include', key='sToggle_V')
+          if sToggle_V == 'exclude':
+            df = df[~df['Name'].str.endswith(('V', 'VSTAR'))]
     
       with col3:
         set_filter = st.multiselect('Set', sorted(df['Set'].unique()))
@@ -683,50 +692,79 @@ with tab3:
   if 'bAdded_Card' not in st.session_state:
     st.session_state['bAdded_Card'] = False
   # sDecklist = st.text_area('Paste decklist here')
-  """
-  """
-  sDecklist = """Pokémon: 9
-1 Rotom V LOR 177
-2 Hisuian Braviary SIT 149
-2 Munkidori TWM 95
-4 Froslass TWM 53
-2 Rufflet ASR 131 PH
-1 Munkidori SFA 72
-1 Bloodmoon Ursaluna ex TWM 222
-4 Snorunt SIT 41
-1 Mimikyu PR-SV 75
-Trainer: 24
-3 Irida ASR 147
-1 Arven SVI 235
-2 Switch Cart ASR 154
-2 Nest Ball PAF 84 PH
-1 Earthen Vessel SFA 96
-1 Calamitous Wasteland PAL 175 PH
-2 Arven PAF 235
-1 Super Rod PAL 276
-3 Iono PAF 237
-1 Iono PAL 269
-1 Penny PAF 239
-1 Technical Machine: Devolution PAR 177
-2 Night Stretcher SFA 61
-1 Pokémon League Headquarters OBF 192 PH
-1 Technical Machine: Evolution PAR 178
-1 Artazon OBF 229
-1 Lost Vacuum LOR 217
-4 Buddy-Buddy Poffin TWM 223
-1 Forest Seal Stone SIT 156
-1 Nest Ball SVI 181
-1 Rescue Board TEF 159
-2 Counter Catcher PAR 264
-1 Neutralization Zone SFA 60
-1 Nest Ball SVI 255
+#   sDecklist = """Pokémon: 9
+# 1 Rotom V LOR 177
+# 2 Hisuian Braviary SIT 149
+# 2 Munkidori TWM 95
+# 4 Froslass TWM 53
+# 2 Rufflet ASR 131 PH
+# 1 Munkidori SFA 72
+# 1 Bloodmoon Ursaluna ex TWM 222
+# 4 Snorunt SIT 41
+# 1 Mimikyu PR-SV 75
+# Trainer: 24
+# 3 Irida ASR 147
+# 1 Arven SVI 235
+# 2 Switch Cart ASR 154
+# 2 Nest Ball PAF 84 PH
+# 1 Earthen Vessel SFA 96
+# 1 Calamitous Wasteland PAL 175 PH
+# 2 Arven PAF 235
+# 1 Super Rod PAL 276
+# 3 Iono PAF 237
+# 1 Iono PAL 269
+# 1 Penny PAF 239
+# 1 Technical Machine: Devolution PAR 177
+# 2 Night Stretcher SFA 61
+# 1 Pokémon League Headquarters OBF 192 PH
+# 1 Technical Machine: Evolution PAR 178
+# 1 Artazon OBF 229
+# 1 Lost Vacuum LOR 217
+# 4 Buddy-Buddy Poffin TWM 223
+# 1 Forest Seal Stone SIT 156
+# 1 Nest Ball SVI 181
+# 1 Rescue Board TEF 159
+# 2 Counter Catcher PAR 264
+# 1 Neutralization Zone SFA 60
+# 1 Nest Ball SVI 255
 
-Energy: 2
-4 Basic {D} Energy SFA 98
-2 Luminous Energy PAL 191
+# Energy: 2
+# 4 Basic {D} Energy SFA 98
+# 2 Luminous Energy PAL 191
 
-Total Cards: 60
+# Total Cards: 60
+#   """
+  sDecklist = """Pokémon: 6
+1 Bidoof CRZ-GG 29
+4 Teal Mask Ogerpon ex TWM 25
+3 Hydrapple ex SCR 14
+1 Dipplin TWM 18
+3 Applin SCR 12
+1 Bibarel CRZ-GG 25
 
+Trainer: 19
+1 Counter Catcher PAR 160
+2 Bug Catching Set TWM 143
+1 Bug Catching Set TWM 143 PH
+3 Nest Ball PAF 84
+1 Capturing Aroma SIT 153 PH
+1 Energy Retrieval SVI 171
+1 Hero's Cape TEF 152
+2 Ultra Ball PAF 91
+1 Night Stretcher SFA 61
+2 Boss's Orders PAL 172
+1 Arven SVI 166
+1 Professor's Research PAF 87
+4 Rare Candy PAF 89
+1 Penny SVI 239
+1 Earthen Vessel PRE 106
+1 Superior Energy Retrieval PAL 189 PH
+1 Professor's Research CEL 24
+1 Buddy-Buddy Poffin TEF 144
+3 Iono PAF 80
+
+Energy: 1
+18 Basic {G} Energy SVE 1
   """
 
   if sDecklist:
