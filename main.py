@@ -114,22 +114,26 @@ def parse_card_entries(text):
 
   return results
 
-def reset():
-  print('reseting')
-  st.session_state.selected_cards = {}
-  st.session_state.search_term = ''
-  st.session_state.search_term_evolves_from = ''
+def reset_fields():
+  print('reseting fields')
+  for k, v in st.session_state.items():
+    print(k, v)
+  st.session_state.seg_ctrl_lang = 'english'
+  st.session_state.seg_ctrl_format = 'standard'
+  st.session_state.search_term_name = None
+  st.session_state.search_term_evolves_from_key = ''
   st.session_state.search_term_cap = ''
   st.session_state.search_term_att_eff = ''
   st.session_state.cardtype = 'All'
   st.session_state.att_eff = None
   st.session_state.evolves = None
-  st.session_state.wertzu = False
+  st.session_state.selected_cards = {}
   st.session_state.bAdded_Card = False
   st.session_state.num_images = 20
   st.session_state.name_decklist = ''
   st.session_state.not_found = []
-  st.session_state.names = None
+  for k, v in st.session_state.items():
+    print(k, v)
 
 # Battlelog viewer START
 def get_language(text):
@@ -338,21 +342,24 @@ def export_decklist(dDecklist):
   st.code(text)
   # pyperclip.copy(text)
 
-col_lang, col_reset = st.columns([1,5])
-# language_cards <<<<<= col_lang.selectbox('Language', ['english', 'deutsch'])
-language_cards = st.segmented_control('Cards language', ['english', 'deutsch'], default='english')
-# print(language_cards)
+col_lang, col_format, col_reset = st.columns([1,1,5])
+with col_lang:
+  language_cards = st.segmented_control('Cards language', ['english', 'deutsch'], default='english', key='seg_ctrl_lang')
+with col_format:
+  sCards_format = st.segmented_control('Cards format', ['standard', 'all'], default='standard', key='seg_ctrl_format')
+with col_reset:
+  # Reset Button
+  st.write('')
+  bReset = st.button('Reset - not working as expected', key='reset', on_click=reset_fields)
 
 # Load data
 df_orig = load_data(language_cards)
+if sCards_format == 'standard':
+  df_orig = df_orig[df_orig['Regulation'].isin(c.lStandard_regulations)] # lStandard_regulations
 df = df_orig
 
 lUniqueNames = df['Name'].unique().tolist()
 
-# Reset Button
-bReset = col_reset.button('Reset', key='reset', on_click=reset)
-
-# Create tabs
 # saved for later
 # tab1, tab2, tab3, tab4 = st.tabs(['Card selection', 'Saved selections', 'Import', 'Battle log viewer'])
 tab1, tab2, tab3 = st.tabs(['Card selection', 'Battlelog viewer', 'Decklist Viewer'])
@@ -361,14 +368,11 @@ tab1, tab2, tab3 = st.tabs(['Card selection', 'Battlelog viewer', 'Decklist View
 with tab1:
   col_search_names, col_search_evo = st.columns(2)
   with col_search_names:
-    search_term = st_keyup(c.dTranslations[language_cards]['find_in_names'], key='names')
+    search_term = st_keyup(c.dTranslations[language_cards]['find_in_names'], key='search_term_name')
   with col_search_evo:
-    search_term_evolves_from = st_keyup(c.dTranslations[language_cards]['find_in_evolves'], key='evolves')
+    search_term_evolves_from = st_keyup(c.dTranslations[language_cards]['find_in_evolves'], key='search_term_evolves_from_key')
 
-  if search_term_evolves_from:
-    mask = df['Evolves from'].str.contains(search_term_evolves_from, case=False, na=False)
-    df = df[mask]
-  elif search_term:
+  if search_term:
     if language_cards == 'english':
       mask = df['Name'].str.contains(search_term, case=False, na=False) | \
         df['Attack 1 Name'].str.contains(search_term, case=False, na=False) | \
@@ -380,6 +384,9 @@ with tab1:
         df['Attack 1 Name EN'].str.contains(search_term, case=False, na=False) | \
         df['Attack 2 Name'].str.contains(search_term, case=False, na=False) | \
         df['Attack 2 Name EN'].str.contains(search_term, case=False, na=False)
+    df = df[mask]
+  if search_term_evolves_from:
+    mask = df['Evolves from'].str.contains(search_term_evolves_from, case=False, na=False)
     df = df[mask]
 
   if not df.empty:
@@ -417,15 +424,18 @@ with tab1:
       with col3:
         set_filter = st.multiselect('Set', sorted(df['Set'].unique()))
         regulation_filter = st.multiselect('Regulation', df['Regulation'].unique())
-        kp_min = int(df['HP'].min())
-        kp_max = int(df['HP'].max())
+        hp_min = int(df['HP'].min())
+        hp_max = int(df['HP'].max())
         iStep = 10
-        if kp_min == kp_max:
-          kp_max += iStep
-        kp_range = st.slider('HP', kp_min, kp_max, (kp_min, kp_max), step=iStep)
+        if hp_min == hp_max:
+          hp_max += iStep
+        hp_range = st.slider('HP', hp_min, hp_max, (hp_min, hp_max), step=iStep)
 
       # Applying the filters
       dFilters = {
+        'sCards_format': sCards_format,
+        'search_term': search_term,
+        'search_term_evolves_from': search_term_evolves_from,
         'cardtype': cardtype,
         'attack1_cost': attack1_cost,
         'attack1_damage': attack1_damage,
@@ -435,7 +445,9 @@ with tab1:
         'attack2_damage': attack2_damage,
         'set_filter': set_filter,
         'regulation_filter': regulation_filter,
-        'kp_range': kp_range
+        'hp_range': hp_range,
+        'sToggle_ex': sToggle_ex,
+        'sToggle_V': sToggle_V,
       }
       if st.checkbox('Show filter'):
         st.write(dFilters)
@@ -447,7 +459,7 @@ with tab1:
         df = df[df['Cardtype'] == cardtype]
       if type_filter != 'All':
         df = df[df['Type'] == type_filter]
-      df = df[(df['HP'] >= kp_range[0]) & (df['HP'] <= kp_range[1])]
+      df = df[(df['HP'] >= hp_range[0]) & (df['HP'] <= hp_range[1])]
       if attack1_cost:
         df = df[df['Attack 1 cost'].isin(attack1_cost)]
       if attack1_damage:

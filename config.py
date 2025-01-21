@@ -1,5 +1,7 @@
 sBattlelogs_Folder = 'battlelogs_others'
 
+lStandard_regulations = ['F', 'G', 'H']
+
 lImportant_Actions = [
   'kampfunfähig',
   'gewonnen',
