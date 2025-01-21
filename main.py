@@ -289,10 +289,6 @@ def parse_decklist(decklist_text):
 
   return dOutput, lNotFound
 
-# New function to update card quantity
-def update_card_quantity(decklist_dict, idx, quantity):
-  print(f'{decklist_dict[idx]['name']}: {idx} = {quantity}')
-
 def display_decklist(decklist_dict, not_found_cards, num_columns):
   st.divider()
   # Display not found cards if any exist
@@ -313,7 +309,7 @@ def display_decklist(decklist_dict, not_found_cards, num_columns):
           f"tpci/{dCard['set']}/{dCard['set']}_{dCard['number']:0>3}_R_EN_LG.png"
         )
         st.write(dCard['name'])
-        dCard['amount'] = st.number_input('', min_value=0, value=int(dCard['amount']), max_value=4, key=f"decklist_card_{idx}", on_change=update_card_quantity(decklist_dict, idx, dCard['amount']), label_visibility='collapsed')
+        dCard['amount'] = st.number_input(dCard['name'], min_value=0, value=int(dCard['amount']), max_value=4, key=f"decklist_card_{idx}", label_visibility='collapsed')
         st.image(image_url, use_container_width=True)
       except Exception as e:
         st.error(f"Error displaying card: {dCard['name']}")
