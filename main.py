@@ -72,13 +72,6 @@ def load_saved_selections():
     saved_selections = saved_selections + [f for f in os.listdir('saved_selections') if f.endswith('.txt')]
     return [os.path.splitext(f)[0] for f in saved_selections]
 
-# New function to update card quantity
-def update_card_quantity(card_name, quantity):
-  if quantity > 0:
-    st.session_state.selected_cards[card_name] = quantity
-  elif card_name in st.session_state.selected_cards:
-    del st.session_state.selected_cards[card_name]
-
 def format_pokemon_card_line(line):
     # Teile die Zeile in Wörter auf
     words = line.split()
@@ -281,7 +274,7 @@ def parse_decklist(decklist_text):
       amount, name, set_code, card_number = matches.groups()
       st.write(f'{sLine} => Amount: {amount}, Name: {name}, Set: {set_code}, Number: {card_number}')
       dOutput[iCounter] = {
-        'amount': amount,
+        'amount': int(amount),
         'name': name,
         'set': set_code,
         'number': card_number
@@ -295,6 +288,10 @@ def parse_decklist(decklist_text):
   # st.write(dOutput)
 
   return dOutput, lNotFound
+
+# New function to update card quantity
+def update_card_quantity(decklist_dict, idx, quantity):
+  print(f'{decklist_dict[idx]['name']}: {idx} = {quantity}')
 
 def display_decklist(decklist_dict, not_found_cards, num_columns):
   st.divider()
@@ -315,7 +312,8 @@ def display_decklist(decklist_dict, not_found_cards, num_columns):
           f"https://limitlesstcg.nyc3.cdn.digitaloceanspaces.com/"
           f"tpci/{dCard['set']}/{dCard['set']}_{dCard['number']:0>3}_R_EN_LG.png"
         )
-        st.write(f"{dCard['amount']} {dCard['name']}")
+        st.write(dCard['name'])
+        dCard['amount'] = st.number_input('', min_value=0, value=int(dCard['amount']), max_value=4, key=f"decklist_card_{idx}", on_change=update_card_quantity(decklist_dict, idx, dCard['amount']), label_visibility='collapsed')
         st.image(image_url, use_container_width=True)
       except Exception as e:
         st.error(f"Error displaying card: {dCard['name']}")
@@ -327,7 +325,7 @@ def add_card_to_decklist(dDecklist, name, set_, num):
   iNew_key = max(list(dDecklist.keys())) + 1
   print(f'{iNew_key}: {name} {set_} {num}')
   dDecklist[iNew_key] = {
-    'amount': '1',
+    'amount': 1,
     'name': name,
     'set': set_,
     'number': num
@@ -747,17 +745,18 @@ with tab3:
 # Total Cards: 60
 #   """
   sDecklist = """Pokémon: 6
-1 Bidoof CRZ-GG 29
-4 Teal Mask Ogerpon ex TWM 25
 3 Hydrapple ex SCR 14
+4 Teal Mask Ogerpon ex TWM 25
+  """
+  """
+1 Bidoof CRZ-GG 29
 1 Dipplin TWM 18
 3 Applin SCR 12
 1 Bibarel CRZ-GG 25
 
 Trainer: 19
 1 Counter Catcher PAR 160
-2 Bug Catching Set TWM 143
-1 Bug Catching Set TWM 143 PH
+3 Bug Catching Set TWM 143
 3 Nest Ball PAF 84
 1 Capturing Aroma SIT 153 PH
 1 Energy Retrieval SVI 171
