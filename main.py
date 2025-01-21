@@ -407,13 +407,17 @@ with tab1:
         attack2_damage = st.multiselect('Attack 2 damage', attack2_damage_options)
         cols_TEMP_ex, cols_TEMP_V = st.columns(2)
         with cols_TEMP_ex:
-          sToggle_ex = st.segmented_control('Pokemon ex', ['include', 'exclude'], default='include', key='sToggle_ex')
+          sToggle_ex = st.segmented_control('Pokemon ex', ['include', 'exclude', 'only'], default='include', key='sToggle_ex')
           if sToggle_ex == 'exclude':
             df = df[~df['Name'].str.endswith('ex')]
+          if sToggle_ex == 'only':
+            df = df[df['Name'].str.endswith('ex')]
         with cols_TEMP_V:
-          sToggle_V = st.segmented_control('Pokemon V', ['include', 'exclude'], default='include', key='sToggle_V')
+          sToggle_V = st.segmented_control('Pokemon V', ['include', 'exclude', 'only'], default='include', key='sToggle_V')
           if sToggle_V == 'exclude':
             df = df[~df['Name'].str.endswith(('V', 'VSTAR'))]
+          if sToggle_V == 'only':
+            df = df[df['Name'].str.endswith(('V', 'VSTAR'))]
     
       with col3:
         set_filter = st.multiselect('Set', sorted(df['Set'].unique()))
@@ -520,16 +524,16 @@ with tab1:
         card = df_selected_cards.iloc[i]
         with cols[i % 4]:
           col_num, col_link = st.columns(2)
-          if language_cards == 'english':
-            quantity = col_num.number_input(f"{card['Name']} {card['Set']} {card['#']}", min_value=0, value=st.session_state.selected_cards.get(f"{card['Name']} {card['Set']} {card['#']}", 0), key=f"quantity_{i}", max_value=4)
-          elif language_cards == 'deutsch':
-            quantity = col_num.number_input(f"{card['Name']} '{card['Name EN']}' {card['Set']} {card['#']}", min_value=0, value=st.session_state.selected_cards.get(f"{card['Name']} {card['Set']} {card['#']}", 0), key=f"quantity_{i}", max_value=4)
+        #  if language_cards == 'english':
+         #   quantity = col_num.number_input(f"{card['Name']} {card['Set']} {card['#']}", min_value=0, value=st.session_state.selected_cards.get(f"{card['Name']} {card['Set']} {card['#']}", 0), key=f"quantity_{i}", max_value=4)
+         # elif language_cards == 'deutsch':
+        #    quantity = col_num.number_input(f"{card['Name']} '{card['Name EN']}' {card['Set']} {card['#']}", min_value=0, value=st.session_state.selected_cards.get(f"{card['Name']} {card['Set']} {card['#']}", 0), key=f"quantity_{i}", max_value=4)
 
           # url = f'https://limitlesstcg.com/cards/de/{card['Set']}/{card['#']}'
           url = card['URL']
           col_link.link_button('go to card on limitlessTCG', url)
           st.image(url, width=iWidth)
-          update_card_quantity(f"{card['Name']}|{card['Set']}|{card['#']}", quantity)
+         # update_card_quantity(f"{card['Name']}|{card['Set']}|{card['#']}", quantity)
 
       if st.session_state.num_images < len(df_selected_cards):
         if st.button('load more'):
