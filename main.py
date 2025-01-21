@@ -424,8 +424,12 @@ with tab1:
         if hp_min == hp_max:
           hp_max += iStep
         hp_range = st.slider('HP', hp_min, hp_max, (hp_min, hp_max), step=iStep)
+        if language_cards == 'deutsch':
+          sSame_name = st.segmented_control('same name only', ['es', 'no'], default='no', key='same_name_key')
+          if sSame_name == 'yes':
+            df = df[df['Name'] == df['Name EN']]
 
-      # Applying the filters
+      # Show filters
       dFilters = {
         'sCards_format': sCards_format,
         'search_term': search_term,
