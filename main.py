@@ -546,28 +546,28 @@ with tab1:
 with tab2:
   st.title('Pokemon Trading Card Game - Battlelog Viewer')
 
-  game_log = ''
+  # game_log = ''
 
-  bfile_uploader = st.toggle('Load battlelog from textfile')
-  if bfile_uploader:
-    col1, col2 = st.columns(2)
-    with col1:
-      # File uploader for the game log
-      uploaded_file = st.file_uploader('Upload battlelog', type=['txt'])
+  # bfile_uploader = st.toggle('Load battlelog from textfile')
+  # if bfile_uploader:
+  #   col1, col2 = st.columns(2)
+  #   with col1:
+  #     # File uploader for the game log
+  #     uploaded_file = st.file_uploader('Upload battlelog', type=['txt'])
 
-    with col2:
-      saved_battlogs = load_saved_battlogs()
-      selected_battlog = st.selectbox('Choose battlelog', saved_battlogs)
+  #   with col2:
+  #     saved_battlogs = load_saved_battlogs()
+  #     selected_battlog = st.selectbox('Choose battlelog', saved_battlogs)
 
-    if uploaded_file is not None:
-      game_log = uploaded_file.getvalue().decode('utf-8')
-    elif selected_battlog:
-      battlelogfile = rf'{c.sBattlelogs_Folder}\{selected_battlog}'
-      print(battlelogfile)
-      with open(battlelogfile, 'r', encoding='utf-8') as _battlelog:
-        game_log = _battlelog.read()
-  else:
-    game_log = st.text_area('Paste battlelog here')
+  #   if uploaded_file is not None:
+  #     game_log = uploaded_file.getvalue().decode('utf-8')
+  #   elif selected_battlog:
+  #     battlelogfile = rf'{c.sBattlelogs_Folder}\{selected_battlog}'
+  #     print(battlelogfile)
+  #     with open(battlelogfile, 'r', encoding='utf-8') as _battlelog:
+  #       game_log = _battlelog.read()
+  # else:
+  game_log = st.text_area('Paste battlelog here')
 
   if game_log:
     get_language(game_log)
