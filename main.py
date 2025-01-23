@@ -336,7 +336,7 @@ def export_decklist(dDecklist):
   st.code(text)
   # pyperclip.copy(text)
 
-col_lang, col_format, col_reset = st.columns([1,1,5])
+col_lang, col_format, col_reset = st.columns(3)
 with col_lang:
   language_cards = st.segmented_control('Cards language', ['english', 'deutsch'], default='english', key='seg_ctrl_lang')
 with col_format:
@@ -405,19 +405,11 @@ with tab1:
         attack2_cost = st.multiselect('Attack 2 cost', attack2_cost_options)
         attack2_damage_options = sorted(df['Attack 2 damage'].unique().tolist())
         attack2_damage = st.multiselect('Attack 2 damage', attack2_damage_options)
-        cols_TEMP_ex, cols_TEMP_V = st.columns(2)
-        with cols_TEMP_ex:
-          sToggle_ex = st.segmented_control('Pokemon ex', ['include', 'exclude', 'only'], default='include', key='sToggle_ex')
-          if sToggle_ex == 'exclude':
-            df = df[~df['Name'].str.endswith('ex')]
-          if sToggle_ex == 'only':
-            df = df[df['Name'].str.endswith('ex')]
-        with cols_TEMP_V:
-          sToggle_V = st.segmented_control('Pokemon V', ['include', 'exclude', 'only'], default='include', key='sToggle_V')
-          if sToggle_V == 'exclude':
-            df = df[~df['Name'].str.endswith(('V', 'VSTAR'))]
-          if sToggle_V == 'only':
-            df = df[df['Name'].str.endswith(('V', 'VSTAR'))]
+        sToggle_ex = st.segmented_control('Pokemon ex', ["include 'ex'", "exclude 'ex'", "only 'ex'"], default="include 'ex'", key='sToggle_ex', label_visibility='hidden')
+        if sToggle_ex == "exclude 'ex'":
+          df = df[~df['Name'].str.endswith('ex')]
+        if sToggle_ex == "only 'ex'":
+          df = df[df['Name'].str.endswith('ex')]
     
       with col3:
         set_filter = st.multiselect('Set', sorted(df['Set'].unique()))
@@ -428,6 +420,11 @@ with tab1:
         if hp_min == hp_max:
           hp_max += iStep
         hp_range = st.slider('HP', hp_min, hp_max, (hp_min, hp_max), step=iStep)
+        sToggle_V = st.segmented_control('Pokemon V', ["include 'V(STAR)'", "exclude 'V(STAR)'", "only 'V(STAR)'"], default="include 'V(STAR)'", key='sToggle_V', label_visibility='hidden')
+        if sToggle_V == "exclude 'V(STAR)'":
+          df = df[~df['Name'].str.endswith(('V', 'VSTAR'))]
+        if sToggle_V == "only 'V(STAR)'":
+          df = df[df['Name'].str.endswith(('V', 'VSTAR'))]
         if language_cards == 'deutsch':
           sSame_name = st.segmented_control('same name only', ['yes', 'no'], default='no', key='same_name_key')
           if sSame_name == 'yes':
