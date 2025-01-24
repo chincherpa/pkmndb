@@ -391,42 +391,38 @@ with tab1:
       with col1:
         lCardtype_options = ['All', 'Pokemon'] + sorted(df['Cardtype'].unique().tolist())
         cardtype = st.selectbox('Cardtype', lCardtype_options)
-        attack1_cost_options = sorted(df['Attack 1 cost'].unique().tolist())
-        attack1_cost = st.multiselect('Attack 1 cost', attack1_cost_options)
-        attack1_damage_options = sorted(df['Attack 1 damage'].unique().tolist())
-        attack1_damage = st.multiselect('Attack 1 damage', attack1_damage_options)
+        typ_options = ['All'] + sorted(df['Type'].unique().tolist())
+        type_filter = st.selectbox('Type', typ_options)
         lWeakness_options = ['Choose an option'] + sorted(df['Weakness'].unique().tolist())
         weakness_filter = st.selectbox('Weakness', lWeakness_options)
 
       with col2:
-        typ_options = ['All'] + sorted(df['Type'].unique().tolist())
-        type_filter = st.selectbox('Type', typ_options)
-        attack2_cost_options = sorted(df['Attack 2 cost'].unique().tolist())
-        attack2_cost = st.multiselect('Attack 2 cost', attack2_cost_options)
-        attack2_damage_options = sorted(df['Attack 2 damage'].unique().tolist())
-        attack2_damage = st.multiselect('Attack 2 damage', attack2_damage_options)
-        sToggle_ex = st.segmented_control('Pokemon ex', ["include 'ex'", "exclude 'ex'", "only 'ex'"], default="include 'ex'", key='sToggle_ex', label_visibility='hidden')
-        if sToggle_ex == "exclude 'ex'":
-          df = df[~df['Name'].str.endswith('ex')]
-        if sToggle_ex == "only 'ex'":
-          df = df[df['Name'].str.endswith('ex')]
-    
-      with col3:
-        set_filter = st.multiselect('Set', sorted(df['Set'].unique()))
-        regulation_filter = st.multiselect('Regulation', df['Regulation'].unique())
+        attack_cost_options = sorted(set(df['Attack 1 cost'].unique().tolist() + df['Attack 2 cost'].unique().tolist()))
+        attack_cost = st.multiselect('Attack cost', attack_cost_options)
+        attack_damage_options = sorted(set(df['Attack 1 damage'].unique().tolist() + df['Attack 2 damage'].unique().tolist()))
+        attack_damage = st.multiselect('Attack damage', attack_damage_options)
         hp_min = int(df['HP'].min())
         hp_max = int(df['HP'].max())
         iStep = 10
         if hp_min == hp_max:
           hp_max += iStep
         hp_range = st.slider('HP', hp_min, hp_max, (hp_min, hp_max), step=iStep)
+
+      with col3:
+        set_filter = st.multiselect('Set', sorted(df['Set'].unique()))
+        regulation_filter = st.multiselect('Regulation', df['Regulation'].unique())
+        sToggle_ex = st.segmented_control('Pokemon ex', ["include 'ex'", "exclude 'ex'", "only 'ex'"], default="include 'ex'", key='sToggle_ex', label_visibility='hidden')
+        if sToggle_ex == "exclude 'ex'":
+          df = df[~df['Name'].str.endswith('ex')]
+        if sToggle_ex == "only 'ex'":
+          df = df[df['Name'].str.endswith('ex')]
         sToggle_V = st.segmented_control('Pokemon V', ["include 'V(STAR)'", "exclude 'V(STAR)'", "only 'V(STAR)'"], default="include 'V(STAR)'", key='sToggle_V', label_visibility='hidden')
         if sToggle_V == "exclude 'V(STAR)'":
           df = df[~df['Name'].str.endswith(('V', 'VSTAR'))]
         if sToggle_V == "only 'V(STAR)'":
           df = df[df['Name'].str.endswith(('V', 'VSTAR'))]
         if language_cards == 'deutsch':
-          sSame_name = st.segmented_control('same name only', ['yes', 'no'], default='no', key='same_name_key')
+          sSame_name = st.segmented_control('Same name in english and german only', ['no', 'yes'], default='no', key='same_name_key')
           if sSame_name == 'yes':
             df = df[df['Name'] == df['Name EN']]
 
@@ -436,12 +432,10 @@ with tab1:
         'search_term': search_term,
         'search_term_evolves_from': search_term_evolves_from,
         'cardtype': cardtype,
-        'attack1_cost': attack1_cost,
-        'attack1_damage': attack1_damage,
+        'attack_cost': attack_cost,
+        'attack_damage': attack_damage,
         'weakness_filter': weakness_filter,
         'type_filter': type_filter,
-        'attack2_cost': attack2_cost,
-        'attack2_damage': attack2_damage,
         'set_filter': set_filter,
         'regulation_filter': regulation_filter,
         'hp_range': hp_range,
@@ -459,14 +453,10 @@ with tab1:
       if type_filter != 'All':
         df = df[df['Type'] == type_filter]
       df = df[(df['HP'] >= hp_range[0]) & (df['HP'] <= hp_range[1])]
-      if attack1_cost:
-        df = df[df['Attack 1 cost'].isin(attack1_cost)]
-      if attack1_damage:
-        df = df[df['Attack 1 damage'].isin(attack1_damage)]
-      if attack2_cost:
-        df = df[df['Attack 2 cost'].isin(attack2_cost)]
-      if attack2_damage:
-        df = df[df['Attack 1 damage'].isin(attack2_damage)]
+      if attack_cost:
+        df = df[df['Attack 1 cost'].isin(attack_cost) | df['Attack 2 cost'].isin(attack_cost)]
+      if attack_damage:
+        df = df[df['Attack 1 damage'].isin(attack_damage) | df['Attack 2 damage'].isin(attack_damage)]
       if set_filter:
         df = df[df['Set'].isin(set_filter)]
       if regulation_filter:
@@ -632,8 +622,10 @@ with tab2:
                     unsafe_allow_html=True)
             else:
               sLine = format_action(action, player_colors)
+              lFound = []
               for sName in lUniqueNames:
-                if sName in sLine:
+                if sName in sLine and sName not in lFound:
+                  lFound.append(sName)
                   sName_final = sName
                   if f'{sName} ex' in sLine:
                     sName_final = f'{sName} ex'
@@ -642,11 +634,13 @@ with tab2:
                   elif f'{sName} V' in sLine:
                     sName_final = f'{sName} V'
                   sLine = sLine.replace(sName_final, f'**:blue-background[{sName_final}]**')
-                  break
+                  continue
+              # print(lFound)
               st.markdown(sLine, unsafe_allow_html=True)
 
     with tab2:
       # Calculate statistics
+
       total_turns = len(turns)
 
       col1, col2, col3 = st.columns(3)
