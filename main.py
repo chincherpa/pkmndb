@@ -413,9 +413,9 @@ with tab1:
         regulation_filter = st.multiselect('Regulation', df['Regulation'].unique())
         sToggle_ex = st.segmented_control('Pokemon ex', ["include 'ex'", "exclude 'ex'", "only 'ex'"], default="include 'ex'", key='sToggle_ex', label_visibility='hidden')
         if sToggle_ex == "exclude 'ex'":
-          df = df[~df['Name'].str.endswith('ex')]
+          df = df[~df['Name'].str.endswith(' ex')]
         if sToggle_ex == "only 'ex'":
-          df = df[df['Name'].str.endswith('ex')]
+          df = df[df['Name'].str.endswith(' ex')]
         sToggle_V = st.segmented_control('Pokemon V', ["include 'V(STAR)'", "exclude 'V(STAR)'", "only 'V(STAR)'"], default="include 'V(STAR)'", key='sToggle_V', label_visibility='hidden')
         if sToggle_V == "exclude 'V(STAR)'":
           df = df[~df['Name'].str.endswith(('V', 'VSTAR'))]
