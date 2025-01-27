@@ -383,6 +383,27 @@ with tab1:
     mask = df['Evolves from'].str.contains(search_term_evolves_from, case=False, na=False)
     df = df[mask]
 
+    col, col2 = st.columns([2,3])
+    with col:
+      search_term_cap = st_keyup('Find in Ability:')
+      search_term_att_eff = st_keyup('Find in attack effect:', key='att_eff')
+
+    if search_term_cap:
+      mask = df['Ability'].str.contains(search_term_cap, case=False, na=False) | \
+        df['Ability text'].str.contains(search_term_cap, case=False, na=False)
+      df = df[mask]
+      with col2:
+        search_term_cap_2 = st_keyup('and...')
+      if search_term_cap_2:
+        mask = df['Ability'].str.contains(search_term_cap_2, case=False, na=False) | \
+          df['Ability text'].str.contains(search_term_cap_2, case=False, na=False)
+        df = df[mask]
+
+    if search_term_att_eff:
+      mask = df['Effect 1'].str.contains(search_term_att_eff, case=False, na=False) | \
+        df['Effect 2'].str.contains(search_term_att_eff, case=False, na=False)
+      df = df[mask]
+
   if not df.empty:
     with st.expander('Filter'):
       # Filter
@@ -463,27 +484,6 @@ with tab1:
         df = df[df['Regulation'].isin(regulation_filter)]
       if weakness_filter != 'Choose an option':
         df = df[df['Weakness'] == weakness_filter]
-
-    col, col2 = st.columns([2,3])
-    with col:
-      search_term_cap = st_keyup('Find in Ability:')
-      search_term_att_eff = st_keyup('Find in attack effect:', key='att_eff')
-
-    if search_term_cap:
-      mask = df['Ability'].str.contains(search_term_cap, case=False, na=False) | \
-        df['Ability text'].str.contains(search_term_cap, case=False, na=False)
-      df = df[mask]
-      with col2:
-        search_term_cap_2 = st_keyup('and...')
-      if search_term_cap_2:
-        mask = df['Ability'].str.contains(search_term_cap_2, case=False, na=False) | \
-          df['Ability text'].str.contains(search_term_cap_2, case=False, na=False)
-        df = df[mask]
-
-    if search_term_att_eff:
-      mask = df['Effect 1'].str.contains(search_term_att_eff, case=False, na=False) | \
-        df['Effect 2'].str.contains(search_term_att_eff, case=False, na=False)
-      df = df[mask]
 
     st.metric('Found cards', len(df))
 
