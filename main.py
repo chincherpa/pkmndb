@@ -464,7 +464,6 @@ with tab1:
       if weakness_filter != 'Choose an option':
         df = df[df['Weakness'] == weakness_filter]
 
-    st.metric('Found cards', len(df))
     col, col2 = st.columns([2,3])
     with col:
       search_term_cap = st_keyup('Find in Ability:')
@@ -485,6 +484,8 @@ with tab1:
       mask = df['Effect 1'].str.contains(search_term_att_eff, case=False, na=False) | \
         df['Effect 2'].str.contains(search_term_att_eff, case=False, na=False)
       df = df[mask]
+
+    st.metric('Found cards', len(df))
 
     event = st.dataframe(
       df,
