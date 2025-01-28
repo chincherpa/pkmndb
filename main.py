@@ -115,7 +115,7 @@ def reset_fields():
   st.session_state.seg_ctrl_format = 'standard'
   st.session_state.search_term_name = None
   st.session_state.search_term_evolves_from_key = ''
-  st.session_state.search_term_cap = ''
+  st.session_state.search_term_ability = ''
   st.session_state.search_term_att_eff = ''
   st.session_state.cardtype = 'All'
   st.session_state.att_eff = None
@@ -362,7 +362,7 @@ tab1, tab2, tab3 = st.tabs(['Card selection', 'Battlelog viewer', 'Decklist View
 with tab1:
   col_search_names, col_search_evo = st.columns(2)
   with col_search_names:
-    search_term = st_keyup(c.dTranslations[language_cards]['find_in_names'], key='search_term_name')
+    search_term = st_keyup('Find in Pokemon names or name of attacks:', key='search_term_name')
   with col_search_evo:
     search_term_evolves_from = st_keyup(c.dTranslations[language_cards]['find_in_evolves'], key='search_term_evolves_from_key')
 
@@ -379,30 +379,31 @@ with tab1:
         df['Attack 2 Name'].str.contains(search_term, case=False, na=False) | \
         df['Attack 2 Name EN'].str.contains(search_term, case=False, na=False)
     df = df[mask]
+
   if search_term_evolves_from:
     mask = df['Evolves from'].str.contains(search_term_evolves_from, case=False, na=False)
     df = df[mask]
 
-    col, col2 = st.columns([2,3])
-    with col:
-      search_term_cap = st_keyup('Find in Ability:')
-      search_term_att_eff = st_keyup('Find in attack effect:', key='att_eff')
+  col, col2 = st.columns([2,3])
+  with col:
+    search_term_ability = st_keyup('Find in ability (name or text):')
+    search_term_att_eff = st_keyup('Find in attack effect:', key='att_eff')
 
-    if search_term_cap:
-      mask = df['Ability'].str.contains(search_term_cap, case=False, na=False) | \
-        df['Ability text'].str.contains(search_term_cap, case=False, na=False)
+  if search_term_ability:
+    mask = df['Ability'].str.contains(search_term_ability, case=False, na=False) | \
+      df['Ability text'].str.contains(search_term_ability, case=False, na=False)
+    df = df[mask]
+    with col2:
+      search_term_ability_2 = st_keyup('and...')
+    if search_term_ability_2:
+      mask = df['Ability'].str.contains(search_term_ability_2, case=False, na=False) | \
+        df['Ability text'].str.contains(search_term_ability_2, case=False, na=False)
       df = df[mask]
-      with col2:
-        search_term_cap_2 = st_keyup('and...')
-      if search_term_cap_2:
-        mask = df['Ability'].str.contains(search_term_cap_2, case=False, na=False) | \
-          df['Ability text'].str.contains(search_term_cap_2, case=False, na=False)
-        df = df[mask]
 
-    if search_term_att_eff:
-      mask = df['Effect 1'].str.contains(search_term_att_eff, case=False, na=False) | \
-        df['Effect 2'].str.contains(search_term_att_eff, case=False, na=False)
-      df = df[mask]
+  if search_term_att_eff:
+    mask = df['Effect 1'].str.contains(search_term_att_eff, case=False, na=False) | \
+      df['Effect 2'].str.contains(search_term_att_eff, case=False, na=False)
+    df = df[mask]
 
   if not df.empty:
     with st.expander('Filter'):
@@ -466,7 +467,6 @@ with tab1:
       if st.checkbox('Show filter'):
         st.write(dFilters)
 
-      # cardtype == 'Pokemon' = Show all Pokemon crads
       if cardtype == 'Pokemon':
         df = df[df['Cardtype'].isin(['Basic', 'Stage 1', 'Stage 2'])]
       elif cardtype != 'All':
