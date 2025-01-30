@@ -488,10 +488,12 @@ with tab1:
     st.metric('Found cards', len(df))
 
     st.write('⬇️⬇️ Select cards here')
+    lColumns_to_show = st.multiselect('Show only these columns', list(df.columns))
+    if lColumns_to_show:
+      df = df[lColumns_to_show]
 
     event = st.dataframe(
       df,
-      # column_config=column_configuration,
       use_container_width=True,
       hide_index=True,
       on_select='rerun',
@@ -505,6 +507,7 @@ with tab1:
       df_selected_cards,
       use_container_width=True,
     )
+    df_selected_cards['URL'] = df_orig.iloc[selected_cards]['URL']
 
     if not df_selected_cards.empty:
       st.write(f'Show {min(st.session_state.num_images, len(df_selected_cards))} cards:')
@@ -514,21 +517,15 @@ with tab1:
         card = df_selected_cards.iloc[i]
         with cols[i % 4]:
           col_num, col_link = st.columns(2)
-        #  if language_cards == 'english':
-         #   quantity = col_num.number_input(f"{card['Name']} {card['Set']} {card['#']}", min_value=0, value=st.session_state.selected_cards.get(f"{card['Name']} {card['Set']} {card['#']}", 0), key=f"quantity_{i}", max_value=4)
-         # elif language_cards == 'deutsch':
-        #    quantity = col_num.number_input(f"{card['Name']} '{card['Name EN']}' {card['Set']} {card['#']}", min_value=0, value=st.session_state.selected_cards.get(f"{card['Name']} {card['Set']} {card['#']}", 0), key=f"quantity_{i}", max_value=4)
 
-          # url = f'https://limitlesstcg.com/cards/de/{card['Set']}/{card['#']}'
           url = card['URL']
           col_link.link_button('go to card on limitlessTCG', url)
           st.image(url, width=iWidth)
-         # update_card_quantity(f"{card['Name']}|{card['Set']}|{card['#']}", quantity)
 
       if st.session_state.num_images < len(df_selected_cards):
         if st.button('load more'):
           load_more()
-        st.write(f'Angezeigt: {min(st.session_state.num_images, len(df_selected_cards))} von {len(df_selected_cards)} Karten')
+        st.write(f'Show: {min(st.session_state.num_images, len(df_selected_cards))} von {len(df_selected_cards)} Karten')
   else:
     st.write('No card found')
 
