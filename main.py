@@ -487,6 +487,8 @@ with tab1:
 
     st.metric('Found cards', len(df))
 
+    st.write('⬇️⬇️ Select cards here')
+
     event = st.dataframe(
       df,
       # column_config=column_configuration,
@@ -697,7 +699,7 @@ with tab2:
 with tab3:
   if 'bAdded_Card' not in st.session_state:
     st.session_state['bAdded_Card'] = False
-  # sDecklist = st.text_area('Paste decklist here')
+  sDecklist = st.text_area('Paste decklist here')
 #   sDecklist = """Pokémon: 9
 # 1 Rotom V LOR 177
 # 2 Hisuian Braviary SIT 149
@@ -740,39 +742,39 @@ with tab3:
 
 # Total Cards: 60
 #   """
-  sDecklist = """Pokémon: 6
-3 Hydrapple ex SCR 14
-4 Teal Mask Ogerpon ex TWM 25
-  """
-  """
-1 Bidoof CRZ-GG 29
-1 Dipplin TWM 18
-3 Applin SCR 12
-1 Bibarel CRZ-GG 25
+#   sDecklist = """Pokémon: 6
+# 3 Hydrapple ex SCR 14
+# 4 Teal Mask Ogerpon ex TWM 25
+#   """
+#   """
+# 1 Bidoof CRZ-GG 29
+# 1 Dipplin TWM 18
+# 3 Applin SCR 12
+# 1 Bibarel CRZ-GG 25
 
-Trainer: 19
-1 Counter Catcher PAR 160
-3 Bug Catching Set TWM 143
-3 Nest Ball PAF 84
-1 Capturing Aroma SIT 153 PH
-1 Energy Retrieval SVI 171
-1 Hero's Cape TEF 152
-2 Ultra Ball PAF 91
-1 Night Stretcher SFA 61
-2 Boss's Orders PAL 172
-1 Arven SVI 166
-1 Professor's Research PAF 87
-4 Rare Candy PAF 89
-1 Penny SVI 239
-1 Earthen Vessel PRE 106
-1 Superior Energy Retrieval PAL 189 PH
-1 Professor's Research CEL 24
-1 Buddy-Buddy Poffin TEF 144
-3 Iono PAF 80
+# Trainer: 19
+# 1 Counter Catcher PAR 160
+# 3 Bug Catching Set TWM 143
+# 3 Nest Ball PAF 84
+# 1 Capturing Aroma SIT 153 PH
+# 1 Energy Retrieval SVI 171
+# 1 Hero's Cape TEF 152
+# 2 Ultra Ball PAF 91
+# 1 Night Stretcher SFA 61
+# 2 Boss's Orders PAL 172
+# 1 Arven SVI 166
+# 1 Professor's Research PAF 87
+# 4 Rare Candy PAF 89
+# 1 Penny SVI 239
+# 1 Earthen Vessel PRE 106
+# 1 Superior Energy Retrieval PAL 189 PH
+# 1 Professor's Research CEL 24
+# 1 Buddy-Buddy Poffin TEF 144
+# 3 Iono PAF 80
 
-Energy: 1
-18 Basic {G} Energy SVE 1
-  """
+# Energy: 1
+# 18 Basic {G} Energy SVE 1
+#   """
 
   if sDecklist:
     with st.expander('Decklist'):
