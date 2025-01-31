@@ -487,6 +487,7 @@ with tab1:
 
     st.metric('Found cards', len(df))
 
+    df_with_urls = df
     st.write('⬇️⬇️ Select cards here')
     lColumns_to_show = st.multiselect('Show only these columns', list(df.columns))
     if lColumns_to_show:
@@ -503,11 +504,13 @@ with tab1:
     st.header('Selected cards')
     selected_cards = event.selection.rows
     df_selected_cards = df.iloc[selected_cards]
+
     st.dataframe(
       df_selected_cards,
       use_container_width=True,
     )
-    df_selected_cards['URL'] = df_orig.iloc[selected_cards]['URL']
+    if 'URL' not in lColumns_to_show:
+      df_selected_cards['URL'] = df_with_urls.iloc[selected_cards]['URL']
 
     if not df_selected_cards.empty:
       st.write(f'Show {min(st.session_state.num_images, len(df_selected_cards))} cards:')
