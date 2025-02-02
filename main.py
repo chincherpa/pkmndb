@@ -23,6 +23,9 @@ if 'num_images' not in st.session_state:
 if 'selected_cards' not in st.session_state:
   st.session_state.selected_cards = {}
 
+if 'pinned_cards' not in st.session_state:
+  st.session_state.pinned_cards = []
+
 # Function to load more images
 def load_more():
   st.session_state.num_images += 20
@@ -511,6 +514,10 @@ with tab1:
     )
     if 'URL' not in lColumns_to_show:
       df_selected_cards['URL'] = df_with_urls.iloc[selected_cards]['URL']
+    if 'Set' not in lColumns_to_show:
+      df_selected_cards['Set'] = df_with_urls.iloc[selected_cards]['Set']
+    if 'num' not in lColumns_to_show:
+      df_selected_cards['num'] = df_with_urls.iloc[selected_cards]['#']
 
     if not df_selected_cards.empty:
       st.write(f'Show {min(st.session_state.num_images, len(df_selected_cards))} cards:')
@@ -520,6 +527,10 @@ with tab1:
         card = df_selected_cards.iloc[i]
         with cols[i % 4]:
           col_num, col_link = st.columns(2)
+          pin = col_num.toggle('pin card', key=f"{card['Set']}-{card['num']}")
+          if pin:
+            st.session_state.pinned_cards.append(f"{card['Set']}-{card['num']}")
+          st.write(pin)
 
           url = card['URL']
           col_link.link_button('go to card on limitlessTCG', url)
@@ -531,6 +542,9 @@ with tab1:
         st.write(f'Show: {min(st.session_state.num_images, len(df_selected_cards))} von {len(df_selected_cards)} Karten')
   else:
     st.write('No card found')
+
+  st.write('st.session_state.pinned_cards')
+  st.write(st.session_state.pinned_cards)
 
 # Battlelog viewer
 with tab2:
