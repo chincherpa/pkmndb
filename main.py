@@ -365,7 +365,7 @@ tab1, tab2, tab3 = st.tabs(['Card selection', 'Battlelog viewer', 'Decklist View
 with tab1:
   col_search_names, col_search_evo = st.columns(2)
   with col_search_names:
-    search_term = st_keyup('Find in Pokemon names or name of attacks:', key='search_term_name')
+    search_term = st_keyup('Find in Pokemon names or name of attacks:', key='search_term_name_key')
   with col_search_evo:
     search_term_evolves_from = st_keyup(c.dTranslations[language_cards]['find_in_evolves'], key='search_term_evolves_from_key')
 
@@ -389,15 +389,15 @@ with tab1:
 
   col, col2 = st.columns([2,3])
   with col:
-    search_term_ability = st_keyup('Find in ability (name or text):')
-    search_term_att_eff = st_keyup('Find in attack effect:', key='att_eff')
+    search_term_ability = st_keyup('Find in ability (name or text):', key='search_term_ability_key')
+    search_term_att_eff = st_keyup('Find in attack effect:', key='search_term_att_eff_key')
 
   if search_term_ability:
     mask = df['Ability'].str.contains(search_term_ability, case=False, na=False) | \
       df['Ability text'].str.contains(search_term_ability, case=False, na=False)
     df = df[mask]
     with col2:
-      search_term_ability_2 = st_keyup('and...')
+      search_term_ability_2 = st_keyup('and...', key='search_term_ability_2')
     if search_term_ability_2:
       mask = df['Ability'].str.contains(search_term_ability_2, case=False, na=False) | \
         df['Ability text'].str.contains(search_term_ability_2, case=False, na=False)
@@ -512,6 +512,7 @@ with tab1:
       df_selected_cards,
       use_container_width=True,
     )
+
     if 'URL' not in lColumns_to_show:
       df_selected_cards['URL'] = df_with_urls.iloc[selected_cards]['URL']
     if 'Set' not in lColumns_to_show:
@@ -530,6 +531,9 @@ with tab1:
           pin = col_num.toggle('pin card', key=f"{card['Set']}-{card['num']}")
           if pin:
             st.session_state.pinned_cards.append(f"{card['Set']}-{card['num']}")
+          else:
+            if f"{card['Set']}-{card['num']}" in st.session_state.pinned_cards:
+              st.session_state.pinned_cards.remove(f"{card['Set']}-{card['num']}")
           st.write(pin)
 
           url = card['URL']
@@ -808,7 +812,7 @@ with tab3:
 
     col_search_term_name, _ = st.columns([1, 3])
     with col_search_term_name:
-      search_term_name = st_keyup('Find card by name', key='name_decklist')
+      search_term_name = st_keyup('Find card by name', key='name_decklist_key')
 
     col_found_cards, col_image_selected_card = st.columns([5, 1])
     with col_found_cards:
