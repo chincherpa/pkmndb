@@ -386,7 +386,7 @@ with tab1:
 
   col, col2 = st.columns([2,3])
   with col:
-    search_term_ability = st_keyup('Find in ability (name or text):', keysearch_term_ability_key)
+    search_term_ability = st_keyup('Find in ability (name or text):', key='search_term_ability_key')
     search_term_att_eff = st_keyup('Find in attack effect:', key='search_term_att_eff_key')
 
   if search_term_ability:
