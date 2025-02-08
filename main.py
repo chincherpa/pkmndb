@@ -362,7 +362,7 @@ tab1, tab2, tab3 = st.tabs(['Card selection', 'Battlelog viewer', 'Decklist View
 with tab1:
   col_search_names, col_search_evo = st.columns(2)
   with col_search_names:
-    search_term = st_keyup('Find in Pokemon names or name of attacks:', key='search_term_name')
+    search_term = st_keyup('Find in Pokemon names or name of attacks:', key='search_term_name_key')
   with col_search_evo:
     search_term_evolves_from = st_keyup(c.dTranslations[language_cards]['find_in_evolves'], key='search_term_evolves_from_key')
 
@@ -386,15 +386,15 @@ with tab1:
 
   col, col2 = st.columns([2,3])
   with col:
-    search_term_ability = st_keyup('Find in ability (name or text):')
-    search_term_att_eff = st_keyup('Find in attack effect:', key='att_eff')
+    search_term_ability = st_keyup('Find in ability (name or text):', key='search_term_ability_key')
+    search_term_att_eff = st_keyup('Find in attack effect:', key='search_term_att_eff_key')
 
   if search_term_ability:
     mask = df['Ability'].str.contains(search_term_ability, case=False, na=False) | \
       df['Ability text'].str.contains(search_term_ability, case=False, na=False)
     df = df[mask]
     with col2:
-      search_term_ability_2 = st_keyup('and...')
+      search_term_ability_2 = st_keyup('and...', key='search_term_ability_2_key')
     if search_term_ability_2:
       mask = df['Ability'].str.contains(search_term_ability_2, case=False, na=False) | \
         df['Ability text'].str.contains(search_term_ability_2, case=False, na=False)
