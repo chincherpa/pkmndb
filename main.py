@@ -366,6 +366,7 @@ with tab1:
   col_search_names, col_search_evo = st.columns(2)
   with col_search_names:
     search_term = st_keyup('Find in Pokemon names or name of attacks:', key='search_term_name')
+
   with col_search_evo:
     search_term_evolves_from = st_keyup(c.dTranslations[language_cards]['find_in_evolves'], key='search_term_evolves_from_key')
 
@@ -414,7 +415,7 @@ with tab1:
       col1, col2, col3 = st.columns(3)
     
       with col1:
-        lCardtype_options = ['All', 'Pokemon'] + sorted(df['Cardtype'].unique().tolist())
+        lCardtype_options = ['All', 'Ace Spec', 'Pokemon'] + sorted(df['Cardtype'].unique().tolist())
         cardtype = st.selectbox('Cardtype', lCardtype_options)
         typ_options = ['All'] + sorted(df['Type'].unique().tolist())
         type_filter = st.selectbox('Type', typ_options)
@@ -472,6 +473,8 @@ with tab1:
 
       if cardtype == 'Pokemon':
         df = df[df['Cardtype'].isin(['Basic', 'Stage 1', 'Stage 2'])]
+      elif cardtype == 'Ace Spec':
+        df = df[df['Cardtype'].str.contains('Ace Spec')]
       elif cardtype != 'All':
         df = df[df['Cardtype'] == cardtype]
       if type_filter != 'All':
@@ -491,11 +494,11 @@ with tab1:
     st.metric('Found cards', len(df))
 
     df_with_urls = df
-    st.write('⬇️⬇️ Select cards here')
     lColumns_to_show = st.multiselect('Show only these columns', list(df.columns))
     if lColumns_to_show:
       df = df[lColumns_to_show]
 
+    st.write('⬇️⬇️ Select cards here')
     event = st.dataframe(
       df,
       use_container_width=True,
