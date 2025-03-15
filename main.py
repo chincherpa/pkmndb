@@ -24,7 +24,7 @@ if 'selected_cards' not in st.session_state:
   st.session_state.selected_cards = {}
 
 if 'pinned_cards' not in st.session_state:
-  st.session_state.pinned_cards = []
+  st.session_state.pinned_cards = set()
 
 # Function to load more images
 def load_more():
@@ -130,6 +130,22 @@ def reset_fields():
   st.session_state.not_found = []
   for k, v in st.session_state.items():
     print(k, v)
+
+# Initialisiere das Set
+if 'card_set' not in st.session_state:
+  st.session_state.card_set = set()
+
+def update_quantity(old_item, new_quantity):
+  """Aktualisiert die Anzahl eines Elements im Set"""
+  # Entferne das alte Element
+  st.session_state.card_set.remove(old_item)
+
+  # Erstelle das neue Element mit aktualisierter Anzahl
+  pattern = r'^\d+'
+  new_item = re.sub(pattern, str(new_quantity), old_item)
+
+  # Füge das neue Element hinzu
+  st.session_state.card_set.add(new_item)
 
 # Battlelog viewer START
 def get_language(text):
@@ -529,10 +545,13 @@ with tab1:
         card = df_selected_cards.iloc[i]
         with cols[i % 4]:
           col_num, col_link = st.columns(2)
-          pin = col_num.toggle('pin card', key=f"{card['Set']}-{card['num']}")
+          card_id = f"1 {card['Name']} {card['Set']} {card['num']}"
+          pin = col_num.toggle('add card', key=card_id)
           if pin:
-            st.session_state.pinned_cards.append(f"{card['Set']}-{card['num']}")
-          st.write(pin)
+            st.session_state.pinned_cards.add(card_id)
+          else:
+            if card_id in st.session_state.pinned_cards:
+              st.session_state.pinned_cards.remove(card_id)
 
           url = card['URL']
           col_link.link_button('go to card on limitlessTCG', url)
@@ -545,8 +564,46 @@ with tab1:
   else:
     st.write('No card found')
 
-  st.write('st.session_state.pinned_cards')
-  st.write(st.session_state.pinned_cards)
+
+  # App-Titel
+  st.title("Karten-Set Verwaltung")
+
+  # Zeige alle Elemente mit Bearbeitungsmöglichkeiten
+  st.header("Dein Karten-Set")
+
+  for item in sorted(list(st.session_state.card_set), key=lambda x: x[2:-8]):
+      col1, col2 = st.columns([3, 1])
+      
+      with col1:
+          st.text(item)
+      
+      with col2:
+          # Extrahiere die aktuelle Anzahl
+          current_quantity = int(re.match(r'^\d+', item).group())
+          
+          # Erstelle einen eindeutigen Schlüssel für den Zahleneingabebereich
+          key = f"quantity_{item}"
+          
+          # Eingabefeld für die neue Anzahl
+          new_quantity = st.number_input(
+              "Anzahl", 
+              min_value=0,
+              max_value=4,
+              value=current_quantity,
+              step=1,
+              key=key,
+              label_visibility="collapsed"
+          )
+          
+          # Wenn sich die Anzahl geändert hat und der Benutzer die Änderung bestätigt
+          if new_quantity != current_quantity:# and st.button("Aktualisieren", key=f"update_{item}"):
+              update_quantity(item, new_quantity)
+              st.rerun()
+
+  st.subheader('Decklist')
+  # st.session_state.pinned_cards
+  for card in sorted(list(st.session_state.card_set), key=lambda x: x[2:-8]):
+    st.write(card)
 
 # Battlelog viewer
 with tab2:
