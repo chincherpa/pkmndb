@@ -388,15 +388,15 @@ with tab1:
   if search_term:
     if language_cards == 'english':
       mask = df['Name'].str.contains(search_term, case=False, na=False) | \
-        df['Attack 1 Name'].str.contains(search_term, case=False, na=False) | \
-        df['Attack 2 Name'].str.contains(search_term, case=False, na=False)
+        df['Attack 1 name'].str.contains(search_term, case=False, na=False) | \
+        df['Attack 2 name'].str.contains(search_term, case=False, na=False)
     elif language_cards == 'deutsch':
-      mask = df['Name'].str.contains(search_term, case=False, na=False) | \
-        df['Name EN'].str.contains(search_term, case=False, na=False) | \
-        df['Attack 1 Name'].str.contains(search_term, case=False, na=False) | \
-        df['Attack 1 Name EN'].str.contains(search_term, case=False, na=False) | \
-        df['Attack 2 Name'].str.contains(search_term, case=False, na=False) | \
-        df['Attack 2 Name EN'].str.contains(search_term, case=False, na=False)
+      mask = df['Name DE'].str.contains(search_term, case=False, na=False) | \
+        df['Name'].str.contains(search_term, case=False, na=False) | \
+        df['Attack 1 name'].str.contains(search_term, case=False, na=False) | \
+        df['Attack 1 name EN'].str.contains(search_term, case=False, na=False) | \
+        df['Attack 2 name'].str.contains(search_term, case=False, na=False) | \
+        df['Attack 2 name EN'].str.contains(search_term, case=False, na=False)
     df = df[mask]
 
   if search_term_evolves_from:
