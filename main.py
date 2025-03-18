@@ -9,8 +9,6 @@ from st_keyup import st_keyup
 
 import config as c
 
-# FIXME Search results with 0 HP
-# FIXME Search results when no card is found
 # TODO entry
 
 st.set_page_config(page_title='pkmndb', page_icon='🐲', layout='wide')
@@ -23,8 +21,8 @@ if 'num_images' not in st.session_state:
 if 'selected_cards' not in st.session_state:
   st.session_state.selected_cards = {}
 
-if 'pinned_cards' not in st.session_state:
-  st.session_state.pinned_cards = set()
+if 'card_set' not in st.session_state:
+  st.session_state.card_set = set()
 
 # Function to load more images
 def load_more():
@@ -287,7 +285,7 @@ def parse_decklist(decklist_text):
     # Skip section headers and empty lines
     if any(keyword in sLine for keyword in c.lDecklistKeywords):
       continue
-      
+
     # Parse card entry
     if matches := re.match(c.sDecklistEntryPattern, sLine):
       amount, name, set_code, card_number = matches.groups()
@@ -328,7 +326,11 @@ def display_decklist(decklist_dict, not_found_cards, num_columns):
           f"tpci/{dCard['set']}/{dCard['set']}_{dCard['number']:0>3}_R_EN_LG.png"
         )
         st.write(dCard['name'])
-        dCard['amount'] = st.number_input(dCard['name'], min_value=0, value=int(dCard['amount']), max_value=4, key=f"decklist_card_{idx}", label_visibility='collapsed')
+        if 'Basic' in dCard['name'] and 'Energy' in dCard['name']:
+          iMaxValue = 59
+        else:
+          iMaxValue = 4
+        dCard['amount'] = st.number_input(dCard['name'], min_value=0, value=int(dCard['amount']), max_value=iMaxValue, key=f"decklist_card_{idx}", label_visibility='collapsed')
         st.image(image_url, use_container_width=True)
       except Exception as e:
         st.error(f"Error displaying card: {dCard['name']}")
@@ -379,45 +381,60 @@ tab1, tab2, tab3 = st.tabs(['Card selection', 'Battlelog viewer', 'Decklist View
 
 # Card search
 with tab1:
-  col_search_names, col_search_evo = st.columns(2)
-  with col_search_names:
-    search_term = st_keyup('Find in Pokemon names or name of attacks:', key='search_term_name_key')
-  with col_search_evo:
+  col_search_left, col_search_right = st.columns(2)
+  with col_search_left:
+    search_term_name = st_keyup('Find in Pokemon name:', key='search_term_name_key')
+    search_term_ability = st_keyup('Find in ability (name or text):', key='search_term_ability_key')
+  with col_search_right:
     search_term_evolves_from = st_keyup(c.dTranslations[language_cards]['find_in_evolves'], key='search_term_evolves_from_key')
 
-  if search_term:
+  if search_term_ability:
+    with col_search_right:
+      search_term_ability_2 = st_keyup('and...', key='search_term_ability_2_key')
+
+  if search_term_name:
     if language_cards == 'english':
-      mask = df['Name'].str.contains(search_term, case=False, na=False) | \
-        df['Attack 1 name'].str.contains(search_term, case=False, na=False) | \
-        df['Attack 2 name'].str.contains(search_term, case=False, na=False)
+      mask = df['Name'].str.contains(search_term_name, case=False, na=False) | \
+        df['Attack 1 name'].str.contains(search_term_name, case=False, na=False) | \
+        df['Attack 2 name'].str.contains(search_term_name, case=False, na=False)
     elif language_cards == 'deutsch':
-      mask = df['Name DE'].str.contains(search_term, case=False, na=False) | \
-        df['Name'].str.contains(search_term, case=False, na=False) | \
-        df['Attack 1 name'].str.contains(search_term, case=False, na=False) | \
-        df['Attack 1 name EN'].str.contains(search_term, case=False, na=False) | \
-        df['Attack 2 name'].str.contains(search_term, case=False, na=False) | \
-        df['Attack 2 name EN'].str.contains(search_term, case=False, na=False)
+      mask = df['Name DE'].str.contains(search_term_name, case=False, na=False) | \
+        df['Name'].str.contains(search_term_name, case=False, na=False) | \
+        df['Attack 1 name'].str.contains(search_term_name, case=False, na=False) | \
+        df['Attack 1 name EN'].str.contains(search_term_name, case=False, na=False) | \
+        df['Attack 2 name'].str.contains(search_term_name, case=False, na=False) | \
+        df['Attack 2 name EN'].str.contains(search_term_name, case=False, na=False)
     df = df[mask]
 
   if search_term_evolves_from:
     mask = df['Evolves from'].str.contains(search_term_evolves_from, case=False, na=False)
     df = df[mask]
 
-  col, col2 = st.columns([2,3])
-  with col:
-    search_term_ability = st_keyup('Find in ability (name or text):', key='search_term_ability_key')
+  col_left, _ = st.columns([2,3])
+  with col_left:
+    search_term_attack = st_keyup('Find in name of attack:', key='search_term_attack_key')
     search_term_att_eff = st_keyup('Find in attack effect:', key='search_term_att_eff_key')
 
   if search_term_ability:
     mask = df['Ability'].str.contains(search_term_ability, case=False, na=False) | \
       df['Ability text'].str.contains(search_term_ability, case=False, na=False)
     df = df[mask]
-    with col2:
-      search_term_ability_2 = st_keyup('and...', key='search_term_ability_2_key')
+
     if search_term_ability_2:
       mask = df['Ability'].str.contains(search_term_ability_2, case=False, na=False) | \
         df['Ability text'].str.contains(search_term_ability_2, case=False, na=False)
       df = df[mask]
+
+  if search_term_attack:
+    if language_cards == 'english':
+      mask = df['Attack 1 name'].str.contains(search_term_attack, case=False, na=False) | \
+        df['Attack 2 name'].str.contains(search_term_attack, case=False, na=False)
+    elif language_cards == 'deutsch':
+      mask = df['Attack 1 name'].str.contains(search_term_attack, case=False, na=False) | \
+        df['Attack 1 name EN'].str.contains(search_term_attack, case=False, na=False) | \
+        df['Attack 2 name'].str.contains(search_term_attack, case=False, na=False) | \
+        df['Attack 2 name EN'].str.contains(search_term_attack, case=False, na=False)
+    df = df[mask]
 
   if search_term_att_eff:
     mask = df['Effect 1'].str.contains(search_term_att_eff, case=False, na=False) | \
@@ -470,7 +487,8 @@ with tab1:
       # Show filters
       dFilters = {
         'sCards_format': sCards_format,
-        'search_term': search_term,
+        'search_term_name': search_term_name,
+        'search_term_attack': search_term_attack,
         'search_term_evolves_from': search_term_evolves_from,
         'cardtype': cardtype,
         'attack_cost': attack_cost,
@@ -548,10 +566,10 @@ with tab1:
           card_id = f"1 {card['Name']} {card['Set']} {card['num']}"
           pin = col_num.toggle('add card', key=card_id)
           if pin:
-            st.session_state.pinned_cards.add(card_id)
+            st.session_state.card_set.add(card_id)
           else:
-            if card_id in st.session_state.pinned_cards:
-              st.session_state.pinned_cards.remove(card_id)
+            if card_id in st.session_state.card_set:
+              st.session_state.card_set.remove(card_id)
 
           url = card['URL']
           col_link.link_button('go to card on limitlessTCG', url)
@@ -566,42 +584,46 @@ with tab1:
 
 
   # App-Titel
-  st.title("Karten-Set Verwaltung")
+  st.title("Karten-Set Verwaltung - TBD")
 
-  # Zeige alle Elemente mit Bearbeitungsmöglichkeiten
-  st.header("Dein Karten-Set")
+  # # Zeige alle Elemente mit Bearbeitungsmöglichkeiten
+  # st.header("Dein Karten-Set")
 
-  for item in sorted(list(st.session_state.card_set), key=lambda x: x[2:-8]):
-      col1, col2 = st.columns([3, 1])
-      
-      with col1:
-          st.text(item)
-      
-      with col2:
-          # Extrahiere die aktuelle Anzahl
-          current_quantity = int(re.match(r'^\d+', item).group())
-          
-          # Erstelle einen eindeutigen Schlüssel für den Zahleneingabebereich
-          key = f"quantity_{item}"
-          
-          # Eingabefeld für die neue Anzahl
-          new_quantity = st.number_input(
-              "Anzahl", 
-              min_value=0,
-              max_value=4,
-              value=current_quantity,
-              step=1,
-              key=key,
-              label_visibility="collapsed"
-          )
-          
-          # Wenn sich die Anzahl geändert hat und der Benutzer die Änderung bestätigt
-          if new_quantity != current_quantity:# and st.button("Aktualisieren", key=f"update_{item}"):
-              update_quantity(item, new_quantity)
-              st.rerun()
+  # for item in sorted(list(st.session_state.card_set), key=lambda x: x[2:-8]):
+  #   col1, col2 = st.columns([3, 1])
+
+  #   with col1:
+  #     st.text(item)
+
+  #   with col2:
+  #     # Extrahiere die aktuelle Anzahl
+  #     current_quantity = int(re.match(r'^\d+', item).group())
+
+  #     # Erstelle einen eindeutigen Schlüssel für den Zahleneingabebereich
+  #     key = f"quantity_{item}"
+
+  #     # Eingabefeld für die neue Anzahl
+  #     if 'Basic' in item and 'Energy' in item:
+  #       iMaxValue = 59
+  #     else:
+  #       iMaxValue = 4
+  #     new_quantity = st.number_input(
+  #       "Anzahl", 
+  #       min_value=0,
+  #       max_value=iMaxValue,
+  #       value=current_quantity,
+  #       step=1,
+  #       key=key,
+  #       label_visibility="collapsed"
+  #     )
+
+  #     # Wenn sich die Anzahl geändert hat und der Benutzer die Änderung bestätigt
+  #     if new_quantity != current_quantity:# and st.button("Aktualisieren", key=f"update_{item}"):
+  #       print('update_quantity', item, new_quantity)
+  #       update_quantity(item, new_quantity)
+  #       st.rerun()
 
   st.subheader('Decklist')
-  # st.session_state.pinned_cards
   for card in sorted(list(st.session_state.card_set), key=lambda x: x[2:-8]):
     st.write(card)
 
@@ -1002,4 +1024,3 @@ with tab3:
 # Two (or more) newline characters in a row will result in a hard return.
 # '''
 # st.markdown(multi)
-
