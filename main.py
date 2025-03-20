@@ -296,12 +296,12 @@ def parse_decklist(decklist_text):
         'set': set_code,
         'number': card_number
       }
+      iCounter += 1
 
     else:
       st.error(f'Could not parse: {sLine}')
       lNotFound.append(sLine)
 
-    iCounter += 1
   # st.write(dOutput)
 
   return dOutput, lNotFound
@@ -320,6 +320,7 @@ def display_decklist(decklist_dict, not_found_cards, num_columns):
   # Display cards in grid
   for idx, dCard in decklist_dict.items():
     with cols[idx % num_columns]:
+      print(idx, idx % num_columns, dCard['name'])
       try:
         image_url = (
           f"https://limitlesstcg.nyc3.cdn.digitaloceanspaces.com/"
@@ -335,6 +336,15 @@ def display_decklist(decklist_dict, not_found_cards, num_columns):
       except Exception as e:
         st.error(f"Error displaying card: {dCard['name']}")
         st.write(f"Error details: {str(e)}")
+  for idx, dCard in decklist_dict.items():
+    print(dCard)
+    # for key, aCard in dCard.items():
+    #   if key == 'name':
+    #     print(key, aCard)
+    #   else:
+    #     print('\t', key, aCard)
+  print('#' * 50)
+  return decklist_dict
 
 def add_card_to_decklist(dDecklist, name, set_, num):
   # print('Decklist IN')
@@ -354,7 +364,8 @@ def add_card_to_decklist(dDecklist, name, set_, num):
 def export_decklist(dDecklist):
   # print(dDecklist)
   text = f"\n{'\n'.join(f"{card['amount']} {card['name']} {card['set']} {card['number']}" for card in dDecklist.values())}\n"
-  st.code(text)
+  with st.popover('popover', icon="🚨"):
+    st.code(text)
   # pyperclip.copy(text)
 
 col_lang, col_format, col_reset = st.columns(3)
@@ -449,26 +460,51 @@ with tab1:
       with col1:
         lCardtype_options = ['All', 'Ace Spec', 'Pokemon'] + sorted(df['Cardtype'].unique().tolist())
         cardtype = st.selectbox('Cardtype', lCardtype_options)
+        if cardtype == 'Pokemon':
+          df = df[df['Cardtype'].isin(['Basic', 'Stage 1', 'Stage 2'])]
+        elif cardtype == 'Ace Spec':
+          df = df[df['Cardtype'].str.contains('Ace Spec')]
+        elif cardtype != 'All':
+          df = df[df['Cardtype'] == cardtype]
         typ_options = ['All'] + sorted(df['Type'].unique().tolist())
         type_filter = st.selectbox('Type', typ_options)
+        if type_filter != 'All':
+          df = df[df['Type'] == type_filter]
         lWeakness_options = ['Choose an option'] + sorted(df['Weakness'].unique().tolist())
         weakness_filter = st.selectbox('Weakness', lWeakness_options)
+        if weakness_filter != 'Choose an option':
+          df = df[df['Weakness'] == weakness_filter]
 
       with col2:
         attack_cost_options = sorted(set(df['Attack 1 cost'].unique().tolist() + df['Attack 2 cost'].unique().tolist()))
-        attack_cost = st.multiselect('Attack cost', attack_cost_options)
+        attack_cost = st.multiselect('Attack cost', attack_cost_options, key='multiselect_key_attack_cost')
+        if attack_cost:
+          df = df[df['Attack 1 cost'].isin(attack_cost) | df['Attack 2 cost'].isin(attack_cost)]
         attack_damage_options = sorted(set(df['Attack 1 damage'].unique().tolist() + df['Attack 2 damage'].unique().tolist()))
-        attack_damage = st.multiselect('Attack damage', attack_damage_options)
+        attack_damage = st.multiselect('Attack damage', attack_damage_options, key='multiselect_key_attack_damage')
+        if attack_damage:
+          df = df[df['Attack 1 damage'].isin(attack_damage) | df['Attack 2 damage'].isin(attack_damage)]
         hp_min = int(df['HP'].min())
         hp_max = int(df['HP'].max())
         iStep = 10
         if hp_min == hp_max:
           hp_max += iStep
         hp_range = st.slider('HP', hp_min, hp_max, (hp_min, hp_max), step=iStep)
+        df = df[(df['HP'] >= hp_range[0]) & (df['HP'] <= hp_range[1])]
 
       with col3:
-        set_filter = st.multiselect('Set', sorted(df['Set'].unique()))
-        regulation_filter = st.multiselect('Regulation', df['Regulation'].unique())
+        col_set, col_num = st.columns(2)
+        with col_set:
+          set_filter = st.multiselect('Set', sorted(df['Set'].unique()), key='multiselect_key_set_filter')
+          if set_filter:
+            df = df[df['Set'].isin(set_filter)]
+        with col_num:
+          num_filter = st.multiselect('Number', sorted(df['#'].unique()), key='multiselect_key_num_filter')
+          if num_filter:
+            df = df[df['#'].isin(num_filter)]
+        regulation_filter = st.multiselect('Regulation', df['Regulation'].unique(), key='multiselect_key_regulation_filter')
+        if regulation_filter:
+          df = df[df['Regulation'].isin(regulation_filter)]
         sToggle_ex = st.segmented_control('Pokemon ex', ["include 'ex'", "exclude 'ex'", "only 'ex'"], default="include 'ex'", key='sToggle_ex', label_visibility='hidden')
         if sToggle_ex == "exclude 'ex'":
           df = df[~df['Name'].str.endswith(' ex')]
@@ -496,6 +532,7 @@ with tab1:
         'weakness_filter': weakness_filter,
         'type_filter': type_filter,
         'set_filter': set_filter,
+        'num_filter': num_filter,
         'regulation_filter': regulation_filter,
         'hp_range': hp_range,
         'sToggle_ex': sToggle_ex,
@@ -504,30 +541,10 @@ with tab1:
       if st.checkbox('Show filter'):
         st.write(dFilters)
 
-      if cardtype == 'Pokemon':
-        df = df[df['Cardtype'].isin(['Basic', 'Stage 1', 'Stage 2'])]
-      elif cardtype == 'Ace Spec':
-        df = df[df['Cardtype'].str.contains('Ace Spec')]
-      elif cardtype != 'All':
-        df = df[df['Cardtype'] == cardtype]
-      if type_filter != 'All':
-        df = df[df['Type'] == type_filter]
-      df = df[(df['HP'] >= hp_range[0]) & (df['HP'] <= hp_range[1])]
-      if attack_cost:
-        df = df[df['Attack 1 cost'].isin(attack_cost) | df['Attack 2 cost'].isin(attack_cost)]
-      if attack_damage:
-        df = df[df['Attack 1 damage'].isin(attack_damage) | df['Attack 2 damage'].isin(attack_damage)]
-      if set_filter:
-        df = df[df['Set'].isin(set_filter)]
-      if regulation_filter:
-        df = df[df['Regulation'].isin(regulation_filter)]
-      if weakness_filter != 'Choose an option':
-        df = df[df['Weakness'] == weakness_filter]
-
     st.metric('Found cards', len(df))
 
     df_with_urls = df
-    lColumns_to_show = st.multiselect('Show only these columns', list(df.columns))
+    lColumns_to_show = st.multiselect('Show only these columns', list(df.columns), key='multiselect_key_lColumns_to_show')
     if lColumns_to_show:
       df = df[lColumns_to_show]
 
@@ -795,81 +812,6 @@ with tab3:
   if 'bAdded_Card' not in st.session_state:
     st.session_state['bAdded_Card'] = False
   sDecklist = st.text_area('Paste decklist here')
-#   sDecklist = """Pokémon: 9
-# 1 Rotom V LOR 177
-# 2 Hisuian Braviary SIT 149
-# 2 Munkidori TWM 95
-# 4 Froslass TWM 53
-# 2 Rufflet ASR 131 PH
-# 1 Munkidori SFA 72
-# 1 Bloodmoon Ursaluna ex TWM 222
-# 4 Snorunt SIT 41
-# 1 Mimikyu PR-SV 75
-# Trainer: 24
-# 3 Irida ASR 147
-# 1 Arven SVI 235
-# 2 Switch Cart ASR 154
-# 2 Nest Ball PAF 84 PH
-# 1 Earthen Vessel SFA 96
-# 1 Calamitous Wasteland PAL 175 PH
-# 2 Arven PAF 235
-# 1 Super Rod PAL 276
-# 3 Iono PAF 237
-# 1 Iono PAL 269
-# 1 Penny PAF 239
-# 1 Technical Machine: Devolution PAR 177
-# 2 Night Stretcher SFA 61
-# 1 Pokémon League Headquarters OBF 192 PH
-# 1 Technical Machine: Evolution PAR 178
-# 1 Artazon OBF 229
-# 1 Lost Vacuum LOR 217
-# 4 Buddy-Buddy Poffin TWM 223
-# 1 Forest Seal Stone SIT 156
-# 1 Nest Ball SVI 181
-# 1 Rescue Board TEF 159
-# 2 Counter Catcher PAR 264
-# 1 Neutralization Zone SFA 60
-# 1 Nest Ball SVI 255
-
-# Energy: 2
-# 4 Basic {D} Energy SFA 98
-# 2 Luminous Energy PAL 191
-
-# Total Cards: 60
-#   """
-#   sDecklist = """Pokémon: 6
-# 3 Hydrapple ex SCR 14
-# 4 Teal Mask Ogerpon ex TWM 25
-#   """
-#   """
-# 1 Bidoof CRZ-GG 29
-# 1 Dipplin TWM 18
-# 3 Applin SCR 12
-# 1 Bibarel CRZ-GG 25
-
-# Trainer: 19
-# 1 Counter Catcher PAR 160
-# 3 Bug Catching Set TWM 143
-# 3 Nest Ball PAF 84
-# 1 Capturing Aroma SIT 153 PH
-# 1 Energy Retrieval SVI 171
-# 1 Hero's Cape TEF 152
-# 2 Ultra Ball PAF 91
-# 1 Night Stretcher SFA 61
-# 2 Boss's Orders PAL 172
-# 1 Arven SVI 166
-# 1 Professor's Research PAF 87
-# 4 Rare Candy PAF 89
-# 1 Penny SVI 239
-# 1 Earthen Vessel PRE 106
-# 1 Superior Energy Retrieval PAL 189 PH
-# 1 Professor's Research CEL 24
-# 1 Buddy-Buddy Poffin TEF 144
-# 3 Iono PAF 80
-
-# Energy: 1
-# 18 Basic {G} Energy SVE 1
-#   """
 
   if sDecklist:
     with st.expander('Decklist'):
@@ -923,104 +865,8 @@ with tab3:
           st.error('No cards found')
 
     # Display the decklist
-    display_decklist(dDecklist, not_found, num_columns)
-    if st.button('Export decklist'):
-      export_decklist(dDecklist)
+    dDecklist = display_decklist(dDecklist, not_found, num_columns)
+    text = f"\n{'\n'.join(f"{card['amount']} {card['name']} {card['set']} {card['number']}" for card in dDecklist.values())}\n"
+    with st.popover('Show decklist', icon="📄"):
+      st.code(text)
 
-# print('st.session_state')
-# for k, v in st.session_state.items():
-#   print(k, f"'{v}'")
-
-
-
-
-####################################### TESTS #######################################
-
-# # Function to display the image on hover
-# def display_image_on_hover(image_url, i):
-#     # Generate unique class names for each image
-#     hover_class = f'hoverable_{i}'
-#     tooltip_class = f'tooltip_{i}'
-#     image_popup_class = f'image-popup_{i}'
-
-#     # Define the unique CSS for each image
-#     hover_css = f'''
-#         .{hover_class} {{
-#             position: relative;
-#             display: inline-block;
-#             cursor: pointer;
-#         }}
-#         .{hover_class} .{tooltip_class} {{
-#             opacity: 0;
-#             position: absolute;
-#             bottom: 100%;
-#             left: 50%;
-#             transform: translateX(-50%);
-#             transition: opacity 0.5s;
-#             background-color: rgba(0, 0, 0, 0.8);
-#             color: #fff;
-#             padding: 4px;
-#             border-radius: 4px;
-#             text-align: center;
-#             white-space: nowrap;
-#         }}
-#         .{hover_class}:hover .{tooltip_class} {{
-#             opacity: 1;
-#         }}
-#         .{image_popup_class} {{
-#             position: absolute;
-#             display: none;
-#             background-image: none;
-#             width: 200px;
-#             height: 200px;
-#         }}
-#         .{hover_class}:hover .{image_popup_class} {{
-#             display: block;
-#             background-image: url({image_url});
-#             background-size: cover;
-#             z-index: 999;
-#         }}
-#     '''
-#     tooltip_css = f"<style>{hover_css}</style>"
-
-#     # Define the html for each image
-#     image_hover = f'''
-#         <div class="{hover_class}">
-#             <a href="{image_url}">{image_url}</a>
-#             <div class="{tooltip_class}">Image {i}</div>
-#             <div class="{image_popup_class}"></div>
-#         </div>
-#     '''
-    
-#     # Write the dynamic HTML and CSS to the content container
-#     st.markdown(f'<p>{image_hover}{tooltip_css}</p>', unsafe_allow_html=True)
-
-# st.image("https://limitlesstcg.nyc3.digitaloceanspaces.com/tpci/ASR/ASR_018_R_EN_XS.png")
-# st.markdown(
-#     """
-#     <style>
-#     img {
-#         cursor: pointer;
-#         transition: all 5s ease-in-out;
-#     }
-#     img:hover {
-#         transform: scale(2);
-#     }
-#     </style>
-#     """,
-#     unsafe_allow_html=True,
-# )
-
-# st.markdown("*Streamlit* is **really** ***cool***.")
-# st.markdown('''
-#     :red[Streamlit] :orange[can] :green[write] :blue[text] :violet[in]
-#     :gray[pretty] :rainbow[colors] and :blue-background[highlight] text.''')
-# st.markdown("Here's a bouquet &mdash;\
-#             :tulip::cherry_blossom::rose::hibiscus::sunflower::blossom:")
-
-# multi = '''If you end a line with two spaces,
-# a soft return is used for the next line.
-
-# Two (or more) newline characters in a row will result in a hard return.
-# '''
-# st.markdown(multi)
