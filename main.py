@@ -9,7 +9,7 @@ from st_keyup import st_keyup
 
 import config as c
 
-# TODO entry
+# TODO filter Tera
 
 st.set_page_config(page_title='pkmndb', page_icon='🐲', layout='wide')
 
@@ -30,14 +30,16 @@ def load_more():
 
 # Load data function (unchanged)
 @st.cache_data
-def load_data(language):
-  df = pd.read_csv(c.dTranslations[language]['file'], sep=';', encoding=c.dTranslations[language]['encoding'])
+def load_data():
+  print('loading data')
+  df = pd.read_csv('cards.csv', sep=';')  # , encoding=c.dTranslations[language]['encoding'])
   df['HP'] = pd.to_numeric(df['HP'], errors='coerce')
   numeric_columns = ['HP', 'Attack 1 damage', 'Attack 2 damage']
 
   df[numeric_columns] = df[numeric_columns].fillna(0)
   object_columns = df.select_dtypes(include=['object']).columns
   df[object_columns] = df[object_columns].astype(str)
+  print(df.columns)
   return df
 
 def save_selection():
@@ -379,7 +381,7 @@ with col_reset:
   bReset = st.button('Reset - not working as expected', key='reset', on_click=reset_fields)
 
 # Load data
-df_orig = load_data(language_cards)
+df_orig = load_data()
 if sCards_format == 'standard':
   df_orig = df_orig[df_orig['Regulation'].isin(c.lStandard_regulations)] # lStandard_regulations
 df = df_orig
@@ -397,7 +399,7 @@ with tab1:
     search_term_name = st_keyup('Find in Pokemon name:', key='search_term_name_key')
     search_term_ability = st_keyup('Find in ability (name or text):', key='search_term_ability_key')
   with col_search_right:
-    search_term_evolves_from = st_keyup(c.dTranslations[language_cards]['find_in_evolves'], key='search_term_evolves_from_key')
+    search_term_evolves_from = st_keyup("Find in 'Evolves from'", key='search_term_evolves_from_key')
 
   if search_term_ability:
     with col_search_right:
@@ -411,14 +413,15 @@ with tab1:
     elif language_cards == 'deutsch':
       mask = df['Name DE'].str.contains(search_term_name, case=False, na=False) | \
         df['Name'].str.contains(search_term_name, case=False, na=False) | \
+        df['Attack 1 name DE'].str.contains(search_term_name, case=False, na=False) | \
         df['Attack 1 name'].str.contains(search_term_name, case=False, na=False) | \
-        df['Attack 1 name EN'].str.contains(search_term_name, case=False, na=False) | \
-        df['Attack 2 name'].str.contains(search_term_name, case=False, na=False) | \
-        df['Attack 2 name EN'].str.contains(search_term_name, case=False, na=False)
+        df['Attack 2 name DE'].str.contains(search_term_name, case=False, na=False) | \
+        df['Attack 2 name'].str.contains(search_term_name, case=False, na=False)
     df = df[mask]
 
   if search_term_evolves_from:
-    mask = df['Evolves from'].str.contains(search_term_evolves_from, case=False, na=False)
+    mask = df['Evolves from'].str.contains(search_term_evolves_from, case=False, na=False) | \
+        df['Evolves from DE'].str.contains(search_term_evolves_from, case=False, na=False)
     df = df[mask]
 
   col_left, _ = st.columns([2,3])
@@ -441,10 +444,10 @@ with tab1:
       mask = df['Attack 1 name'].str.contains(search_term_attack, case=False, na=False) | \
         df['Attack 2 name'].str.contains(search_term_attack, case=False, na=False)
     elif language_cards == 'deutsch':
-      mask = df['Attack 1 name'].str.contains(search_term_attack, case=False, na=False) | \
-        df['Attack 1 name EN'].str.contains(search_term_attack, case=False, na=False) | \
-        df['Attack 2 name'].str.contains(search_term_attack, case=False, na=False) | \
-        df['Attack 2 name EN'].str.contains(search_term_attack, case=False, na=False)
+      mask = df['Attack 1 name DE'].str.contains(search_term_attack, case=False, na=False) | \
+        df['Attack 1 name'].str.contains(search_term_attack, case=False, na=False) | \
+        df['Attack 2 name DE'].str.contains(search_term_attack, case=False, na=False) | \
+        df['Attack 2 name'].str.contains(search_term_attack, case=False, na=False)
     df = df[mask]
 
   if search_term_att_eff:
@@ -518,7 +521,7 @@ with tab1:
         if language_cards == 'deutsch':
           sSame_name = st.segmented_control('Same name in english and german only', ['no', 'yes'], default='no', key='same_name_key')
           if sSame_name == 'yes':
-            df = df[df['Name'] == df['Name EN']]
+            df = df[df['Name DE'] == df['Name']]
 
       # Show filters
       dFilters = {
@@ -544,6 +547,8 @@ with tab1:
     st.metric('Found cards', len(df))
 
     df_with_urls = df
+    if language_cards == 'english':
+      df = df.drop(c.lColumns_DE, axis=1)
     lColumns_to_show = st.multiselect('Show only these columns', list(df.columns), key='multiselect_key_lColumns_to_show')
     if lColumns_to_show:
       df = df[lColumns_to_show]
@@ -566,7 +571,8 @@ with tab1:
       use_container_width=True,
     )
     if 'URL' not in lColumns_to_show:
-      df_selected_cards['URL'] = df_with_urls.iloc[selected_cards]['URL']
+      if language_cards == 'deutsch':
+        df_selected_cards['URL'] = df_with_urls.iloc[selected_cards]['URL DE']
     if 'Set' not in lColumns_to_show:
       df_selected_cards['Set'] = df_with_urls.iloc[selected_cards]['Set']
     if 'num' not in lColumns_to_show:

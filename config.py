@@ -2,6 +2,8 @@ sBattlelogs_Folder = 'battlelogs_others'
 
 lStandard_regulations = ['F', 'G', 'H']
 
+lColumns_DE = ['Name DE', 'Evolves from DE', 'Attack 1 name DE', 'Effect 1 DE', 'Attack 2 name DE', 'Effect 2 DE', 'URL DE']
+
 lImportant_Actions = [
   'kampfunfähig',
   'gewonnen',
