@@ -110,6 +110,7 @@ def parse_card_entries(text):
 
 def reset_fields():
   for k, v in st.session_state.items():
+    print(k, v)
   st.session_state.seg_ctrl_lang = 'english'
   st.session_state.seg_ctrl_format = 'standard'
   st.session_state.search_term_name = None
@@ -125,6 +126,7 @@ def reset_fields():
   st.session_state.name_decklist = ''
   st.session_state.not_found = []
   for k, v in st.session_state.items():
+    print(k, v)
 
 # Initialisiere das Set
 if 'card_set' not in st.session_state:
@@ -332,10 +334,6 @@ def display_decklist(decklist_dict, not_found_cards, num_columns):
       except Exception as e:
         st.error(f"Error displaying card: {dCard['name']}")
         st.write(f"Error details: {str(e)}")
-  for idx, dCard in decklist_dict.items():
-    # for key, aCard in dCard.items():
-    #   if key == 'name':
-    #   else:
   return decklist_dict
 
 def add_card_to_decklist(dDecklist, name, set_, num):
