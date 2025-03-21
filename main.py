@@ -31,20 +31,18 @@ def load_more():
 # Load data function (unchanged)
 @st.cache_data
 def load_data():
-  print('loading data')
-  df = pd.read_csv('cards.csv', sep=';')  # , encoding=c.dTranslations[language]['encoding'])
+  df = pd.read_csv('cards.csv', sep=';')
+  df=df.fillna('')
   df['HP'] = pd.to_numeric(df['HP'], errors='coerce')
   numeric_columns = ['HP', 'Attack 1 damage', 'Attack 2 damage']
 
   df[numeric_columns] = df[numeric_columns].fillna(0)
   object_columns = df.select_dtypes(include=['object']).columns
   df[object_columns] = df[object_columns].astype(str)
-  print(df.columns)
   return df
 
 def save_selection():
     selection_name = st.session_state.selection_name
-    print(f'{selection_name = }')
     if selection_name and st.session_state.selected_cards:
         with open(f'{selection_name}.txt', 'w') as f:
     #with open('readme.txt', 'w') as f:
@@ -111,9 +109,7 @@ def parse_card_entries(text):
   return results
 
 def reset_fields():
-  print('reseting fields')
   for k, v in st.session_state.items():
-    print(k, v)
   st.session_state.seg_ctrl_lang = 'english'
   st.session_state.seg_ctrl_format = 'standard'
   st.session_state.search_term_name = None
@@ -129,7 +125,6 @@ def reset_fields():
   st.session_state.name_decklist = ''
   st.session_state.not_found = []
   for k, v in st.session_state.items():
-    print(k, v)
 
 # Initialisiere das Set
 if 'card_set' not in st.session_state:
@@ -322,7 +317,6 @@ def display_decklist(decklist_dict, not_found_cards, num_columns):
   # Display cards in grid
   for idx, dCard in decklist_dict.items():
     with cols[idx % num_columns]:
-      print(idx, idx % num_columns, dCard['name'])
       try:
         image_url = (
           f"https://limitlesstcg.nyc3.cdn.digitaloceanspaces.com/"
@@ -339,32 +333,22 @@ def display_decklist(decklist_dict, not_found_cards, num_columns):
         st.error(f"Error displaying card: {dCard['name']}")
         st.write(f"Error details: {str(e)}")
   for idx, dCard in decklist_dict.items():
-    print(dCard)
     # for key, aCard in dCard.items():
     #   if key == 'name':
-    #     print(key, aCard)
     #   else:
-    #     print('\t', key, aCard)
-  print('#' * 50)
   return decklist_dict
 
 def add_card_to_decklist(dDecklist, name, set_, num):
-  # print('Decklist IN')
-  # print(dDecklist)
   iNew_key = max(list(dDecklist.keys())) + 1
-  print(f'{iNew_key}: {name} {set_} {num}')
   dDecklist[iNew_key] = {
     'amount': 1,
     'name': name,
     'set': set_,
     'number': num
   }
-  # print('Decklist OUT')
-  # print(dDecklist)
   return dDecklist
 
 def export_decklist(dDecklist):
-  # print(dDecklist)
   text = f"\n{'\n'.join(f"{card['amount']} {card['name']} {card['set']} {card['number']}" for card in dDecklist.values())}\n"
   with st.popover('popover', icon="🚨"):
     st.code(text)
@@ -382,9 +366,10 @@ with col_reset:
 
 # Load data
 df_orig = load_data()
+lIndices = [47, 48 , 49]
 if sCards_format == 'standard':
   df_orig = df_orig[df_orig['Regulation'].isin(c.lStandard_regulations)] # lStandard_regulations
-df = df_orig
+df = df_orig.reset_index(drop=True)
 
 lUniqueNames = df['Name'].unique().tolist()
 
@@ -394,166 +379,160 @@ tab1, tab2, tab3 = st.tabs(['Card selection', 'Battlelog viewer', 'Decklist View
 
 # Card search
 with tab1:
-  col_search_left, col_search_right = st.columns(2)
-  with col_search_left:
+  with st.expander('Filter'):
+    # Filter
+    col1, col2, col3 = st.columns(3)
+  
+    with col1:
+      lCardtype_options = ['All', 'Ace Spec', 'Pokemon'] + sorted(df['Cardtype'].unique().tolist())
+      cardtype = st.selectbox('Cardtype', lCardtype_options)
+      if cardtype == 'Pokemon':
+        df = df[df['Cardtype'].isin(['Basic', 'Stage 1', 'Stage 2'])]
+      elif cardtype == 'Ace Spec':
+        df = df[df['Cardtype'].str.contains('Ace Spec')]
+      elif cardtype != 'All':
+        df = df[df['Cardtype'] == cardtype]
+      typ_options = ['All'] + sorted(df['Type'].unique().tolist())
+      type_filter = st.selectbox('Type', typ_options)
+      if type_filter != 'All':
+        df = df[df['Type'] == type_filter]
+      lWeakness_options = ['Choose an option'] + sorted(df['Weakness'].unique().tolist())
+      weakness_filter = st.selectbox('Weakness', lWeakness_options)
+      if weakness_filter != 'Choose an option':
+        df = df[df['Weakness'] == weakness_filter]
+
+    with col2:
+      attack_cost_options = sorted(set(df['Attack 1 cost'].unique().tolist() + df['Attack 2 cost'].unique().tolist()))
+      attack_cost = st.multiselect('Attack cost', attack_cost_options, key='multiselect_key_attack_cost')
+      if attack_cost:
+        df = df[df['Attack 1 cost'].isin(attack_cost) | df['Attack 2 cost'].isin(attack_cost)]
+      attack_damage_options = sorted(set(df['Attack 1 damage'].unique().tolist() + df['Attack 2 damage'].unique().tolist()))
+      attack_damage = st.multiselect('Attack damage', attack_damage_options, key='multiselect_key_attack_damage')
+      if attack_damage:
+        df = df[df['Attack 1 damage'].isin(attack_damage) | df['Attack 2 damage'].isin(attack_damage)]
+      hp_min = int(df['HP'].min())
+      hp_max = int(df['HP'].max())
+      iStep = 10
+      if hp_min == hp_max:
+        hp_max += iStep
+      hp_range = st.slider('HP', hp_min, hp_max, (hp_min, hp_max), step=iStep)
+      df = df[(df['HP'] >= hp_range[0]) & (df['HP'] <= hp_range[1])]
+
+    with col3:
+      col_set, col_num = st.columns(2)
+      with col_set:
+        set_filter = st.multiselect('Set', sorted(df['Set'].unique()), key='multiselect_key_set_filter')
+        if set_filter:
+          df = df[df['Set'].isin(set_filter)]
+      with col_num:
+        num_filter = st.multiselect('Number', sorted(df['#'].unique()), key='multiselect_key_num_filter')
+        if num_filter:
+          df = df[df['#'].isin(num_filter)]
+      regulation_filter = st.multiselect('Regulation', df['Regulation'].unique(), key='multiselect_key_regulation_filter')
+      if regulation_filter:
+        df = df[df['Regulation'].isin(regulation_filter)]
+      sToggle_ex = st.segmented_control('Pokemon ex', ["include 'ex'", "exclude 'ex'", "only 'ex'"], default="include 'ex'", key='sToggle_ex', label_visibility='hidden')
+      if sToggle_ex == "exclude 'ex'":
+        df = df[~df['Name'].str.endswith(' ex')]
+      if sToggle_ex == "only 'ex'":
+        df = df[df['Name'].str.endswith(' ex')]
+      sToggle_V = st.segmented_control('Pokemon V', ["include 'V(STAR)'", "exclude 'V(STAR)'", "only 'V(STAR)'"], default="include 'V(STAR)'", key='sToggle_V', label_visibility='hidden')
+      if sToggle_V == "exclude 'V(STAR)'":
+        df = df[~df['Name'].str.endswith(('V', 'VSTAR'))]
+      if sToggle_V == "only 'V(STAR)'":
+        df = df[df['Name'].str.endswith(('V', 'VSTAR'))]
+      if language_cards == 'deutsch':
+        sSame_name = st.segmented_control('Same name in english and german only', ['no', 'yes'], default='no', key='same_name_key')
+        if sSame_name == 'yes':
+          df = df[df['Name DE'] == df['Name']]
+
+  col_search_left1, col_search_right1 = st.columns(2)
+  with col_search_left1:
     search_term_name = st_keyup('Find in Pokemon name:', key='search_term_name_key')
-    search_term_ability = st_keyup('Find in ability (name or text):', key='search_term_ability_key')
-  with col_search_right:
+    if search_term_name:
+      if language_cards == 'english':
+        mask = df['Name'].str.contains(search_term_name, case=False, na=False)
+      elif language_cards == 'deutsch':
+        mask = df['Name DE'].str.contains(search_term_name, case=False, na=False) | \
+          df['Name'].str.contains(search_term_name, case=False, na=False)
+      df = df[mask]
+  with col_search_right1:
     search_term_evolves_from = st_keyup("Find in 'Evolves from'", key='search_term_evolves_from_key')
+    if search_term_evolves_from:
+      mask = df['Evolves from'].str.contains(search_term_evolves_from, case=False, na=False) | \
+          df['Evolves from DE'].str.contains(search_term_evolves_from, case=False, na=False)
+      df = df[mask]
 
-  if search_term_ability:
-    with col_search_right:
-      search_term_ability_2 = st_keyup('and...', key='search_term_ability_2_key')
-
-  if search_term_name:
-    if language_cards == 'english':
-      mask = df['Name'].str.contains(search_term_name, case=False, na=False) | \
-        df['Attack 1 name'].str.contains(search_term_name, case=False, na=False) | \
-        df['Attack 2 name'].str.contains(search_term_name, case=False, na=False)
-    elif language_cards == 'deutsch':
-      mask = df['Name DE'].str.contains(search_term_name, case=False, na=False) | \
-        df['Name'].str.contains(search_term_name, case=False, na=False) | \
-        df['Attack 1 name DE'].str.contains(search_term_name, case=False, na=False) | \
-        df['Attack 1 name'].str.contains(search_term_name, case=False, na=False) | \
-        df['Attack 2 name DE'].str.contains(search_term_name, case=False, na=False) | \
-        df['Attack 2 name'].str.contains(search_term_name, case=False, na=False)
-    df = df[mask]
-
-  if search_term_evolves_from:
-    mask = df['Evolves from'].str.contains(search_term_evolves_from, case=False, na=False) | \
-        df['Evolves from DE'].str.contains(search_term_evolves_from, case=False, na=False)
-    df = df[mask]
-
-  col_left, _ = st.columns([2,3])
-  with col_left:
-    search_term_attack = st_keyup('Find in name of attack:', key='search_term_attack_key')
-    search_term_att_eff = st_keyup('Find in attack effect:', key='search_term_att_eff_key')
-
-  if search_term_ability:
-    mask = df['Ability'].str.contains(search_term_ability, case=False, na=False) | \
-      df['Ability text'].str.contains(search_term_ability, case=False, na=False)
-    df = df[mask]
-
+  col_search_left2, col_search_right2 = st.columns(2)
+  with col_search_left2:
+    search_term_ability = st_keyup('Find in ability (name or text):', key='search_term_ability_key')
+    if search_term_ability:
+      mask = df['Ability'].str.contains(search_term_ability, case=False, na=False) | \
+        df['Ability text'].str.contains(search_term_ability, case=False, na=False)
+      df = df[mask]
+  with col_search_right2:
+    search_term_ability_2 = st_keyup('and...', key='search_term_ability_2_key')
     if search_term_ability_2:
       mask = df['Ability'].str.contains(search_term_ability_2, case=False, na=False) | \
         df['Ability text'].str.contains(search_term_ability_2, case=False, na=False)
       df = df[mask]
 
-  if search_term_attack:
-    if language_cards == 'english':
-      mask = df['Attack 1 name'].str.contains(search_term_attack, case=False, na=False) | \
-        df['Attack 2 name'].str.contains(search_term_attack, case=False, na=False)
-    elif language_cards == 'deutsch':
-      mask = df['Attack 1 name DE'].str.contains(search_term_attack, case=False, na=False) | \
-        df['Attack 1 name'].str.contains(search_term_attack, case=False, na=False) | \
-        df['Attack 2 name DE'].str.contains(search_term_attack, case=False, na=False) | \
-        df['Attack 2 name'].str.contains(search_term_attack, case=False, na=False)
-    df = df[mask]
+  col_search_left3, col_search_right3 = st.columns(2)
+  with col_search_left3:
+    search_term_attack = st_keyup('Find in name of attack:', key='search_term_attack_key')
+    if search_term_attack:
+      if language_cards == 'english':
+        mask = df['Attack 1 name'].str.contains(search_term_attack, case=False, na=False) | \
+          df['Attack 2 name'].str.contains(search_term_attack, case=False, na=False)
+      elif language_cards == 'deutsch':
+        mask = df['Attack 1 name DE'].str.contains(search_term_attack, case=False, na=False) | \
+          df['Attack 1 name'].str.contains(search_term_attack, case=False, na=False) | \
+          df['Attack 2 name DE'].str.contains(search_term_attack, case=False, na=False) | \
+          df['Attack 2 name'].str.contains(search_term_attack, case=False, na=False)
+      df = df[mask]
+  with col_search_right3:
+    search_term_att_eff = st_keyup('Find in effect of attack:', key='search_term_att_eff_key')
+    if search_term_att_eff:
+      if language_cards == 'english':
+        mask = df['Effect 1'].str.contains(search_term_att_eff, case=False, na=False) | \
+          df['Effect 2'].str.contains(search_term_att_eff, case=False, na=False)
+      elif language_cards == 'deutsch':
+        mask = df['Effect 1 DE'].str.contains(search_term_att_eff, case=False, na=False) | \
+          df['Effect 1'].str.contains(search_term_att_eff, case=False, na=False) | \
+          df['Effect 2 DE'].str.contains(search_term_att_eff, case=False, na=False) | \
+          df['Effect 2'].str.contains(search_term_att_eff, case=False, na=False)
+      df = df[mask]
 
-  if search_term_att_eff:
-    mask = df['Effect 1'].str.contains(search_term_att_eff, case=False, na=False) | \
-      df['Effect 2'].str.contains(search_term_att_eff, case=False, na=False)
-    df = df[mask]
+  # Show filters
+  dFilters = {
+    'sCards_format': sCards_format,
+    'search_term_name': search_term_name,
+    'search_term_attack': search_term_attack,
+    'search_term_evolves_from': search_term_evolves_from,
+    'cardtype': cardtype,
+    'attack_cost': attack_cost,
+    'attack_damage': attack_damage,
+    'weakness_filter': weakness_filter,
+    'type_filter': type_filter,
+    'set_filter': set_filter,
+    'num_filter': num_filter,
+    'regulation_filter': regulation_filter,
+    'hp_range': hp_range,
+    'sToggle_ex': sToggle_ex,
+    'sToggle_V': sToggle_V,
+  }
+  with st.expander(f'Found cards {len(df)} - Show filter'):
+    st.write(dFilters)
 
   if not df.empty:
-    with st.expander('Filter'):
-      # Filter
-      col1, col2, col3 = st.columns(3)
-    
-      with col1:
-        lCardtype_options = ['All', 'Ace Spec', 'Pokemon'] + sorted(df['Cardtype'].unique().tolist())
-        cardtype = st.selectbox('Cardtype', lCardtype_options)
-        if cardtype == 'Pokemon':
-          df = df[df['Cardtype'].isin(['Basic', 'Stage 1', 'Stage 2'])]
-        elif cardtype == 'Ace Spec':
-          df = df[df['Cardtype'].str.contains('Ace Spec')]
-        elif cardtype != 'All':
-          df = df[df['Cardtype'] == cardtype]
-        typ_options = ['All'] + sorted(df['Type'].unique().tolist())
-        type_filter = st.selectbox('Type', typ_options)
-        if type_filter != 'All':
-          df = df[df['Type'] == type_filter]
-        lWeakness_options = ['Choose an option'] + sorted(df['Weakness'].unique().tolist())
-        weakness_filter = st.selectbox('Weakness', lWeakness_options)
-        if weakness_filter != 'Choose an option':
-          df = df[df['Weakness'] == weakness_filter]
-
-      with col2:
-        attack_cost_options = sorted(set(df['Attack 1 cost'].unique().tolist() + df['Attack 2 cost'].unique().tolist()))
-        attack_cost = st.multiselect('Attack cost', attack_cost_options, key='multiselect_key_attack_cost')
-        if attack_cost:
-          df = df[df['Attack 1 cost'].isin(attack_cost) | df['Attack 2 cost'].isin(attack_cost)]
-        attack_damage_options = sorted(set(df['Attack 1 damage'].unique().tolist() + df['Attack 2 damage'].unique().tolist()))
-        attack_damage = st.multiselect('Attack damage', attack_damage_options, key='multiselect_key_attack_damage')
-        if attack_damage:
-          df = df[df['Attack 1 damage'].isin(attack_damage) | df['Attack 2 damage'].isin(attack_damage)]
-        hp_min = int(df['HP'].min())
-        hp_max = int(df['HP'].max())
-        iStep = 10
-        if hp_min == hp_max:
-          hp_max += iStep
-        hp_range = st.slider('HP', hp_min, hp_max, (hp_min, hp_max), step=iStep)
-        df = df[(df['HP'] >= hp_range[0]) & (df['HP'] <= hp_range[1])]
-
-      with col3:
-        col_set, col_num = st.columns(2)
-        with col_set:
-          set_filter = st.multiselect('Set', sorted(df['Set'].unique()), key='multiselect_key_set_filter')
-          if set_filter:
-            df = df[df['Set'].isin(set_filter)]
-        with col_num:
-          num_filter = st.multiselect('Number', sorted(df['#'].unique()), key='multiselect_key_num_filter')
-          if num_filter:
-            df = df[df['#'].isin(num_filter)]
-        regulation_filter = st.multiselect('Regulation', df['Regulation'].unique(), key='multiselect_key_regulation_filter')
-        if regulation_filter:
-          df = df[df['Regulation'].isin(regulation_filter)]
-        sToggle_ex = st.segmented_control('Pokemon ex', ["include 'ex'", "exclude 'ex'", "only 'ex'"], default="include 'ex'", key='sToggle_ex', label_visibility='hidden')
-        if sToggle_ex == "exclude 'ex'":
-          df = df[~df['Name'].str.endswith(' ex')]
-        if sToggle_ex == "only 'ex'":
-          df = df[df['Name'].str.endswith(' ex')]
-        sToggle_V = st.segmented_control('Pokemon V', ["include 'V(STAR)'", "exclude 'V(STAR)'", "only 'V(STAR)'"], default="include 'V(STAR)'", key='sToggle_V', label_visibility='hidden')
-        if sToggle_V == "exclude 'V(STAR)'":
-          df = df[~df['Name'].str.endswith(('V', 'VSTAR'))]
-        if sToggle_V == "only 'V(STAR)'":
-          df = df[df['Name'].str.endswith(('V', 'VSTAR'))]
-        if language_cards == 'deutsch':
-          sSame_name = st.segmented_control('Same name in english and german only', ['no', 'yes'], default='no', key='same_name_key')
-          if sSame_name == 'yes':
-            df = df[df['Name DE'] == df['Name']]
-
-      # Show filters
-      dFilters = {
-        'sCards_format': sCards_format,
-        'search_term_name': search_term_name,
-        'search_term_attack': search_term_attack,
-        'search_term_evolves_from': search_term_evolves_from,
-        'cardtype': cardtype,
-        'attack_cost': attack_cost,
-        'attack_damage': attack_damage,
-        'weakness_filter': weakness_filter,
-        'type_filter': type_filter,
-        'set_filter': set_filter,
-        'num_filter': num_filter,
-        'regulation_filter': regulation_filter,
-        'hp_range': hp_range,
-        'sToggle_ex': sToggle_ex,
-        'sToggle_V': sToggle_V,
-      }
-      if st.checkbox('Show filter'):
-        st.write(dFilters)
-
-    st.metric('Found cards', len(df))
-
-    df_with_urls = df
+    df_with_urls = df.reset_index(drop=True)
     if language_cards == 'english':
       df = df.drop(c.lColumns_DE, axis=1)
     lColumns_to_show = st.multiselect('Show only these columns', list(df.columns), key='multiselect_key_lColumns_to_show')
     if lColumns_to_show:
       df = df[lColumns_to_show]
 
-    st.write('⬇️⬇️ Select cards here')
+    st.write('⬇️ Select cards here')
     event = st.dataframe(
       df,
       use_container_width=True,
@@ -576,7 +555,8 @@ with tab1:
     if 'Set' not in lColumns_to_show:
       df_selected_cards['Set'] = df_with_urls.iloc[selected_cards]['Set']
     if 'num' not in lColumns_to_show:
-      df_selected_cards['num'] = df_with_urls.iloc[selected_cards]['#']
+      # df_selected_cards['num'] = df_with_urls.iloc[selected_cards]['#']
+      df_selected_cards['num'] = df_with_urls.loc[selected_cards, '#'].values
 
     if not df_selected_cards.empty:
       st.write(f'Show {min(st.session_state.num_images, len(df_selected_cards))} cards:')
@@ -605,44 +585,41 @@ with tab1:
   else:
     st.write('No card found')
 
-
   # App-Titel
-  st.title("Karten-Set Verwaltung - TBD")
+  st.header('Card set administration - TBD')
 
-  # # Zeige alle Elemente mit Bearbeitungsmöglichkeiten
-  # st.header("Dein Karten-Set")
+  # Zeige alle Elemente mit Bearbeitungsmöglichkeiten
 
-  # for item in sorted(list(st.session_state.card_set), key=lambda x: x[2:-8]):
-  #   col1, col2 = st.columns([3, 1])
+  for item in sorted(list(st.session_state.card_set), key=lambda x: x[2:-8]):
+    col1, col2 = st.columns([3, 1])
 
-  #   with col1:
-  #     st.text(item)
+    with col1:
+      st.text(item)
 
-  #   with col2:
-  #     # Extrahiere die aktuelle Anzahl
-  #     current_quantity = int(re.match(r'^\d+', item).group())
+    with col2:
+      # Extrahiere die aktuelle Anzahl
+      current_quantity = int(re.match(r'^\d+', item).group())
 
-  #     # Erstelle einen eindeutigen Schlüssel für den Zahleneingabebereich
-  #     key = f"quantity_{item}"
+      # Erstelle einen eindeutigen Schlüssel für den Zahleneingabebereich
+      key = f'quantity_{item}'
 
-  #     # Eingabefeld für die neue Anzahl
-  #     if 'Basic' in item and 'Energy' in item:
-  #       iMaxValue = 59
-  #     else:
-  #       iMaxValue = 4
+      # Eingabefeld für die neue Anzahl
+      if 'Basic' in item and 'Energy' in item:
+        iMaxValue = 59
+      else:
+        iMaxValue = 4
   #     new_quantity = st.number_input(
-  #       "Anzahl", 
+  #       'Anzahl', 
   #       min_value=0,
   #       max_value=iMaxValue,
   #       value=current_quantity,
   #       step=1,
   #       key=key,
-  #       label_visibility="collapsed"
+  #       label_visibility='collapsed'
   #     )
 
   #     # Wenn sich die Anzahl geändert hat und der Benutzer die Änderung bestätigt
-  #     if new_quantity != current_quantity:# and st.button("Aktualisieren", key=f"update_{item}"):
-  #       print('update_quantity', item, new_quantity)
+  #     if new_quantity != current_quantity:# and st.button('Aktualisieren', key=f'update_{item}'):
   #       update_quantity(item, new_quantity)
   #       st.rerun()
 
@@ -671,7 +648,6 @@ with tab2:
   #     game_log = uploaded_file.getvalue().decode('utf-8')
   #   elif selected_battlog:
   #     battlelogfile = rf'{c.sBattlelogs_Folder}\{selected_battlog}'
-  #     print(battlelogfile)
   #     with open(battlelogfile, 'r', encoding='utf-8') as _battlelog:
   #       game_log = _battlelog.read()
   # else:
@@ -692,7 +668,6 @@ with tab2:
     st.markdown('### Players')
     cols = st.columns(2)
     for i, (player, color) in enumerate(player_colors.items()):
-      print(player, color)
       with cols[i]:
         if player == winner:
           st.markdown(f'''<div style="text-align: center; padding: 10px; border-radius: 5px; border: 2px solid {color}; background-color:gold;">
@@ -756,7 +731,6 @@ with tab2:
                     sName_final = f'{sName} V'
                   sLine = sLine.replace(sName_final, f'**:blue-background[{sName_final}]**')
                   continue
-              # print(lFound)
               st.markdown(sLine, unsafe_allow_html=True)
 
     with tab2:
@@ -875,4 +849,3 @@ with tab3:
     text = f"\n{'\n'.join(f"{card['amount']} {card['name']} {card['set']} {card['number']}" for card in dDecklist.values())}\n"
     with st.popover('Show decklist', icon="📄"):
       st.code(text)
-
