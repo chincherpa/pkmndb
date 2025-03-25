@@ -1,0 +1,214 @@
+Vorbereitung
+Bluer1 hat Zahl für den Münzwurf am Anfang gewählt.
+Bluer1 hat den Münzwurf gewonnen.
+Bluer1 möchte als Zweiter dran sein.
+Bluer1 hat für die Starthand 7 Karten gezogen.
+- 7 gezogene Karten
+ElButze hat für die Starthand 7 Karten gezogen.
+- 7 gezogene Karten
+   • Basis-Pflanze-Energie, Ergreifendes Aroma, Sonderbonbon, Türkisgrüne-Maske-Ogerpon-ex, Dicke-Freunde-Knursp, Energie-Umschalter, Knapfel
+Bluer1 hat Glumanda in die Aktive Position gelegt.
+ElButze hat Türkisgrüne-Maske-Ogerpon-ex in die Aktive Position gelegt.
+
+Turn # 1 - Zug von ElButze
+ElButze hat Zarude gezogen.
+Türkisgrüne-Maske-Ogerpon-ex von ElButze hat Türkisgrüner Tanz eingesetzt.
+- ElButze hat Basis-Pflanze-Energie an Türkisgrüne-Maske-Ogerpon-ex in der Aktiven Position angelegt.
+- ElButze hat Basis-Pflanze-Energie gezogen.
+ElButze hat Dicke-Freunde-Knursp gespielt.
+- ElButze hat Knapfel gezogen und auf die Bank gelegt.
+- ElButze hat das eigene Deck gemischt.
+ElButze hat Ergreifendes Aroma gespielt.
+- Der Münzwurf von ElButze hatte das Ergebnis Kopf.
+- ElButze hat Hydrapfel-ex gezogen.
+- ElButze hat das eigene Deck gemischt.
+ElButze hat Basis-Pflanze-Energie an Türkisgrüne-Maske-Ogerpon-ex in der Aktiven Position angelegt.
+ElButze hat den eigenen Zug beendet.
+
+Turn # 2 - Zug von Bluer1
+Bluer1 hat eine Karte gezogen.
+Bluer1 hat Dicke-Freunde-Knursp gespielt.
+- Bluer1 hat 2 Karten gezogen und auf die Bank gespielt.
+   • Taubsi, Victini
+- Bluer1 hat das eigene Deck gemischt.
+Bluer1 hat den eigenen Zug beendet.
+
+Turn # 3 - Zug von ElButze
+ElButze hat Heldenumhang gezogen.
+ElButze hat Heldenumhang an Knapfel auf der Bank angelegt.
+ElButze hat Sonderbonbon gespielt.
+- ElButze hat Knapfel auf der Bank zu Hydrapfel-ex entwickelt.
+ElButze hat den eigenen Zug beendet.
+
+Turn # 4 - Zug von Bluer1
+Bluer1 hat eine Karte gezogen.
+Bluer1 hat Hyperball gespielt.
+- Bluer1 hat 2 Karten auf den Ablagestapel gelegt.
+   • Superangel, Basis-Feuer-Energie
+- Bluer1 hat Tauboga gezogen.
+- Bluer1 hat das eigene Deck gemischt.
+Bluer1 hat Taubsi auf der Bank zu Tauboga entwickelt.
+Bluer1 hat den eigenen Zug beendet.
+
+Turn # 5 - Zug von ElButze
+ElButze hat Cosima gezogen.
+ElButze hat Cosima gespielt.
+- ElButze hat 3 Karten von ElButze auf die Hand von ElButze gegeben.
+   • Türkisgrüne-Maske-Ogerpon-ex, Basis-Pflanze-Energie, Basis-Pflanze-Energie
+Hydrapfel-ex von ElButze ist jetzt in der Aktiven Position.
+ElButze hat Türkisgrüne-Maske-Ogerpon-ex auf die Bank gelegt.
+Türkisgrüne-Maske-Ogerpon-ex von ElButze hat Türkisgrüner Tanz eingesetzt.
+- ElButze hat Basis-Pflanze-Energie an Türkisgrüne-Maske-Ogerpon-ex auf der Bank angelegt.
+- ElButze hat Sonderbonbon gezogen.
+ElButze hat Basis-Pflanze-Energie an Hydrapfel-ex in der Aktiven Position angelegt.
+ElButze hat Energie-Umschalter gespielt.
+- ElButze hat Basis-Pflanze-Energie an Hydrapfel-ex in der Aktiven Position angelegt.
+Hydrapfel-ex von ElButze hat Sirupsturm gegen Glumanda von Bluer1 für 90 Schadenspunkte eingesetzt.
+- Schadensaufteilung:
+   • Grundschaden: 30 Schadenspunkte
+   • 2 angelegte Energien: 60 Schadenspunkte
+   • Gesamtschaden: 90 Schadenspunkte
+
+Glumanda von Bluer1 wurde kampfunfähig gemacht!
+ElButze hat eine Preiskarte aufgenommen.
+Basis-Pflanze-Energie wurde zu der Hand von ElButze hinzugefügt.
+Victini von Bluer1 ist jetzt in der Aktiven Position.
+
+Turn # 6 - Zug von Bluer1
+Bluer1 hat eine Karte gezogen.
+Bluer1 hat Tauboga auf der Bank zu Tauboss-ex entwickelt.
+Tauboss-ex von Bluer1 hat Schnelle Suche eingesetzt.
+- Bluer1 hat eine Karte gezogen.
+- Bluer1 hat das eigene Deck gemischt.
+Bluer1 hat den eigenen Zug beendet.
+
+Turn # 7 - Zug von ElButze
+ElButze hat Käfersammlerset gezogen.
+ElButze hat Käfersammlerset gespielt.
+- ElButze hat 2 Karten gezogen.
+   • Basis-Pflanze-Energie, Basis-Pflanze-Energie
+- ElButze hat das eigene Deck gemischt.
+Türkisgrüne-Maske-Ogerpon-ex von ElButze hat Türkisgrüner Tanz eingesetzt.
+- ElButze hat Basis-Pflanze-Energie an Türkisgrüne-Maske-Ogerpon-ex auf der Bank angelegt.
+- ElButze hat Irdengefäß gezogen.
+ElButze hat Basis-Pflanze-Energie an Türkisgrüne-Maske-Ogerpon-ex auf der Bank angelegt.
+Hydrapfel-ex von ElButze hat Reifende Aufladung eingesetzt.
+- ElButze hat Basis-Pflanze-Energie an Türkisgrüne-Maske-Ogerpon-ex auf der Bank angelegt.
+Hydrapfel-ex von ElButze hat Sirupsturm gegen Victini von Bluer1 für 180 Schadenspunkte eingesetzt.
+- Schadensaufteilung:
+   • Grundschaden: 30 Schadenspunkte
+   • 5 angelegte Energien: 150 Schadenspunkte
+   • Gesamtschaden: 180 Schadenspunkte
+
+Victini von Bluer1 wurde kampfunfähig gemacht!
+ElButze hat eine Preiskarte aufgenommen.
+Nachttrage wurde zu der Hand von ElButze hinzugefügt.
+Tauboss-ex von Bluer1 ist jetzt in der Aktiven Position.
+
+Turn # 8 - Zug von Bluer1
+Bluer1 hat eine Karte gezogen.
+Tauboss-ex von Bluer1 hat Schnelle Suche eingesetzt.
+- Bluer1 hat eine Karte gezogen.
+- Bluer1 hat das eigene Deck gemischt.
+Bluer1 hat den eigenen Zug beendet.
+
+Turn # 9 - Zug von ElButze
+ElButze hat Energie-Umschalter gezogen.
+ElButze hat Irdengefäß gespielt.
+- ElButze hat Knapfel auf den Ablagestapel gelegt.
+- ElButze hat 2 Karten gezogen.
+   • Basis-Pflanze-Energie, Basis-Pflanze-Energie
+- ElButze hat das eigene Deck gemischt.
+ElButze hat Zarude auf die Bank gelegt.
+Türkisgrüne-Maske-Ogerpon-ex von ElButze hat Türkisgrüner Tanz eingesetzt.
+- ElButze hat Basis-Pflanze-Energie an Türkisgrüne-Maske-Ogerpon-ex auf der Bank angelegt.
+- ElButze hat Basis-Pflanze-Energie gezogen.
+ElButze hat Basis-Pflanze-Energie an Zarude auf der Bank angelegt.
+Hydrapfel-ex von ElButze hat Reifende Aufladung eingesetzt.
+- ElButze hat Basis-Pflanze-Energie an Zarude auf der Bank angelegt.
+Hydrapfel-ex von ElButze hat Sirupsturm gegen Tauboss-ex von Bluer1 für 270 Schadenspunkte eingesetzt.
+- Schadensaufteilung:
+   • Grundschaden: 30 Schadenspunkte
+   • 8 angelegte Energien: 240 Schadenspunkte
+   • Gesamtschaden: 270 Schadenspunkte
+
+
+Turn # 10 - Zug von Bluer1
+Bluer1 hat eine Karte gezogen.
+Tauboss-ex von Bluer1 hat Schnelle Suche eingesetzt.
+- Bluer1 hat eine Karte gezogen.
+- Bluer1 hat das eigene Deck gemischt.
+Bluer1 hat Glumanda auf die Bank gelegt.
+Bluer1 hat den eigenen Zug beendet.
+
+Turn # 11 - Zug von ElButze
+ElButze hat Basis-Pflanze-Energie gezogen.
+Türkisgrüne-Maske-Ogerpon-ex von ElButze hat Türkisgrüner Tanz eingesetzt.
+- ElButze hat Basis-Pflanze-Energie an Türkisgrüne-Maske-Ogerpon-ex auf der Bank angelegt.
+- ElButze hat Energie-Umschalter gezogen.
+Hydrapfel-ex von ElButze hat Sirupsturm gegen Tauboss-ex von Bluer1 für 300 Schadenspunkte eingesetzt.
+- Schadensaufteilung:
+   • Grundschaden: 30 Schadenspunkte
+   • 9 angelegte Energien: 270 Schadenspunkte
+   • Gesamtschaden: 300 Schadenspunkte
+
+Tauboss-ex von Bluer1 wurde kampfunfähig gemacht!
+- 2 Karten wurden von Tauboss-ex von Bluer1 auf den Ablagestapel gelegt.
+   • Tauboga, Taubsi
+ElButze hat 2 Preiskarten aufgenommen.
+Befehl vom Boss wurde zu der Hand von ElButze hinzugefügt.
+Energie-Umschalter wurde zu der Hand von ElButze hinzugefügt.
+Glumanda von Bluer1 ist jetzt in der Aktiven Position.
+
+Turn # 12 - Zug von Bluer1
+Bluer1 hat eine Karte gezogen.
+Bluer1 hat Sonderbonbon gespielt.
+- Bluer1 hat Glumanda in der Aktiven Position zu Glurak-ex entwickelt.
+Glurak-ex von Bluer1 hat Infernalische Herrschaft eingesetzt.
+- Bluer1 hat Basis-Feuer-Energie an Glurak-ex in der Aktiven Position angelegt.
+- Bluer1 hat Basis-Feuer-Energie an Glurak-ex in der Aktiven Position angelegt.
+- Bluer1 hat das eigene Deck gemischt.
+Bluer1 hat Befehl vom Boss gespielt.
+- Türkisgrüne-Maske-Ogerpon-ex von ElButze wurde mit Hydrapfel-ex von ElButze ausgetauscht, um das Aktive Pokémon zu sein.
+Türkisgrüne-Maske-Ogerpon-ex von ElButze ist jetzt in der Aktiven Position.
+Glurak-ex von Bluer1 hat Brennende Finsternis gegen Türkisgrüne-Maske-Ogerpon-ex von ElButze für 300 Schadenspunkte eingesetzt.
+- Schadensaufteilung:
+   • Grundschaden: 180 Schadenspunkte
+   • 4 Preiskarten: 120 Schadenspunkte
+   • Gesamtschaden: 300 Schadenspunkte
+
+Türkisgrüne-Maske-Ogerpon-ex von ElButze wurde kampfunfähig gemacht!
+- 5 Karten wurden von Türkisgrüne-Maske-Ogerpon-ex von ElButze auf den Ablagestapel gelegt.
+   • Basis-Pflanze-Energie, Basis-Pflanze-Energie, Basis-Pflanze-Energie, Basis-Pflanze-Energie, Basis-Pflanze-Energie
+Bluer1 hat 2 Preiskarten aufgenommen.
+Eine Karte wurde zu der Hand von Bluer1 hinzugefügt.
+Eine Karte wurde zu der Hand von Bluer1 hinzugefügt.
+Hydrapfel-ex von ElButze ist jetzt in der Aktiven Position.
+
+Turn # 13 - Zug von ElButze
+ElButze hat Hyperball gezogen.
+ElButze hat Hyperball gespielt.
+- ElButze hat 2 Karten auf den Ablagestapel gelegt.
+   • Sonderbonbon, Energie-Umschalter
+- ElButze hat Eisenblatt-ex gezogen.
+- ElButze hat das eigene Deck gemischt.
+ElButze hat Eisenblatt-ex auf die Bank gelegt.
+Eisenblatt-ex von ElButze hat Schnelle Justierung eingesetzt.
+- Eisenblatt-ex von ElButze wurde mit Hydrapfel-ex von ElButze ausgetauscht, um das Aktive Pokémon zu sein.
+- ElButze hat Basis-Pflanze-Energie an Eisenblatt-ex in der Aktiven Position angelegt.
+- ElButze hat Basis-Pflanze-Energie an Eisenblatt-ex in der Aktiven Position angelegt.
+- ElButze hat Basis-Pflanze-Energie an Eisenblatt-ex in der Aktiven Position angelegt.
+Eisenblatt-ex von ElButze ist jetzt in der Aktiven Position.
+Eisenblatt-ex von ElButze hat Prismaklinge gegen Glurak-ex von Bluer1 für 360 Schadenspunkte eingesetzt. Glurak-ex von Bluer1 hat 180 Schadenspunkte mehr erhalten, weil es Schwäche gegen Pflanze hat.
+- Schadensaufteilung:
+   • Grundschaden: 180 Schadenspunkte
+   • Schwäche gegen Pflanze: 180 Schadenspunkte
+   • Gesamtschaden: 360 Schadenspunkte
+
+Glurak-ex von Bluer1 wurde kampfunfähig gemacht!
+- 3 Karten wurden von Glurak-ex von Bluer1 auf den Ablagestapel gelegt.
+   • Basis-Feuer-Energie, Basis-Feuer-Energie, Glumanda
+ElButze hat 2 Preiskarten aufgenommen.
+Hochwertiger Energie-Zugewinn wurde zu der Hand von ElButze hinzugefügt.
+Befehl vom Boss wurde zu der Hand von ElButze hinzugefügt.
+Du hast alle Pokémon deines Gegners im Spiel kampfunfähig gemacht und alle deine Preiskarten genommen.. ElButze hat gewonnen.

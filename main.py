@@ -2,6 +2,7 @@ import re
 
 import streamlit as st
 import pandas as pd
+from rich import print
 import os
 
 from st_keyup import st_keyup
@@ -523,7 +524,7 @@ with tab1:
     st.write(dFilters)
 
   if not df.empty:
-    df_with_urls = df.reset_index(drop=True)
+    df_with_urls = df #.reset_index(drop=True)
     if language_cards == 'english':
       df = df.drop(c.lColumns_DE, axis=1)
     lColumns_to_show = st.multiselect('Show only these columns', list(df.columns), key='multiselect_key_lColumns_to_show')
@@ -547,14 +548,21 @@ with tab1:
       df_selected_cards,
       use_container_width=True,
     )
-    if 'URL' not in lColumns_to_show:
-      if language_cards == 'deutsch':
-        df_selected_cards['URL'] = df_with_urls.iloc[selected_cards]['URL DE']
-    if 'Set' not in lColumns_to_show:
-      df_selected_cards['Set'] = df_with_urls.iloc[selected_cards]['Set']
-    if 'num' not in lColumns_to_show:
-      # df_selected_cards['num'] = df_with_urls.iloc[selected_cards]['#']
-      df_selected_cards['num'] = df_with_urls.loc[selected_cards, '#'].values
+    if language_cards == 'deutsch':
+      print('\t\t\t\t[yellow]JA, IST DEUTSCH')
+      print("[yellow]df_with_urls.iloc[selected_cards]['URL DE']")
+      print(df_with_urls.iloc[selected_cards]['URL DE'])
+      print("[yellow]df_selected_cards['URL']")
+      print(df_selected_cards['URL'])
+      df_selected_cards['URL'] = df_with_urls.iloc[selected_cards]['URL DE']
+    # if 'URL' not in lColumns_to_show:
+    #   if language_cards == 'deutsch':
+    #     df_selected_cards['URL'] = df_with_urls.iloc[selected_cards]['URL DE']
+    # if 'Set' not in lColumns_to_show:
+    #   df_selected_cards['Set'] = df_with_urls.iloc[selected_cards]['Set']
+    # if 'num' not in lColumns_to_show:
+    #   df_selected_cards['#'] = df_with_urls.iloc[selected_cards]['#']
+      # df_selected_cards['#'] = df_with_urls.loc[selected_cards, '#'].values
 
     if not df_selected_cards.empty:
       st.write(f'Show {min(st.session_state.num_images, len(df_selected_cards))} cards:')
@@ -562,9 +570,10 @@ with tab1:
       cols = st.columns(4)
       for i in range(min(st.session_state.num_images, len(df_selected_cards))):
         card = df_selected_cards.iloc[i]
+        # print(f'{card = }')
         with cols[i % 4]:
           col_num, col_link = st.columns(2)
-          card_id = f"1 {card['Name']} {card['Set']} {card['num']}"
+          card_id = f"1 {card['Name']} {card['Set']} {card['#']}"
           pin = col_num.toggle('add card', key=card_id)
           if pin:
             st.session_state.card_set.add(card_id)
@@ -573,6 +582,7 @@ with tab1:
               st.session_state.card_set.remove(card_id)
 
           url = card['URL']
+          print(f'{url = }')
           col_link.link_button('go to card on limitlessTCG', url)
           st.image(url, width=iWidth)
 
