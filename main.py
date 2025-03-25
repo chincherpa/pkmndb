@@ -181,7 +181,7 @@ def color_player_names_events(text, player_colors, sKey=None):
   if ':' not in text:
     return text
 
-  text_turn, text_text = text.split(':')
+  text_turn, text_text = text.split(':', maxsplit=1)
   if sKey is not None:
     color = c.dImportant_Actions_colors[sKey]
     text_text = text_text.replace(sKey, f"<span style='color: {color}; font-weight: bold;'>{sKey}</span>")
