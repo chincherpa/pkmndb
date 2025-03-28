@@ -549,11 +549,6 @@ with tab1:
       use_container_width=True,
     )
     if language_cards == 'deutsch':
-      print('\t\t\t\t[yellow]JA, IST DEUTSCH')
-      print("[yellow]df_with_urls.iloc[selected_cards]['URL DE']")
-      print(df_with_urls.iloc[selected_cards]['URL DE'])
-      print("[yellow]df_selected_cards['URL']")
-      print(df_selected_cards['URL'])
       df_selected_cards['URL'] = df_with_urls.iloc[selected_cards]['URL DE']
     # if 'URL' not in lColumns_to_show:
     #   if language_cards == 'deutsch':
@@ -570,7 +565,6 @@ with tab1:
       cols = st.columns(4)
       for i in range(min(st.session_state.num_images, len(df_selected_cards))):
         card = df_selected_cards.iloc[i]
-        # print(f'{card = }')
         with cols[i % 4]:
           col_num, col_link = st.columns(2)
           card_id = f"1 {card['Name']} {card['Set']} {card['#']}"
@@ -582,7 +576,6 @@ with tab1:
               st.session_state.card_set.remove(card_id)
 
           url = card['URL']
-          print(f'{url = }')
           col_link.link_button('go to card on limitlessTCG', url)
           st.image(url, width=iWidth)
 
@@ -637,8 +630,6 @@ with tab1:
 
 # Battlelog viewer
 with tab2:
-  st.title('Pokemon Trading Card Game - Battlelog Viewer')
-
   # game_log = ''
 
   # bfile_uploader = st.toggle('Load battlelog from textfile')
