@@ -494,14 +494,14 @@ with tab1:
   with col_search_right3:
     search_term_att_eff = st_keyup('Find in effect of attack:', key='search_term_att_eff_key')
     if search_term_att_eff:
-      if language_search == 'english':
-        mask = df['Effect 1'].str.contains(search_term_att_eff, case=False, na=False) | \
-          df['Effect 2'].str.contains(search_term_att_eff, case=False, na=False)
-      elif language_search == 'deutsch':
-        mask = df['Effect 1 DE'].str.contains(search_term_att_eff, case=False, na=False) | \
-          df['Effect 1'].str.contains(search_term_att_eff, case=False, na=False) | \
-          df['Effect 2 DE'].str.contains(search_term_att_eff, case=False, na=False) | \
-          df['Effect 2'].str.contains(search_term_att_eff, case=False, na=False)
+      if language_search == 'xenglish':
+        mask = df['Effect Attack 1'].str.contains(search_term_att_eff, case=False, na=False) | \
+          df['Effect Attack 2'].str.contains(search_term_att_eff, case=False, na=False)
+      elif 1:#language_search == 'deutsch':
+        mask = df['Effect Attack 1 DE'].str.contains(search_term_att_eff, case=False, na=False) | \
+          df['Effect Attack 1'].str.contains(search_term_att_eff, case=False, na=False) | \
+          df['Effect Attack 2 DE'].str.contains(search_term_att_eff, case=False, na=False) | \
+          df['Effect Attack 2'].str.contains(search_term_att_eff, case=False, na=False)
       df = df[mask]
 
   # Show filters
@@ -579,7 +579,7 @@ with tab1:
 
           url = card['URL']
           col_link.link_button('go to card on limitlessTCG', url)
-          st.image(url, width=iWidth)
+          # st.image(url, width=iWidth)
 
       if st.session_state.num_images < len(df_selected_cards):
         if st.button('load more'):
