@@ -4,6 +4,8 @@ from datetime import datetime
 import re
 import sys
 
+from rich import print
+
 sDateTime = datetime.now().strftime("%Y-%m-%d %H-%M-%S")
 print(sDateTime)
 
@@ -402,7 +404,7 @@ lFiles = [
       # 'ASR_DE.html',
       # 'BRS_DE.html',
       # 'CRZ_DE.html',
-      'JTG_DE.html',
+      # 'JTG_DE.html',
       # 'LOR_DE.html',
       # 'MEW_DE.html',
       # 'OBF_DE.html',
@@ -410,7 +412,7 @@ lFiles = [
       # 'PAL_DE.html',
       # 'PAR_DE.html',
       # 'PGO_DE.html',
-      # 'PR-SW_DE.html',
+      'PR-SW_DE.html',
       # 'PRE_DE.html',
       # 'SCR_DE.html',
       # 'SFA_DE.html',
@@ -450,6 +452,7 @@ with open(f'cards_{sDateTime}.csv', mode='w', newline='', encoding=sEncoding) as
       expansion, _, _, number_rarity = set_info_en.split("\n")
       expansion_long = expansion.strip()
       expansion = expansion_long[-4:-1]
+      expansion = translate_text(dReplacements, expansion)
       try:
         number, rarity = number_rarity.split(' · ')
         set_info_en = f'{expansion} {number.strip()}'
@@ -542,6 +545,7 @@ with open(f'cards_{sDateTime}.csv', mode='w', newline='', encoding=sEncoding) as
       expansion, _, _, number_rarity = set_info.split("\n")
       expansion_long = expansion.strip()
       expansion = expansion_long[-4:-1]
+      expansion = translate_text(dReplacements, expansion)
       try:
         number, rarity = number_rarity.split(' · ')
         set_info = f'{expansion} {number.strip()}'
@@ -699,6 +703,7 @@ with open(f'cards_{sDateTime}.csv', mode='w', newline='', encoding=sEncoding) as
           "img_url",
           "dCards_EN[set_info]['img_url_en']",
         ]
+
       lResult = [
           sCard_name,
           dCards_EN[set_info]['sCard_name_en'],

@@ -451,9 +451,9 @@ with tab1:
   with col_search_left1:
     search_term_name = st_keyup('Find in Pokemon name:', key='search_term_name_key')
     if search_term_name:
-      if language_cards == 'english':
+      if language_search == 'english':
         mask = df['Name'].str.contains(search_term_name, case=False, na=False)
-      elif language_cards == 'deutsch':
+      elif language_search == 'deutsch':
         mask = df['Name DE'].str.contains(search_term_name, case=False, na=False) | \
           df['Name'].str.contains(search_term_name, case=False, na=False)
       df = df[mask]
@@ -482,10 +482,10 @@ with tab1:
   with col_search_left3:
     search_term_attack = st_keyup('Find in name of attack:', key='search_term_attack_key')
     if search_term_attack:
-      if language_cards == 'english':
+      if language_search == 'english':
         mask = df['Attack 1 name'].str.contains(search_term_attack, case=False, na=False) | \
           df['Attack 2 name'].str.contains(search_term_attack, case=False, na=False)
-      elif language_cards == 'deutsch':
+      elif language_search == 'deutsch':
         mask = df['Attack 1 name DE'].str.contains(search_term_attack, case=False, na=False) | \
           df['Attack 1 name'].str.contains(search_term_attack, case=False, na=False) | \
           df['Attack 2 name DE'].str.contains(search_term_attack, case=False, na=False) | \
@@ -506,6 +506,9 @@ with tab1:
 
   # Show filters
   dFilters = {
+    'language_cards': language_cards,
+    'language_search': language_search,
+    'sCards_format': sCards_format,
     'sCards_format': sCards_format,
     'search_term_name': search_term_name,
     'search_term_attack': search_term_attack,
@@ -522,6 +525,8 @@ with tab1:
     'sToggle_ex': sToggle_ex,
     'sToggle_V': sToggle_V,
   }
+  print(f'Found cards {len(df)} - Show filter')
+  print(dFilters)
   with st.expander(f'Found cards {len(df)} - Show filter'):
     st.write(dFilters)
 
