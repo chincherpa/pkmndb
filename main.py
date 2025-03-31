@@ -355,9 +355,9 @@ def export_decklist(dDecklist):
 
 col_lang_crads, col_lang_search, col_format, col_reset = st.columns(4)
 with col_lang_crads:
-  language_cards = st.segmented_control('Cards language', ['english', 'deutsch'], default='english', key='seg_ctrl_lang_cards')
+  language_cards = st.segmented_control('Cards language', ['deutsch', 'english'], default='deutsch', key='seg_ctrl_lang_cards')
 with col_lang_search:
-  language_search = st.segmented_control('Search language', ['english', 'deutsch'], default='english', key='seg_ctrl_lang_search')
+  language_search = st.segmented_control('Search language', ['deutsch', 'english'], default='deutsch', key='seg_ctrl_lang_search')
 with col_format:
   sCards_format = st.segmented_control('Cards format', ['standard', 'all'], default='standard', key='seg_ctrl_format')
 with col_reset:
@@ -367,7 +367,6 @@ with col_reset:
 
 # Load data
 df_orig = load_data()
-lIndices = [47, 48 , 49]
 if sCards_format == 'standard':
   df_orig = df_orig[df_orig['Regulation'].isin(c.lStandard_regulations)] # lStandard_regulations
 df = df_orig.reset_index(drop=True)
@@ -449,7 +448,7 @@ with tab1:
 
   col_search_left1, col_search_right1 = st.columns(2)
   with col_search_left1:
-    search_term_name = st_keyup('Find in Pokemon name:', key='search_term_name_key')
+    search_term_name = st_keyup('Find in Cards name:', key='search_term_name_key')
     if search_term_name:
       if language_search == 'english':
         mask = df['Name'].str.contains(search_term_name, case=False, na=False)
@@ -457,6 +456,8 @@ with tab1:
         mask = df['Name DE'].str.contains(search_term_name, case=False, na=False) | \
           df['Name'].str.contains(search_term_name, case=False, na=False)
       df = df[mask]
+      print(df.head())
+
   with col_search_right1:
     search_term_evolves_from = st_keyup("Find in 'Evolves from'", key='search_term_evolves_from_key')
     if search_term_evolves_from:
@@ -471,6 +472,7 @@ with tab1:
       mask = df['Ability'].str.contains(search_term_ability, case=False, na=False) | \
         df['Ability text'].str.contains(search_term_ability, case=False, na=False)
       df = df[mask]
+
   with col_search_right2:
     search_term_ability_2 = st_keyup('and...', key='search_term_ability_2_key')
     if search_term_ability_2:
@@ -494,10 +496,10 @@ with tab1:
   with col_search_right3:
     search_term_att_eff = st_keyup('Find in effect of attack:', key='search_term_att_eff_key')
     if search_term_att_eff:
-      if language_search == 'xenglish':
+      if language_search == 'english':
         mask = df['Effect Attack 1'].str.contains(search_term_att_eff, case=False, na=False) | \
           df['Effect Attack 2'].str.contains(search_term_att_eff, case=False, na=False)
-      elif 1:#language_search == 'deutsch':
+      elif language_search == 'deutsch':
         mask = df['Effect Attack 1 DE'].str.contains(search_term_att_eff, case=False, na=False) | \
           df['Effect Attack 1'].str.contains(search_term_att_eff, case=False, na=False) | \
           df['Effect Attack 2 DE'].str.contains(search_term_att_eff, case=False, na=False) | \
@@ -527,6 +529,8 @@ with tab1:
   }
   print(f'Found cards {len(df)} - Show filter')
   print(dFilters)
+  print(df['Name DE'])
+  print(df.shape)
   with st.expander(f'Found cards {len(df)} - Show filter'):
     st.write(dFilters)
 
