@@ -394,14 +394,15 @@ lHeader = [
   '#',
   'Regulation',
   'Set Name',
+  'URL DE',
   'URL',
-  'URL EN',
 ]
 
 lFiles = [
       # 'ASR_DE.html',
       # 'BRS_DE.html',
       # 'CRZ_DE.html',
+      'JTG_DE.html',
       # 'LOR_DE.html',
       # 'MEW_DE.html',
       # 'OBF_DE.html',
@@ -409,7 +410,7 @@ lFiles = [
       # 'PAL_DE.html',
       # 'PAR_DE.html',
       # 'PGO_DE.html',
-      'PR-SW_DE.html',
+      # 'PR-SW_DE.html',
       # 'PRE_DE.html',
       # 'SCR_DE.html',
       # 'SFA_DE.html',
@@ -512,9 +513,9 @@ with open(f'cards_{sDateTime}.csv', mode='w', newline='', encoding=sEncoding) as
       else:
         ability_en, ability_text_en = '', ''
 
-      if 'Trainer' in card_type:
-        sections = card_en.find_all('div', class_='card-text-section')
-        ability_text = sections[1].text.strip()
+      if 'Trainer' in card_type_en:
+        sections_en = card_en.find_all('div', class_='card-text-section')
+        ability_text_en = sections_en[1].text.strip()
 
       img_tag_en = card_en.select_one('div.card-image img')
       img_url_en = img_tag_en.get('src')
@@ -738,12 +739,6 @@ with open(f'cards_{sDateTime}.csv', mode='w', newline='', encoding=sEncoding) as
           img_url,
           dCards_EN[set_info]['img_url_en'],
         ]
-
-      if number == '257':
-        print(*zip(lResult_str, lResult), sep='\n')
-      else:
-        continue
-
 
       # else:
       #   lResult = [

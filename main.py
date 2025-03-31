@@ -353,9 +353,11 @@ def export_decklist(dDecklist):
     st.code(text)
   # pyperclip.copy(text)
 
-col_lang, col_format, col_reset = st.columns(3)
-with col_lang:
-  language_cards = st.segmented_control('Cards language', ['english', 'deutsch'], default='english', key='seg_ctrl_lang')
+col_lang_crads, col_lang_search, col_format, col_reset = st.columns(4)
+with col_lang_crads:
+  language_cards = st.segmented_control('Cards language', ['english', 'deutsch'], default='english', key='seg_ctrl_lang_cards')
+with col_lang_search:
+  language_search = st.segmented_control('Search language', ['english', 'deutsch'], default='english', key='seg_ctrl_lang_search')
 with col_format:
   sCards_format = st.segmented_control('Cards format', ['standard', 'all'], default='standard', key='seg_ctrl_format')
 with col_reset:
@@ -440,7 +442,7 @@ with tab1:
         df = df[~df['Name'].str.endswith(('V', 'VSTAR'))]
       if sToggle_V == "only 'V(STAR)'":
         df = df[df['Name'].str.endswith(('V', 'VSTAR'))]
-      if language_cards == 'deutsch':
+      if language_search == 'deutsch':
         sSame_name = st.segmented_control('Same name in english and german only', ['no', 'yes'], default='no', key='same_name_key')
         if sSame_name == 'yes':
           df = df[df['Name DE'] == df['Name']]
@@ -492,10 +494,10 @@ with tab1:
   with col_search_right3:
     search_term_att_eff = st_keyup('Find in effect of attack:', key='search_term_att_eff_key')
     if search_term_att_eff:
-      if language_cards == 'english':
+      if language_search == 'english':
         mask = df['Effect 1'].str.contains(search_term_att_eff, case=False, na=False) | \
           df['Effect 2'].str.contains(search_term_att_eff, case=False, na=False)
-      elif language_cards == 'deutsch':
+      elif language_search == 'deutsch':
         mask = df['Effect 1 DE'].str.contains(search_term_att_eff, case=False, na=False) | \
           df['Effect 1'].str.contains(search_term_att_eff, case=False, na=False) | \
           df['Effect 2 DE'].str.contains(search_term_att_eff, case=False, na=False) | \
@@ -525,8 +527,8 @@ with tab1:
 
   if not df.empty:
     df_with_urls = df #.reset_index(drop=True)
-    if language_cards == 'english':
-      df = df.drop(c.lColumns_DE, axis=1)
+    # if language_search == 'english':
+    #   df = df.drop(c.lColumns_DE, axis=1)
     lColumns_to_show = st.multiselect('Show only these columns', list(df.columns), key='multiselect_key_lColumns_to_show')
     if lColumns_to_show:
       df = df[lColumns_to_show]
