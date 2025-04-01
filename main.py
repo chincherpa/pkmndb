@@ -569,7 +569,10 @@ with tab1:
     #   df_selected_cards['#'] = df_with_urls.iloc[selected_cards]['#']
       # df_selected_cards['#'] = df_with_urls.loc[selected_cards, '#'].values
 
-    username = os.getlogin()
+    try:
+      username = os.getlogin()
+    except Exception as e:
+      username = 'online'
     if username != 'FV4TJAY':
       print(username)
       if not df_selected_cards.empty:
