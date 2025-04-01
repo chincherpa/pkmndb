@@ -404,7 +404,7 @@ lFiles = [
       # 'ASR_DE.html',
       # 'BRS_DE.html',
       # 'CRZ_DE.html',
-      # 'JTG_DE.html',
+      'JTG_DE.html',
       # 'LOR_DE.html',
       # 'MEW_DE.html',
       # 'OBF_DE.html',
@@ -412,7 +412,7 @@ lFiles = [
       # 'PAL_DE.html',
       # 'PAR_DE.html',
       # 'PGO_DE.html',
-      'PR-SW_DE.html',
+      # 'PR-SW_DE.html',
       # 'PRE_DE.html',
       # 'SCR_DE.html',
       # 'SFA_DE.html',
@@ -462,6 +462,8 @@ with open(f'cards_{sDateTime}.csv', mode='w', newline='', encoding=sEncoding) as
         rarity = ''
         set_info_en = f'{expansion} {number_rarity.strip()}'
         number = number_rarity.replace('#', '').strip()
+      if number == '159':
+        print(card_en)
       # Kartentitel, Typ und KP
       name_section_en = card_en.find('p', class_='card-text-title').text.strip()
       s_clean_en = name_section_en.strip().split(' - ')
@@ -516,9 +518,11 @@ with open(f'cards_{sDateTime}.csv', mode='w', newline='', encoding=sEncoding) as
       else:
         ability_en, ability_text_en = '', ''
 
-      if 'Trainer' in card_type_en:
+      if 'Trainer' in card_type_en or 'Energy' in card_type_en:
         sections_en = card_en.find_all('div', class_='card-text-section')
         ability_text_en = sections_en[1].text.strip()
+        ability_text_en = ability_text_en.split()
+        ability_text_en = ' '.join(ability_text_en)
 
       img_tag_en = card_en.select_one('div.card-image img')
       img_url_en = img_tag_en.get('src')
@@ -535,6 +539,8 @@ with open(f'cards_{sDateTime}.csv', mode='w', newline='', encoding=sEncoding) as
         'evolves_from_en': sEvolves_from_en,
         'img_url_en': img_url_en,
       }
+      if number == '159':
+        print(dCards_EN[set_info_en])
 
     soup = BeautifulSoup(html, 'html.parser')
     sTitle = soup.title.string.replace(' – Limitless', '')
@@ -744,6 +750,9 @@ with open(f'cards_{sDateTime}.csv', mode='w', newline='', encoding=sEncoding) as
           img_url,
           dCards_EN[set_info]['img_url_en'],
         ]
+
+      # if number == '159':
+      #   print(dict(zip(lHeader, lResult)))
 
       # else:
       #   lResult = [

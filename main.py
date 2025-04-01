@@ -43,49 +43,47 @@ def load_data():
   return df
 
 def save_selection():
-    selection_name = st.session_state.selection_name
-    if selection_name and st.session_state.selected_cards:
-        with open(f'{selection_name}.txt', 'w') as f:
-    #with open('readme.txt', 'w') as f:
-    #  f.write('readme')
-            for card, quantity in st.session_state.selected_cards.items():
-                f.write(f'{quantity} {card}\n')
-        st.success(f"Selection '{selection_name}' saved successfully!")
-    elif selection_name:
-        st.error('Please select at least one card.')
-    elif st.session_state.selected_cards:
-        st.error('Please enter a name.')
+  selection_name = st.session_state.selection_name
+  if selection_name and st.session_state.selected_cards:
+    with open(f'{selection_name}.txt', 'w') as f:
+      for card, quantity in st.session_state.selected_cards.items():
+        f.write(f'{quantity} {card}\n')
+    st.success(f"Selection '{selection_name}' saved successfully!")
+  elif selection_name:
+    st.error('Please select at least one card.')
+  elif st.session_state.selected_cards:
+    st.error('Please enter a name.')
 
 def load_saved_selection(textfile):
-    with open(f'saved_selections/{textfile}', 'r') as f:
-        lines = f.readlines()
+  with open(f'saved_selections/{textfile}', 'r') as f:
+    lines = f.readlines()
 
-    dResult = {}
-    for line in lines:
-        quantity = line.split(' ')[0]
-        card = line[len(quantity) + 1:].strip()
-        dResult[card] = quantity
+  dResult = {}
+  for line in lines:
+    quantity = line.split(' ')[0]
+    card = line[len(quantity) + 1:].strip()
+    dResult[card] = quantity
 
-    return dResult
+  return dResult
 
 # Modified function for loading saved selections
 def load_saved_selections():
-    saved_selections = ['']
-    saved_selections = saved_selections + [f for f in os.listdir('saved_selections') if f.endswith('.txt')]
-    return [os.path.splitext(f)[0] for f in saved_selections]
+  saved_selections = ['']
+  saved_selections = saved_selections + [f for f in os.listdir('saved_selections') if f.endswith('.txt')]
+  return [os.path.splitext(f)[0] for f in saved_selections]
 
 def format_pokemon_card_line(line):
-    # Teile die Zeile in Wörter auf
-    words = line.split()
-    
-    # Finde die Position der letzten beiden Wörter
-    last_word = words[-1]
-    second_last_word = words[-2]
-    
-    # Erstelle den neuen String mit | als Trenner für die letzten beiden Elemente
-    new_line = ' '.join(words[:-2]) + f'|{second_last_word}|{last_word}'
-    
-    return new_line
+  # Teile die Zeile in Wörter auf
+  words = line.split()
+
+  # Finde die Position der letzten beiden Wörter
+  last_word = words[-1]
+  second_last_word = words[-2]
+
+  # Erstelle den neuen String mit | als Trenner für die letzten beiden Elemente
+  new_line = ' '.join(words[:-2]) + f'|{second_last_word}|{last_word}'
+
+  return new_line
 
 def parse_card_entries(text):
   r"""
@@ -147,34 +145,34 @@ def update_quantity(old_item, new_quantity):
 
 # Battlelog viewer START
 def get_language(text):
-    global language_battlelog
-    language_battlelog = ['english', 'deutsch'][text.split('\n')[0] == 'Vorbereitung']
+  global language_battlelog
+  language_battlelog = ['english', 'deutsch'][text.split('\n')[0] == 'Vorbereitung']
 
 def load_saved_battlogs():
-    saved_selections = ['']
-    saved_selections = saved_selections + [f'{battlelog}.txt' for battlelog in os.listdir(c.sBattlelogs_Folder) if battlelog.endswith('.txt')]
-    return [os.path.splitext(f)[0] for f in saved_selections]
+  saved_selections = ['']
+  saved_selections = saved_selections + [f'{battlelog}.txt' for battlelog in os.listdir(c.sBattlelogs_Folder) if battlelog.endswith('.txt')]
+  return [os.path.splitext(f)[0] for f in saved_selections]
 
 def extract_players(preparation_text):
-    players = []
-    lines = preparation_text.split('\n')
+  players = []
+  lines = preparation_text.split('\n')
 
-    for line in lines:
-        if c.dTranslations[language_battlelog]['player_pattern'] in line:
-            player = line.split(c.dTranslations[language_battlelog]['player_pattern'])[0].strip()
-            players.append(player)
-    return players
+  for line in lines:
+    if c.dTranslations[language_battlelog]['player_pattern'] in line:
+      player = line.split(c.dTranslations[language_battlelog]['player_pattern'])[0].strip()
+      players.append(player)
+  return players
 
 def get_player_colors(players):
-    """Assign colors to players"""
-    colors = ['#FF4B00', '#4B8BFF']  # Rot und Blau
-    return {player: color for player, color in zip(players, colors)}
+  """Assign colors to players"""
+  colors = ['#FF4B00', '#4B8BFF']  # Rot und Blau
+  return {player: color for player, color in zip(players, colors)}
 
 def color_player_names(text, player_colors):
-    """Replace player names with colored versions"""
-    for player, color in player_colors.items():
-        text = text.replace(player, f"<span style='color: {color}; font-weight: bold;'>{player}</span>")
-    return text
+  """Replace player names with colored versions"""
+  for player, color in player_colors.items():
+    text = text.replace(player, f"<span style='color: {color}; font-weight: bold;'>{player}</span>")
+  return text
 
 def color_player_names_events(text, player_colors, sKey=None):
   """Replace player names with colored versions"""
@@ -192,43 +190,43 @@ def color_player_names_events(text, player_colors, sKey=None):
   return f'<p><u>{text_turn}:</u> {text_text}</p>'
 
 def find_last_item(lst):
-    """
-    Find the last item in the list.
-    """
-    true_indices = [x for x in lst if x]
-    return true_indices[-1]
+  """
+  Find the last item in the list.
+  """
+  true_indices = [x for x in lst if x]
+  return true_indices[-1]
 
 def get_winner(text):
-    winner = 'not found'
-    last_line = find_last_item(text.split('\n'))
-    # Suche nach dem Muster
-    match = re.search(c.dTranslations[language_battlelog]['winner_pattern'], text)
-    if match:
-        winner = match.group(1)
-    return winner, last_line
+  winner = 'not found'
+  last_line = find_last_item(text.split('\n'))
+  # Suche nach dem Muster
+  match = re.search(c.dTranslations[language_battlelog]['winner_pattern'], text)
+  if match:
+    winner = match.group(1)
+  return winner, last_line
 
 def parse_game_log(log_text):
-    # Split into preparation and turns
-    parts = log_text.split('\n\nTurn #')
-    preparation = parts[0]
-    turns = ['Turn #' + turn for turn in parts[1:]]
+  # Split into preparation and turns
+  parts = log_text.split('\n\nTurn #')
+  preparation = parts[0]
+  turns = ['Turn #' + turn for turn in parts[1:]]
 
-    return preparation, turns
+  return preparation, turns
 
 def extract_turn_info(turn_text):
-    # Extract turn number and player
-    turn_header = turn_text.split('\n')[0]
-    turn_num = int(re.search(r'Turn # (\d+)', turn_header).group(1))
-    player = re.search(c.dTranslations[language_battlelog]['turn_pattern'], turn_header).group(1)
+  # Extract turn number and player
+  turn_header = turn_text.split('\n')[0]
+  turn_num = int(re.search(r'Turn # (\d+)', turn_header).group(1))
+  player = re.search(c.dTranslations[language_battlelog]['turn_pattern'], turn_header).group(1)
 
-    # Extract actions
-    actions = [line.strip() for line in turn_text.split('\n')[1:] if line.strip()]
+  # Extract actions
+  actions = [line.strip() for line in turn_text.split('\n')[1:] if line.strip()]
 
-    return {
-        'turn_number': turn_num,
-        'player': player,
-        'actions': actions
-    }
+  return {
+    'turn_number': turn_num,
+    'player': player,
+    'actions': actions
+  }
 
 def format_action(action, player_colors):
   """Format action text with colored player names and appropriate styling"""
@@ -353,8 +351,8 @@ def export_decklist(dDecklist):
     st.code(text)
   # pyperclip.copy(text)
 
-col_lang_crads, col_lang_search, col_format, col_reset = st.columns(4)
-with col_lang_crads:
+col_lang_cards, col_lang_search, col_format, col_reset = st.columns(4)
+with col_lang_cards:
   language_cards = st.segmented_control('Cards language', ['deutsch', 'english'], default='deutsch', key='seg_ctrl_lang_cards')
 with col_lang_search:
   language_search = st.segmented_control('Search language', ['deutsch', 'english'], default='deutsch', key='seg_ctrl_lang_search')
@@ -511,7 +509,6 @@ with tab1:
     'language_cards': language_cards,
     'language_search': language_search,
     'sCards_format': sCards_format,
-    'sCards_format': sCards_format,
     'search_term_name': search_term_name,
     'search_term_attack': search_term_attack,
     'search_term_evolves_from': search_term_evolves_from,
@@ -527,10 +524,10 @@ with tab1:
     'sToggle_ex': sToggle_ex,
     'sToggle_V': sToggle_V,
   }
-  print(f'Found cards {len(df)} - Show filter')
-  print(dFilters)
-  print(df['Name DE'])
-  print(df.shape)
+  # print(f'Found cards {len(df)} - Show filter')
+  # print(dFilters)
+  # print(df['Name DE'])
+  # print(df.shape)
   with st.expander(f'Found cards {len(df)} - Show filter'):
     st.write(dFilters)
 
@@ -554,13 +551,15 @@ with tab1:
     st.header('Selected cards')
     selected_cards = event.selection.rows
     df_selected_cards = df.iloc[selected_cards]
+    if language_cards == 'deutsch':
+      # df_selected_cards['URL'] = df_with_urls.iloc[selected_cards]['URL DE']
+      df_selected_cards = df_selected_cards.assign(URL=df_with_urls.iloc[selected_cards]['URL DE'].values)
+      df_selected_cards = df_selected_cards.drop(['URL DE'], axis=1)
 
     st.dataframe(
       df_selected_cards,
       use_container_width=True,
     )
-    if language_cards == 'deutsch':
-      df_selected_cards['URL'] = df_with_urls.iloc[selected_cards]['URL DE']
     # if 'URL' not in lColumns_to_show:
     #   if language_cards == 'deutsch':
     #     df_selected_cards['URL'] = df_with_urls.iloc[selected_cards]['URL DE']
@@ -570,30 +569,37 @@ with tab1:
     #   df_selected_cards['#'] = df_with_urls.iloc[selected_cards]['#']
       # df_selected_cards['#'] = df_with_urls.loc[selected_cards, '#'].values
 
-    if not df_selected_cards.empty:
-      st.write(f'Show {min(st.session_state.num_images, len(df_selected_cards))} cards:')
-      iWidth = 400  # st.slider('size', 100, 600, 400, 50)
-      cols = st.columns(4)
-      for i in range(min(st.session_state.num_images, len(df_selected_cards))):
-        card = df_selected_cards.iloc[i]
-        with cols[i % 4]:
-          col_num, col_link = st.columns(2)
-          card_id = f"1 {card['Name']} {card['Set']} {card['#']}"
-          pin = col_num.toggle('add card', key=card_id)
-          if pin:
-            st.session_state.card_set.add(card_id)
-          else:
-            if card_id in st.session_state.card_set:
-              st.session_state.card_set.remove(card_id)
+    username = os.getlogin()
+    if username != 'FV4TJAY':
+      print(username)
+      if not df_selected_cards.empty:
+        st.write(f'Show {min(st.session_state.num_images, len(df_selected_cards))} cards:')
+        iWidth = 400  # st.slider('size', 100, 600, 400, 50)
+        cols = st.columns(4)
+        for i in range(min(st.session_state.num_images, len(df_selected_cards))):
+          card = df_selected_cards.iloc[i]
+          with cols[i % 4]:
+            col_num, col_link = st.columns(2)
+            card_id = f"1 {card['Name']} {card['Set']} {card['#']}"
+            pin = col_num.toggle('add card', key=card_id)
+            if pin:
+              st.session_state.card_set.add(card_id)
+            else:
+              if card_id in st.session_state.card_set:
+                st.session_state.card_set.remove(card_id)
 
-          url = card['URL']
-          col_link.link_button('go to card on limitlessTCG', url)
-          # st.image(url, width=iWidth)
+            url = card['URL']
+            col_link.link_button('go to card on limitlessTCG', url)
+            # st.image(url, width=iWidth)
 
-      if st.session_state.num_images < len(df_selected_cards):
-        if st.button('load more'):
-          load_more()
-        st.write(f'Show: {min(st.session_state.num_images, len(df_selected_cards))} von {len(df_selected_cards)} Karten')
+        if st.session_state.num_images < len(df_selected_cards):
+          if st.button('load more'):
+            load_more()
+          st.write(f'Show: {min(st.session_state.num_images, len(df_selected_cards))} von {len(df_selected_cards)} Karten')
+    else:
+      print(f'{username = }')
+      print('Stopping here')
+      st.write('Stopping here')
   else:
     st.write('No card found')
 
