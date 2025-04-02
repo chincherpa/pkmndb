@@ -1,3 +1,4 @@
+import uuid
 import re
 
 import streamlit as st
@@ -23,7 +24,8 @@ if 'selected_cards' not in st.session_state:
   st.session_state.selected_cards = {}
 
 if 'card_set' not in st.session_state:
-  st.session_state.card_set = set()
+  # st.session_state.card_set = set()
+  st.session_state.card_set = {}
 
 # Function to load more images
 def load_more():
@@ -126,10 +128,6 @@ def reset_fields():
   st.session_state.not_found = []
   for k, v in st.session_state.items():
     print(k, v)
-
-# Initialisiere das Set
-if 'card_set' not in st.session_state:
-  st.session_state.card_set = set()
 
 def update_quantity(old_item, new_quantity):
   """Aktualisiert die Anzahl eines Elements im Set"""
@@ -454,7 +452,6 @@ with tab1:
         mask = df['Name DE'].str.contains(search_term_name, case=False, na=False) | \
           df['Name'].str.contains(search_term_name, case=False, na=False)
       df = df[mask]
-      print(df.head())
 
   with col_search_right1:
     search_term_evolves_from = st_keyup("Find in 'Evolves from'", key='search_term_evolves_from_key')
@@ -569,7 +566,10 @@ with tab1:
     #   df_selected_cards['#'] = df_with_urls.iloc[selected_cards]['#']
       # df_selected_cards['#'] = df_with_urls.loc[selected_cards, '#'].values
 
-    username = os.getlogin()
+    try:
+      username = os.getlogin()
+    except Exception as e:
+      username = 'online'
     if username != 'FV4TJAY':
       print(username)
       if not df_selected_cards.empty:
@@ -580,17 +580,17 @@ with tab1:
           card = df_selected_cards.iloc[i]
           with cols[i % 4]:
             col_num, col_link = st.columns(2)
-            card_id = f"1 {card['Name']} {card['Set']} {card['#']}"
-            pin = col_num.toggle('add card', key=card_id)
-            if pin:
-              st.session_state.card_set.add(card_id)
+            card_id = (card['Set'], card['#'])
+            add_card = col_num.toggle('add card', value=card_id in st.session_state.card_set, key=card_id)
+            if add_card:
+              st.session_state.card_set[card_id] = 1
             else:
               if card_id in st.session_state.card_set:
-                st.session_state.card_set.remove(card_id)
+                del st.session_state.card_set[card_id]
 
             url = card['URL']
             col_link.link_button('go to card on limitlessTCG', url)
-            # st.image(url, width=iWidth)
+            st.image(url, width=iWidth)
 
         if st.session_state.num_images < len(df_selected_cards):
           if st.button('load more'):
@@ -608,42 +608,50 @@ with tab1:
 
   # Zeige alle Elemente mit Bearbeitungsmöglichkeiten
 
-  for item in sorted(list(st.session_state.card_set), key=lambda x: x[2:-8]):
-    col1, col2 = st.columns([3, 1])
+  # for set_num, quantity in st.session_state.card_set.items():
+  #   st.text(f'{set_num = }')
+  # st.text('###################################################')
+  iCounter = 0
+  for set_num, quantity in st.session_state.card_set.items():
+    print(f'{iCounter} - {set_num = }')
+    # st.write(f'{iCounter} - {set_num = }')
+    iCounter += 1
+    set = set_num[0]
+    num = set_num[1]
+    col1, col2, col3 = st.columns([2, 1, 8])
 
     with col1:
-      st.text(item)
+      name = df_orig.loc[(df_orig['Set'] == set) & (df_orig['#'] == num), 'Name'].values[0]
+      sText = f'{name} {set} {num}'
+      st.write(sText)
 
     with col2:
-      # Extrahiere die aktuelle Anzahl
-      current_quantity = int(re.match(r'^\d+', item).group())
-
-      # Erstelle einen eindeutigen Schlüssel für den Zahleneingabebereich
-      key = f'quantity_{item}'
-
-      # Eingabefeld für die neue Anzahl
-      if 'Basic' in item and 'Energy' in item:
+  #     # Eingabefeld für die neue Anzahl
+      cardtype = df_orig.loc[(df_orig['Set'] == set) & (df_orig['#'] == num), 'Cardtype'].values[0]
+      print(cardtype)
+      if cardtype == 'Energy - Basic Energy':
         iMaxValue = 59
       else:
         iMaxValue = 4
-  #     new_quantity = st.number_input(
-  #       'Anzahl', 
-  #       min_value=0,
-  #       max_value=iMaxValue,
-  #       value=current_quantity,
-  #       step=1,
-  #       key=key,
-  #       label_visibility='collapsed'
-  #     )
 
-  #     # Wenn sich die Anzahl geändert hat und der Benutzer die Änderung bestätigt
-  #     if new_quantity != current_quantity:# and st.button('Aktualisieren', key=f'update_{item}'):
-  #       update_quantity(item, new_quantity)
-  #       st.rerun()
+      new_quantity = st.number_input(
+        'Anzahl',
+        min_value=0,
+        max_value=iMaxValue,
+        value=quantity,
+        step=1,
+        key=uuid.uuid4(),
+        label_visibility='collapsed'
+      )
 
-  st.subheader('Decklist')
-  for card in sorted(list(st.session_state.card_set), key=lambda x: x[2:-8]):
-    st.write(card)
+      # Wenn sich die Anzahl geändert hat und der Benutzer die Änderung bestätigt
+      if new_quantity != quantity:# and st.button('Aktualisieren', key=f'update_{card_id}'):
+        st.session_state.card_set[set_num] = new_quantity
+        # st.rerun()
+
+  # st.subheader('Decklist')
+  # for card in sorted(list(st.session_state.card_set), key=lambda x: x[2:-8]):
+  #   st.write(card)
 
 # Battlelog viewer
 with tab2:
