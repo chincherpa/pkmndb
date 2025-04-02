@@ -126,21 +126,21 @@ def download_image(url, cardname, expansion, number):
   #       file.write(image_data)
 
 def progress_bar(current, total, filename="", bar_length=40):
-    """Eine Fortschrittsanzeige mit aktuellem Dateinamen."""
-    fraction = current / total
-    arrow = int(fraction * bar_length) * '█'
-    padding = (bar_length - len(arrow)) * '░'
-    percent = int(fraction * 100)
-    # Dateianzeige auf maximale Länge begrenzen
-    max_filename_length = 40
-    if len(filename) > max_filename_length:
-        display_filename = filename[:max_filename_length-3] + "..."
-    else:
-        display_filename = filename
-    sys.stdout.write(f'\r[{arrow}{padding}] {percent}% ({current}/{total}) | {display_filename} ')
-    sys.stdout.flush()
-    if current == total:
-        print("\n")
+  """Eine Fortschrittsanzeige mit aktuellem Dateinamen."""
+  fraction = current / total
+  arrow = int(fraction * bar_length) * '█'
+  padding = (bar_length - len(arrow)) * '░'
+  percent = int(fraction * 100)
+  # Dateianzeige auf maximale Länge begrenzen
+  max_filename_length = 40
+  if len(filename) > max_filename_length:
+    display_filename = filename[:max_filename_length-3] + "..."
+  else:
+    display_filename = filename
+  sys.stdout.write(f'\r[{arrow}{padding}] {percent}% ({current}/{total}) | {display_filename} ')
+  sys.stdout.flush()
+  if current == total:
+    print("\n")
 
 def split_attack(sAttack):
   # pattern = r"^(\w+)\s+([A-Za-zÄÖÜäöüß ]+)\s*(\d*\+??)$"
@@ -169,7 +169,6 @@ def translate_text(dReplacements, text):
       text = text.replace(old_text, new_text)
   
   return text
-
 
 DOWNLOAD_ONLY = False
 
@@ -257,112 +256,6 @@ lAceSpecs = [
   'Treasure Tracker',
 ]
 
-# dDict = {
-  # 'lang': {
-  #   'de': [
-  #     'Name DE',
-  #     'Name',
-  #     'Cardtype',
-  #     'Type',
-  #     'Tera',
-  #     'HP',
-  #     'Evolves from',
-  #     'Ability',
-  #     'Ability text',
-  #     'Attack 1 cost',
-  #     'Attack 1 name',
-  #     'Attack 1 name EN',
-  #     'Attack 1 damage',
-  #     'Effect 1',
-  #     'Attack 2 cost',
-  #     'Attack 2 name',
-  #     'Attack 2 name EN',
-  #     'Attack 2 damage',
-  #     'Effect 2',
-  #     'Weakness',
-  #     'Resistance',
-  #     'Retreat cost',
-  #     'Set',
-  #     '#',
-  #     'Regulation',
-  #     'Set Name',
-  #     'URL'
-  #   ],
-  #   'en': [
-  #     'Name',
-  #     'Cardtype',
-  #     'Type',
-  #     'Tera',
-  #     'HP',
-  #     'Evolves from',
-  #     'Ability',
-  #     'Ability text',
-  #     'Attack 1 cost',
-  #     'Attack 1 name',
-  #     'Attack 1 damage',
-  #     'Effect 1',
-  #     'Attack 2 cost',
-  #     'Attack 2 name',
-  #     'Attack 2 damage',
-  #     'Effect 2',
-  #     'Weakness',
-  #     'Resistance',
-  #     'Retreat cost',
-  #     'Set',
-  #     '#',
-  #     'Regulation',
-  #     'Set Name',
-  #     'URL'
-  #   ],
-  # },
-#   'files': {
-#     'de': [
-#       'ASR_DE.html',
-#       'BRS_DE.html',
-#       'CRZ_DE.html',
-#       'LOR_DE.html',
-#       'MEW_DE.html',
-#       'OBF_DE.html',
-#       'PAF_DE.html',
-#       'PAL_DE.html',
-#       'PAR_DE.html',
-#       'PGO_DE.html',
-#       'PR-SW_DE.html',
-#       'PRE_DE.html',
-#       'SCR_DE.html',
-#       'SFA_DE.html',
-#       'SIT_DE.html',
-#       'SSP_DE.html',
-#       'SVI_DE.html',
-#       'SVP_DE.html',
-#       'TEF_DE.html',
-#       'TWM_DE.html',
-#     ],
-#     'en': [
-#       'ASR_EN.html',
-#       'BRS_EN.html',
-#       'CRZ_EN.html',
-#       'LOR_EN.html',
-#       'MEW_EN.html',
-#       'OBF_EN.html',
-#       'PAF_EN.html',
-#       'PAL_EN.html',
-#       'PAR_EN.html',
-#       'PGO_EN.html',
-#       'PR-SW_EN.html',
-#       'PRE_EN.html',
-#       'SCR_EN.html',
-#       'SFA_EN.html',
-#       'SIT_EN.html',
-#       'SSP_EN.html',
-#       'SVI_EN.html',
-#       'SVP_EN.html',
-#       'TEF_EN.html',
-#       'TWM_EN.html',
-#     ]
-#   }
-# }
-
 langs = ['de', 'en']
 lHeader = [
   'Name DE',
@@ -401,27 +294,27 @@ lHeader = [
 ]
 
 lFiles = [
-      # 'ASR_DE.html',
-      # 'BRS_DE.html',
-      # 'CRZ_DE.html',
+      'ASR_DE.html',
+      'BRS_DE.html',
+      'CRZ_DE.html',
       'JTG_DE.html',
-      # 'LOR_DE.html',
-      # 'MEW_DE.html',
-      # 'OBF_DE.html',
-      # 'PAF_DE.html',
-      # 'PAL_DE.html',
-      # 'PAR_DE.html',
-      # 'PGO_DE.html',
-      # 'PR-SW_DE.html',
-      # 'PRE_DE.html',
-      # 'SCR_DE.html',
-      # 'SFA_DE.html',
-      # 'SIT_DE.html',
-      # 'SSP_DE.html',
-      # 'SVI_DE.html',
-      # 'SVP_DE.html',
-      # 'TEF_DE.html',
-      # 'TWM_DE.html',
+      'LOR_DE.html',
+      'MEW_DE.html',
+      'OBF_DE.html',
+      'PAF_DE.html',
+      'PAL_DE.html',
+      'PAR_DE.html',
+      'PGO_DE.html',
+      'PR-SW_DE.html',
+      'PRE_DE.html',
+      'SCR_DE.html',
+      'SFA_DE.html',
+      'SIT_DE.html',
+      'SSP_DE.html',
+      'SVI_DE.html',
+      'SVP_DE.html',
+      'TEF_DE.html',
+      'TWM_DE.html',
     ]
 
 dCards_EN = {}
@@ -432,7 +325,7 @@ with open(f'cards_{sDateTime}.csv', mode='w', newline='', encoding=sEncoding) as
   writer.writerow(lHeader)
 # if 1:
   for idx, file_path in enumerate(lFiles):
-    progress_bar(idx + 1, len(lFiles), file_path)
+    progress_bar(idx + 1, len(lFiles), file_path.split('_')[0])
 
     file_path = f'html/{file_path}'
     with open(file_path, 'r', encoding='utf-8') as file:
@@ -462,8 +355,6 @@ with open(f'cards_{sDateTime}.csv', mode='w', newline='', encoding=sEncoding) as
         rarity = ''
         set_info_en = f'{expansion} {number_rarity.strip()}'
         number = number_rarity.replace('#', '').strip()
-      if number == '159':
-        print(card_en)
       # Kartentitel, Typ und KP
       name_section_en = card_en.find('p', class_='card-text-title').text.strip()
       s_clean_en = name_section_en.strip().split(' - ')
@@ -518,7 +409,7 @@ with open(f'cards_{sDateTime}.csv', mode='w', newline='', encoding=sEncoding) as
       else:
         ability_en, ability_text_en = '', ''
 
-      if 'Trainer' in card_type_en or 'Energy' in card_type_en:
+      if 'Trainer' in card_type_en or 'Special Energy' in card_type_en:
         sections_en = card_en.find_all('div', class_='card-text-section')
         ability_text_en = sections_en[1].text.strip()
         ability_text_en = ability_text_en.split()
@@ -539,8 +430,6 @@ with open(f'cards_{sDateTime}.csv', mode='w', newline='', encoding=sEncoding) as
         'evolves_from_en': sEvolves_from_en,
         'img_url_en': img_url_en,
       }
-      if number == '159':
-        print(dCards_EN[set_info_en])
 
     soup = BeautifulSoup(html, 'html.parser')
     sTitle = soup.title.string.replace(' – Limitless', '')
@@ -628,7 +517,7 @@ with open(f'cards_{sDateTime}.csv', mode='w', newline='', encoding=sEncoding) as
       else:
         ability, ability_text = '', ''
 
-      if 'Trainer' in card_type:
+      if 'Trainer' in card_type or 'Spezial-Energie' in card_type:
         sections = card.find_all('div', class_='card-text-section')
         ability_text = sections[1].text.strip()
 
@@ -807,3 +696,5 @@ with open(f'cards_{sDateTime}.csv', mode='w', newline='', encoding=sEncoding) as
       writer.writerow(lResult)
       # print(*lResult, sep='\n')
       # input('next')
+
+print('DONE')

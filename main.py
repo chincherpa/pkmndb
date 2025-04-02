@@ -20,12 +20,12 @@ if 'num_images' not in st.session_state:
   st.session_state.num_images = 20
 
 # Modified initialization for selected cards
-if 'selected_cards' not in st.session_state:
-  st.session_state.selected_cards = {}
+# if 'selected_cards' not in st.session_state:
+#   st.session_state.selected_cards = {}
 
-if 'card_set' not in st.session_state:
-  # st.session_state.card_set = set()
-  st.session_state.card_set = {}
+if 'dDecklist' not in st.session_state:
+  # st.session_state.dDecklist = set()
+  st.session_state.dDecklist = dict()
 
 # Function to load more images
 def load_more():
@@ -44,17 +44,17 @@ def load_data():
   df[object_columns] = df[object_columns].astype(str)
   return df
 
-def save_selection():
-  selection_name = st.session_state.selection_name
-  if selection_name and st.session_state.selected_cards:
-    with open(f'{selection_name}.txt', 'w') as f:
-      for card, quantity in st.session_state.selected_cards.items():
-        f.write(f'{quantity} {card}\n')
-    st.success(f"Selection '{selection_name}' saved successfully!")
-  elif selection_name:
-    st.error('Please select at least one card.')
-  elif st.session_state.selected_cards:
-    st.error('Please enter a name.')
+# def save_selection():
+#   selection_name = st.session_state.selection_name
+#   if selection_name and st.session_state.selected_cards:
+#     with open(f'{selection_name}.txt', 'w') as f:
+#       for card, quantity in st.session_state.selected_cards.items():
+#         f.write(f'{quantity} {card}\n')
+#     st.success(f"Selection '{selection_name}' saved successfully!")
+#   elif selection_name:
+#     st.error('Please select at least one card.')
+#   elif st.session_state.selected_cards:
+#     st.error('Please enter a name.')
 
 def load_saved_selection(textfile):
   with open(f'saved_selections/{textfile}', 'r') as f:
@@ -129,17 +129,17 @@ def reset_fields():
   for k, v in st.session_state.items():
     print(k, v)
 
-def update_quantity(old_item, new_quantity):
-  """Aktualisiert die Anzahl eines Elements im Set"""
-  # Entferne das alte Element
-  st.session_state.card_set.remove(old_item)
+# def update_quantity(old_item, new_quantity):
+#   """Aktualisiert die Anzahl eines Elements im Set"""
+#   # Entferne das alte Element
+#   st.session_state.dDecklist.remove(old_item)
 
-  # Erstelle das neue Element mit aktualisierter Anzahl
-  pattern = r'^\d+'
-  new_item = re.sub(pattern, str(new_quantity), old_item)
+#   # Erstelle das neue Element mit aktualisierter Anzahl
+#   pattern = r'^\d+'
+#   new_item = re.sub(pattern, str(new_quantity), old_item)
 
-  # Füge das neue Element hinzu
-  st.session_state.card_set.add(new_item)
+#   # Füge das neue Element hinzu
+#   st.session_state.dDecklist.add(new_item)
 
 # Battlelog viewer START
 def get_language(text):
@@ -460,73 +460,73 @@ with tab1:
           df['Evolves from DE'].str.contains(search_term_evolves_from, case=False, na=False)
       df = df[mask]
 
-  col_search_left2, col_search_right2 = st.columns(2)
-  with col_search_left2:
-    search_term_ability = st_keyup('Find in ability (name or text):', key='search_term_ability_key')
-    if search_term_ability:
-      mask = df['Ability'].str.contains(search_term_ability, case=False, na=False) | \
-        df['Ability text'].str.contains(search_term_ability, case=False, na=False)
-      df = df[mask]
+  # col_search_left2, col_search_right2 = st.columns(2)
+  # with col_search_left2:
+  #   search_term_ability = st_keyup('Find in ability (name or text):', key='search_term_ability_key')
+  #   if search_term_ability:
+  #     mask = df['Ability'].str.contains(search_term_ability, case=False, na=False) | \
+  #       df['Ability text'].str.contains(search_term_ability, case=False, na=False)
+  #     df = df[mask]
 
-  with col_search_right2:
-    search_term_ability_2 = st_keyup('and...', key='search_term_ability_2_key')
-    if search_term_ability_2:
-      mask = df['Ability'].str.contains(search_term_ability_2, case=False, na=False) | \
-        df['Ability text'].str.contains(search_term_ability_2, case=False, na=False)
-      df = df[mask]
+  # with col_search_right2:
+  #   search_term_ability_2 = st_keyup('and...', key='search_term_ability_2_key')
+  #   if search_term_ability_2:
+  #     mask = df['Ability'].str.contains(search_term_ability_2, case=False, na=False) | \
+  #       df['Ability text'].str.contains(search_term_ability_2, case=False, na=False)
+  #     df = df[mask]
 
-  col_search_left3, col_search_right3 = st.columns(2)
-  with col_search_left3:
-    search_term_attack = st_keyup('Find in name of attack:', key='search_term_attack_key')
-    if search_term_attack:
-      if language_search == 'english':
-        mask = df['Attack 1 name'].str.contains(search_term_attack, case=False, na=False) | \
-          df['Attack 2 name'].str.contains(search_term_attack, case=False, na=False)
-      elif language_search == 'deutsch':
-        mask = df['Attack 1 name DE'].str.contains(search_term_attack, case=False, na=False) | \
-          df['Attack 1 name'].str.contains(search_term_attack, case=False, na=False) | \
-          df['Attack 2 name DE'].str.contains(search_term_attack, case=False, na=False) | \
-          df['Attack 2 name'].str.contains(search_term_attack, case=False, na=False)
-      df = df[mask]
-  with col_search_right3:
-    search_term_att_eff = st_keyup('Find in effect of attack:', key='search_term_att_eff_key')
-    if search_term_att_eff:
-      if language_search == 'english':
-        mask = df['Effect Attack 1'].str.contains(search_term_att_eff, case=False, na=False) | \
-          df['Effect Attack 2'].str.contains(search_term_att_eff, case=False, na=False)
-      elif language_search == 'deutsch':
-        mask = df['Effect Attack 1 DE'].str.contains(search_term_att_eff, case=False, na=False) | \
-          df['Effect Attack 1'].str.contains(search_term_att_eff, case=False, na=False) | \
-          df['Effect Attack 2 DE'].str.contains(search_term_att_eff, case=False, na=False) | \
-          df['Effect Attack 2'].str.contains(search_term_att_eff, case=False, na=False)
-      df = df[mask]
+  # col_search_left3, col_search_right3 = st.columns(2)
+  # with col_search_left3:
+  #   search_term_attack = st_keyup('Find in name of attack:', key='search_term_attack_key')
+  #   if search_term_attack:
+  #     if language_search == 'english':
+  #       mask = df['Attack 1 name'].str.contains(search_term_attack, case=False, na=False) | \
+  #         df['Attack 2 name'].str.contains(search_term_attack, case=False, na=False)
+  #     elif language_search == 'deutsch':
+  #       mask = df['Attack 1 name DE'].str.contains(search_term_attack, case=False, na=False) | \
+  #         df['Attack 1 name'].str.contains(search_term_attack, case=False, na=False) | \
+  #         df['Attack 2 name DE'].str.contains(search_term_attack, case=False, na=False) | \
+  #         df['Attack 2 name'].str.contains(search_term_attack, case=False, na=False)
+  #     df = df[mask]
+  # with col_search_right3:
+  #   search_term_att_eff = st_keyup('Find in effect of attack:', key='search_term_att_eff_key')
+  #   if search_term_att_eff:
+  #     if language_search == 'english':
+  #       mask = df['Effect Attack 1'].str.contains(search_term_att_eff, case=False, na=False) | \
+  #         df['Effect Attack 2'].str.contains(search_term_att_eff, case=False, na=False)
+  #     elif language_search == 'deutsch':
+  #       mask = df['Effect Attack 1 DE'].str.contains(search_term_att_eff, case=False, na=False) | \
+  #         df['Effect Attack 1'].str.contains(search_term_att_eff, case=False, na=False) | \
+  #         df['Effect Attack 2 DE'].str.contains(search_term_att_eff, case=False, na=False) | \
+  #         df['Effect Attack 2'].str.contains(search_term_att_eff, case=False, na=False)
+  #     df = df[mask]
 
-  # Show filters
-  dFilters = {
-    'language_cards': language_cards,
-    'language_search': language_search,
-    'sCards_format': sCards_format,
-    'search_term_name': search_term_name,
-    'search_term_attack': search_term_attack,
-    'search_term_evolves_from': search_term_evolves_from,
-    'cardtype': cardtype,
-    'attack_cost': attack_cost,
-    'attack_damage': attack_damage,
-    'weakness_filter': weakness_filter,
-    'type_filter': type_filter,
-    'set_filter': set_filter,
-    'num_filter': num_filter,
-    'regulation_filter': regulation_filter,
-    'hp_range': hp_range,
-    'sToggle_ex': sToggle_ex,
-    'sToggle_V': sToggle_V,
-  }
-  # print(f'Found cards {len(df)} - Show filter')
-  # print(dFilters)
-  # print(df['Name DE'])
-  # print(df.shape)
-  with st.expander(f'Found cards {len(df)} - Show filter'):
-    st.write(dFilters)
+  # # Show filters
+  # dFilters = {
+  #   'language_cards': language_cards,
+  #   'language_search': language_search,
+  #   'sCards_format': sCards_format,
+  #   'search_term_name': search_term_name,
+  #   'search_term_attack': search_term_attack,
+  #   'search_term_evolves_from': search_term_evolves_from,
+  #   'cardtype': cardtype,
+  #   'attack_cost': attack_cost,
+  #   'attack_damage': attack_damage,
+  #   'weakness_filter': weakness_filter,
+  #   'type_filter': type_filter,
+  #   'set_filter': set_filter,
+  #   'num_filter': num_filter,
+  #   'regulation_filter': regulation_filter,
+  #   'hp_range': hp_range,
+  #   'sToggle_ex': sToggle_ex,
+  #   'sToggle_V': sToggle_V,
+  # }
+  # # print(f'Found cards {len(df)} - Show filter')
+  # # print(dFilters)
+  # # print(df['Name DE'])
+  # # print(df.shape)
+  # with st.expander(f'Found cards {len(df)} - Show filter'):
+  #   st.write(dFilters)
 
   if not df.empty:
     df_with_urls = df #.reset_index(drop=True)
@@ -581,12 +581,12 @@ with tab1:
           with cols[i % 4]:
             col_num, col_link = st.columns(2)
             card_id = (card['Set'], card['#'])
-            add_card = col_num.toggle('add card', value=card_id in st.session_state.card_set, key=card_id)
+            add_card = col_num.toggle('add card', value=card_id in st.session_state.dDecklist, key=card_id)
             if add_card:
-              st.session_state.card_set[card_id] = 1
+              st.session_state.dDecklist[card_id] = 1
             else:
-              if card_id in st.session_state.card_set:
-                del st.session_state.card_set[card_id]
+              if card_id in st.session_state.dDecklist:
+                del st.session_state.dDecklist[card_id]
 
             url = card['URL']
             col_link.link_button('go to card on limitlessTCG', url)
@@ -597,9 +597,17 @@ with tab1:
             load_more()
           st.write(f'Show: {min(st.session_state.num_images, len(df_selected_cards))} von {len(df_selected_cards)} Karten')
     else:
-      print(f'{username = }')
-      print('Stopping here')
-      st.write('Stopping here')
+      for idx, row in df_selected_cards.iterrows():
+        col_card, col_add = st.columns([1, 6])
+        with col_card:
+          card_id = (row['Set'], row['#'])
+          st.code(f"{row['Name']}\n{row['Set']} {row['#']}")
+        add_card = col_add.toggle('add card', value=card_id in st.session_state.dDecklist, key=card_id, label_visibility='hidden')
+        if add_card:
+          st.session_state.dDecklist[card_id] = 1
+        else:
+          if card_id in st.session_state.dDecklist:
+            del st.session_state.dDecklist[card_id]
   else:
     st.write('No card found')
 
@@ -608,11 +616,11 @@ with tab1:
 
   # Zeige alle Elemente mit Bearbeitungsmöglichkeiten
 
-  # for set_num, quantity in st.session_state.card_set.items():
+  # for set_num, quantity in st.session_state.dDecklist.items():
   #   st.text(f'{set_num = }')
   # st.text('###################################################')
   iCounter = 0
-  for set_num, quantity in st.session_state.card_set.items():
+  for set_num, quantity in st.session_state.dDecklist.items():
     print(f'{iCounter} - {set_num = }')
     # st.write(f'{iCounter} - {set_num = }')
     iCounter += 1
@@ -646,11 +654,11 @@ with tab1:
 
       # Wenn sich die Anzahl geändert hat und der Benutzer die Änderung bestätigt
       if new_quantity != quantity:# and st.button('Aktualisieren', key=f'update_{card_id}'):
-        st.session_state.card_set[set_num] = new_quantity
+        st.session_state.dDecklist[set_num] = new_quantity
         # st.rerun()
 
   # st.subheader('Decklist')
-  # for card in sorted(list(st.session_state.card_set), key=lambda x: x[2:-8]):
+  # for card in sorted(list(st.session_state.dDecklist), key=lambda x: x[2:-8]):
   #   st.write(card)
 
 # Battlelog viewer
