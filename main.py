@@ -460,73 +460,73 @@ with tab1:
           df['Evolves from DE'].str.contains(search_term_evolves_from, case=False, na=False)
       df = df[mask]
 
-  # col_search_left2, col_search_right2 = st.columns(2)
-  # with col_search_left2:
-  #   search_term_ability = st_keyup('Find in ability (name or text):', key='search_term_ability_key')
-  #   if search_term_ability:
-  #     mask = df['Ability'].str.contains(search_term_ability, case=False, na=False) | \
-  #       df['Ability text'].str.contains(search_term_ability, case=False, na=False)
-  #     df = df[mask]
+  col_search_left2, col_search_right2 = st.columns(2)
+  with col_search_left2:
+    search_term_ability = st_keyup('Find in ability (name or text):', key='search_term_ability_key')
+    if search_term_ability:
+      mask = df['Ability'].str.contains(search_term_ability, case=False, na=False) | \
+        df['Ability text'].str.contains(search_term_ability, case=False, na=False)
+      df = df[mask]
 
-  # with col_search_right2:
-  #   search_term_ability_2 = st_keyup('and...', key='search_term_ability_2_key')
-  #   if search_term_ability_2:
-  #     mask = df['Ability'].str.contains(search_term_ability_2, case=False, na=False) | \
-  #       df['Ability text'].str.contains(search_term_ability_2, case=False, na=False)
-  #     df = df[mask]
+  with col_search_right2:
+    search_term_ability_2 = st_keyup('and...', key='search_term_ability_2_key')
+    if search_term_ability_2:
+      mask = df['Ability'].str.contains(search_term_ability_2, case=False, na=False) | \
+        df['Ability text'].str.contains(search_term_ability_2, case=False, na=False)
+      df = df[mask]
 
-  # col_search_left3, col_search_right3 = st.columns(2)
-  # with col_search_left3:
-  #   search_term_attack = st_keyup('Find in name of attack:', key='search_term_attack_key')
-  #   if search_term_attack:
-  #     if language_search == 'english':
-  #       mask = df['Attack 1 name'].str.contains(search_term_attack, case=False, na=False) | \
-  #         df['Attack 2 name'].str.contains(search_term_attack, case=False, na=False)
-  #     elif language_search == 'deutsch':
-  #       mask = df['Attack 1 name DE'].str.contains(search_term_attack, case=False, na=False) | \
-  #         df['Attack 1 name'].str.contains(search_term_attack, case=False, na=False) | \
-  #         df['Attack 2 name DE'].str.contains(search_term_attack, case=False, na=False) | \
-  #         df['Attack 2 name'].str.contains(search_term_attack, case=False, na=False)
-  #     df = df[mask]
-  # with col_search_right3:
-  #   search_term_att_eff = st_keyup('Find in effect of attack:', key='search_term_att_eff_key')
-  #   if search_term_att_eff:
-  #     if language_search == 'english':
-  #       mask = df['Effect Attack 1'].str.contains(search_term_att_eff, case=False, na=False) | \
-  #         df['Effect Attack 2'].str.contains(search_term_att_eff, case=False, na=False)
-  #     elif language_search == 'deutsch':
-  #       mask = df['Effect Attack 1 DE'].str.contains(search_term_att_eff, case=False, na=False) | \
-  #         df['Effect Attack 1'].str.contains(search_term_att_eff, case=False, na=False) | \
-  #         df['Effect Attack 2 DE'].str.contains(search_term_att_eff, case=False, na=False) | \
-  #         df['Effect Attack 2'].str.contains(search_term_att_eff, case=False, na=False)
-  #     df = df[mask]
+  col_search_left3, col_search_right3 = st.columns(2)
+  with col_search_left3:
+    search_term_attack = st_keyup('Find in name of attack:', key='search_term_attack_key')
+    if search_term_attack:
+      if language_search == 'english':
+        mask = df['Attack 1 name'].str.contains(search_term_attack, case=False, na=False) | \
+          df['Attack 2 name'].str.contains(search_term_attack, case=False, na=False)
+      elif language_search == 'deutsch':
+        mask = df['Attack 1 name DE'].str.contains(search_term_attack, case=False, na=False) | \
+          df['Attack 1 name'].str.contains(search_term_attack, case=False, na=False) | \
+          df['Attack 2 name DE'].str.contains(search_term_attack, case=False, na=False) | \
+          df['Attack 2 name'].str.contains(search_term_attack, case=False, na=False)
+      df = df[mask]
+  with col_search_right3:
+    search_term_att_eff = st_keyup('Find in effect of attack:', key='search_term_att_eff_key')
+    if search_term_att_eff:
+      if language_search == 'english':
+        mask = df['Effect Attack 1'].str.contains(search_term_att_eff, case=False, na=False) | \
+          df['Effect Attack 2'].str.contains(search_term_att_eff, case=False, na=False)
+      elif language_search == 'deutsch':
+        mask = df['Effect Attack 1 DE'].str.contains(search_term_att_eff, case=False, na=False) | \
+          df['Effect Attack 1'].str.contains(search_term_att_eff, case=False, na=False) | \
+          df['Effect Attack 2 DE'].str.contains(search_term_att_eff, case=False, na=False) | \
+          df['Effect Attack 2'].str.contains(search_term_att_eff, case=False, na=False)
+      df = df[mask]
 
-  # # Show filters
-  # dFilters = {
-  #   'language_cards': language_cards,
-  #   'language_search': language_search,
-  #   'sCards_format': sCards_format,
-  #   'search_term_name': search_term_name,
-  #   'search_term_attack': search_term_attack,
-  #   'search_term_evolves_from': search_term_evolves_from,
-  #   'cardtype': cardtype,
-  #   'attack_cost': attack_cost,
-  #   'attack_damage': attack_damage,
-  #   'weakness_filter': weakness_filter,
-  #   'type_filter': type_filter,
-  #   'set_filter': set_filter,
-  #   'num_filter': num_filter,
-  #   'regulation_filter': regulation_filter,
-  #   'hp_range': hp_range,
-  #   'sToggle_ex': sToggle_ex,
-  #   'sToggle_V': sToggle_V,
-  # }
-  # # print(f'Found cards {len(df)} - Show filter')
-  # # print(dFilters)
-  # # print(df['Name DE'])
-  # # print(df.shape)
-  # with st.expander(f'Found cards {len(df)} - Show filter'):
-  #   st.write(dFilters)
+  # Show filters
+  dFilters = {
+    'language_cards': language_cards,
+    'language_search': language_search,
+    'sCards_format': sCards_format,
+    'search_term_name': search_term_name,
+    'search_term_attack': search_term_attack,
+    'search_term_evolves_from': search_term_evolves_from,
+    'cardtype': cardtype,
+    'attack_cost': attack_cost,
+    'attack_damage': attack_damage,
+    'weakness_filter': weakness_filter,
+    'type_filter': type_filter,
+    'set_filter': set_filter,
+    'num_filter': num_filter,
+    'regulation_filter': regulation_filter,
+    'hp_range': hp_range,
+    'sToggle_ex': sToggle_ex,
+    'sToggle_V': sToggle_V,
+  }
+  # print(f'Found cards {len(df)} - Show filter')
+  # print(dFilters)
+  # print(df['Name DE'])
+  # print(df.shape)
+  with st.expander(f'Found cards {len(df)} - Show filter'):
+    st.write(dFilters)
 
   if not df.empty:
     df_with_urls = df #.reset_index(drop=True)
