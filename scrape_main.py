@@ -553,8 +553,11 @@ with open(f'cards_{sDateTime}.csv', mode='w', newline='', encoding=sEncoding) as
         retreat = translate_text(dReplacements, wrr_section[2]).strip()
 
       regulation_mark_div = card.find('div', class_='regulation-mark')
-      regulation_text = regulation_mark_div.get_text(strip=True)
-      sRegulation = regulation_text.split('•')[0].strip().replace(' Regelzeichen', '').replace(' Regulation Mark', '')
+      if card_type == 'Energy - Basic Energy':
+        sRegulation = 'Energy'
+      else:
+        regulation_text = regulation_mark_div.get_text(strip=True)
+        sRegulation = regulation_text.split('•')[0].strip().replace(' Regelzeichen', '').replace(' Regulation Mark', '')
 
       # In die CSV-Datei schreiben
       # if lang == 'de':

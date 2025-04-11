@@ -95,7 +95,7 @@ dTranslations = {
 
 lDecklistKeywords = ['Pokémon:', 'Trainer:', 'Energy:', 'Total Cards:', 'Energie:', 'Karten insgesamt:']
 # sDecklistEntryPattern = r'(\d+) .+ ([A-Z]{3}) (\d+)' # without cardname
-sDecklistEntryPattern = r'(\d+) (.+) ([A-Z]{3}) (\d+)'
+sDecklistEntryPattern = r'(\d+)\s+(.+?)\s+([A-Z]{2,}(?:-[A-Z]{2,})?)\s+(\d+)'
 
 # lEnergies = {
 #   'Basic {D} Energy': 'Darkness Energy',

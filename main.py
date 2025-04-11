@@ -14,6 +14,10 @@ import config as c
 # TODO filter Tera
 
 st.set_page_config(page_title='pkmndb', page_icon='🐲', layout='wide')
+try:
+  username = os.getlogin()
+except Exception as e:
+  username = 'online'
 
 # Existing initializations
 if 'num_images' not in st.session_state:
@@ -277,6 +281,7 @@ def parse_decklist(decklist_text):
   lNotFound = []
   iCounter = 0
   # Process each non-empty line
+  extracted_cards = []
   for sLine in (line.strip() for line in decklist_text.splitlines() if line.strip()):
     # Skip section headers and empty lines
     if any(keyword in sLine for keyword in c.lDecklistKeywords):
@@ -284,26 +289,37 @@ def parse_decklist(decklist_text):
 
     # Parse card entry
     if matches := re.match(c.sDecklistEntryPattern, sLine):
-      amount, name, set_code, card_number = matches.groups()
-      st.write(f'{sLine} => Amount: {amount}, Name: {name}, Set: {set_code}, Number: {card_number}')
-      dOutput[iCounter] = {
-        'amount': int(amount),
-        'name': name,
-        'set': set_code,
-        'number': card_number
-      }
-      iCounter += 1
+      amount, name, set_name, set_number = matches.groups()
+      extracted_cards.append({'Name': name, 'Set': set_name, '#': int(set_number)})
+
+      name_found = ''
+      # Überprüfen, ob die Kombination aus Set-Name und Set-Nummer im Dataframe existiert
+      found = any((df_orig['Set'] == set_name) & (df_orig['#'] == str(set_number)))
+
+      if not found:
+        name_found = not df_orig[df_orig['Name'].str.contains(name) | df_orig['Name DE'].str.contains(name)].empty
+
+      if any([found, name_found]):
+        nameDE = df_orig[df_orig['Name'] == name]['Name DE'].values[0]
+        dOutput[iCounter] = {
+          'amount': int(amount),
+          'name': name,
+          'nameDE': nameDE,
+          'set': set_name,
+          'number': set_number,
+          'name_found': name_found
+        }
+        iCounter += 1
+      else:
+        lNotFound.append(sLine)
 
     else:
       st.error(f'Could not parse: {sLine}')
       lNotFound.append(sLine)
 
-  # st.write(dOutput)
-
   return dOutput, lNotFound
 
 def display_decklist(decklist_dict, not_found_cards, num_columns):
-  st.divider()
   # Display not found cards if any exist
   if not_found_cards:
     st.write("Cards not found")
@@ -311,8 +327,9 @@ def display_decklist(decklist_dict, not_found_cards, num_columns):
       st.error(card)
 
   # Create grid layout
+  num_cards = sum(dCard['amount'] for dCard in decklist_dict.values())
+  st.metric('Number of cards', num_cards)
   cols = st.columns(num_columns)
-
   # Display cards in grid
   for idx, dCard in decklist_dict.items():
     with cols[idx % num_columns]:
@@ -321,13 +338,16 @@ def display_decklist(decklist_dict, not_found_cards, num_columns):
           f"https://limitlesstcg.nyc3.cdn.digitaloceanspaces.com/"
           f"tpci/{dCard['set']}/{dCard['set']}_{dCard['number']:0>3}_R_EN_LG.png"
         )
-        st.write(dCard['name'])
+        st.code(f"{dCard['name']}\n{dCard['nameDE']}", height=63)
         if 'Basic' in dCard['name'] and 'Energy' in dCard['name']:
           iMaxValue = 59
         else:
           iMaxValue = 4
-        dCard['amount'] = st.number_input(dCard['name'], min_value=0, value=int(dCard['amount']), max_value=iMaxValue, key=f"decklist_card_{idx}", label_visibility='collapsed')
-        st.image(image_url, use_container_width=True)
+        new_amount = st.number_input(dCard['name'], min_value=0, value=int(dCard['amount']), max_value=iMaxValue, key=f"decklist_card_{idx}", label_visibility='collapsed')
+        if new_amount != dCard['amount']:
+          decklist_dict[idx]['amount'] = new_amount
+        if username != 'FV4TJAY':
+          st.image(image_url, use_container_width=True)
       except Exception as e:
         st.error(f"Error displaying card: {dCard['name']}")
         st.write(f"Error details: {str(e)}")
@@ -566,10 +586,6 @@ with tab1:
     #   df_selected_cards['#'] = df_with_urls.iloc[selected_cards]['#']
       # df_selected_cards['#'] = df_with_urls.loc[selected_cards, '#'].values
 
-    try:
-      username = os.getlogin()
-    except Exception as e:
-      username = 'online'
     if username != 'FV4TJAY':
       print(username)
       if not df_selected_cards.empty:
@@ -824,20 +840,51 @@ with tab3:
   if 'bAdded_Card' not in st.session_state:
     st.session_state['bAdded_Card'] = False
   sDecklist = st.text_area('Paste decklist here')
+  if not sDecklist:
+    sDecklist = """Pokémon: 9
+1 Fezandipiti ex SFA 84
+2 Snorunt SIT 41
+4 Capsakid PAF 106
+2 Froslass TWM 53
+2 Cleffa OBF 80
+1 Scovillain ex SSP 37
+2 Scovillain ex SSP 216
+1 Radiant Greninja ASR 46
+1 Manaphy BRS 41
+
+Trainer: 16
+2 Boss's Orders RCL 189
+4 Buddy-Buddy Poffin TWM 223
+1 Damage Pump LOR 156
+1 Rescue Board TWM 225
+1 Professor's Research PR-SW 152
+1 Rigid Band MEW 165
+2 Nest Ball SVI 255
+2 Earthen Vessel SFA 96
+4 Ultra Ball PLF 122
+1 Hyper Aroma TWM 152
+2 Night Stretcher SSP 251
+1 Mela PAR 236
+4 Iono PAL 269
+1 Technical Machine: Evolution PAR 178
+4 Magma Basin BRS 185
+4 Arven SVI 249
+
+Energy: 1
+9 Basic {R} Energy BUS 167"""
 
   if sDecklist:
-    with st.expander('Decklist'):
-      if not st.session_state['bAdded_Card']:
-        dDecklist, not_found = parse_decklist(sDecklist)
-        if 'decklist' not in st.session_state:
-          st.write("Adding key 'decklist' to sessionState")
-          st.session_state['decklist'] = dDecklist
-          st.write("Adding key 'not_found' to sessionState")
-          st.session_state['not_found'] = not_found
-      else:
-        dDecklist = st.session_state['decklist']
-        not_found = st.session_state['not_found']
-        st.session_state['bAdded_Card'] = False
+    if not st.session_state['bAdded_Card']:
+      dDecklist, not_found = parse_decklist(sDecklist)
+      if 'decklist' not in st.session_state:
+        st.write("Adding key 'decklist' to sessionState")
+        st.session_state['decklist'] = dDecklist
+        st.write("Adding key 'not_found' to sessionState")
+        st.session_state['not_found'] = not_found
+    else:
+      dDecklist = st.session_state['decklist']
+      not_found = st.session_state['not_found']
+      st.session_state['bAdded_Card'] = False
 
     num_columns = st.slider('Number of columns:', min_value=1, max_value=20, value=8)
 
