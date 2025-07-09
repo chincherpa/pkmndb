@@ -167,7 +167,7 @@ def extract_players(preparation_text):
 
 def get_player_colors(players):
   """Assign colors to players"""
-  colors = ['#FF4B00', '#4B8BFF']  # Rot und Blau
+  colors = ['blue', 'red']  # Rot und Blau
   return {player: color for player, color in zip(players, colors)}
 
 def color_player_names(text, player_colors):
@@ -189,7 +189,8 @@ def color_player_names_events(text, player_colors, sKey=None):
   for player, player_color in player_colors.items():
     text_text = text_text.replace(player, f"<span style='color: {player_color}; font-weight: bold;'>{player}</span>")
 
-  return f'<p><u>{text_turn}:</u> {text_text}</p>'
+  text_text = color_card(text_text)
+  return f'{text_turn}:&nbsp;&nbsp;&nbsp;{text_text}'
 
 def find_last_item(lst):
   """
@@ -272,7 +273,26 @@ def format_action(action, player_colors):
       # Default pattern if no match found
       return formatted_text
 
-  return f'{pattern} {formatted_text}'
+  sLine_out = f'{pattern} {formatted_text}'
+  sLine_out = color_card(sLine_out)
+
+  return sLine_out
+
+def color_card(sLine_out):
+    lFound = []
+    for sName in lUniqueNames:
+      if sName in sLine_out and sName not in lFound:
+        sName_final = sName
+        if f'{sName}-ex' in sLine_out:
+          sName_final = f'{sName} ex'
+        elif f'{sName} VSTAR' in sLine_out:
+          sName_final = f'{sName} VSTAR'
+        elif f'{sName} V' in sLine_out:
+          sName_final = f'{sName} V'
+        lFound.append(sName_final)
+        sLine_out = sLine_out.replace(sName_final, f'**:blue-background[{sName_final}]**')
+        # break
+    return sLine_out
 # Battlelog viewer END
 
 # Decklist viewer
@@ -387,7 +407,7 @@ if sCards_format == 'standard':
   df_orig = df_orig[df_orig['Regulation'].isin(c.lStandard_regulations)] # lStandard_regulations
 df = df_orig.reset_index(drop=True)
 
-lUniqueNames = df['Name'].unique().tolist()
+lUniqueNames = df['Name DE'].unique().tolist() + df['Name'].unique().tolist()
 
 # saved for later
 # tab1, tab2, tab3, tab4 = st.tabs(['Card selection', 'Saved selections', 'Import', 'Battle log viewer'])
@@ -731,6 +751,7 @@ with tab2:
     # Create tabs for different views
     tab1, tab2 = st.tabs([f"🎮 {c.dTranslations[language_battlelog]['gameplay']}", f"📊 {c.dTranslations[language_battlelog]['statistics']}"])
 
+    # tab Spielverlauf
     with tab1:
       # Display preparation phase with colored player names
       with st.expander(f"📝 {c.dTranslations[language_battlelog]['setup']}", expanded=False):
@@ -745,15 +766,15 @@ with tab2:
         color = player_colors[player]
         light_color = f'{color}22'  # Add transparency for lighter background
 
-        st.markdown(f"""
-        <div style="background: linear-gradient(to right, {light_color}, white);
-              padding: 15px; border-radius: 10px; margin: 10px 0;
-              border-left: 5px solid {color};">
-          <h3>{c.dTranslations[language_battlelog]['turn']} {turn_info['turn_number']} - <span style='color: {color}'>{player}</span></h3>
-        </div>
-        """, unsafe_allow_html=True)
+        # st.markdown(f"""
+        # <div style="background: linear-gradient(to right, {light_color}, white);
+        #       padding: 15px; border-radius: 10px; margin: 10px 0;
+        #       border-left: 5px solid {color};">
+        #   <h3>{c.dTranslations[language_battlelog]['turn']} {turn_info['turn_number']} - <span style='color: {color}'>{player}</span></h3>
+        # </div>
+        # """, unsafe_allow_html=True)
 
-        with st.expander(f'{c.dTranslations[language_battlelog]['turn']} {turn_info['turn_number']}', True):
+        with st.expander(f'{c.dTranslations[language_battlelog]['turn']} {turn_info['turn_number']} - **:{color}-background[{player}]**', True):
           # Display actions with colored player names
           for action in turn_info['actions']:
             if last_line in action:
@@ -766,21 +787,8 @@ with tab2:
                     unsafe_allow_html=True)
             else:
               sLine = format_action(action, player_colors)
-              lFound = []
-              for sName in lUniqueNames:
-                if sName in sLine and sName not in lFound:
-                  lFound.append(sName)
-                  sName_final = sName
-                  if f'{sName} ex' in sLine:
-                    sName_final = f'{sName} ex'
-                  elif f'{sName} VSTAR' in sLine:
-                    sName_final = f'{sName} VSTAR'
-                  elif f'{sName} V' in sLine:
-                    sName_final = f'{sName} V'
-                  sLine = sLine.replace(sName_final, f'**:blue-background[{sName_final}]**')
-                  continue
               st.markdown(sLine, unsafe_allow_html=True)
-
+    # tab Statistiken
     with tab2:
       # Calculate statistics
 
