@@ -144,7 +144,7 @@ def progress_bar(current, total, filename="", bar_length=40):
 
 def split_attack(sAttack):
   # pattern = r"^(\w+)\s+([A-Za-zÄÖÜäöüß ]+)\s*(\d*\+??)$"
-  pattern = r"^(\w+)\s+([A-Za-zÄÖÜäöüß \-]+)\s*(\d+[+×]?)?$"
+  pattern = r"^(\w+)\s+([,A-Za-zÄÖÜäöüß \-\']+|Attack 1|Attack 2)\s*(\d+[+×]?)?$"
 
   # Verarbeitung der Strings
   match = re.match(pattern, sAttack)
@@ -154,7 +154,9 @@ def split_attack(sAttack):
   else:
     color, name, damage = '', '', ''
 
-  return color, name, damage
+  # print(color.strip(), name.strip(), damage.strip())
+
+  return color.strip(), name.strip(), damage.strip()
 
 def translate_text(dReplacements, text):
   
@@ -257,6 +259,7 @@ lAceSpecs = [
 ]
 
 langs = ['de', 'en']
+
 lHeader = [
   'Name DE',
   'Name',
@@ -294,39 +297,43 @@ lHeader = [
 ]
 
 lFiles = [
-      # 'ASR_DE.html',
-      # 'BRS_DE.html',
-      # 'CRZ_DE.html',
+      'ASR_DE.html',
+      'BLK_DE.html',
+      'BRS_DE.html',
+      'CRZ_DE.html',
       'DRI_DE.html',
-      # 'JTG_DE.html',
-      # 'LOR_DE.html',
-      # 'MEW_DE.html',
-      # 'OBF_DE.html',
-      # 'PAF_DE.html',
-      # 'PAL_DE.html',
-      # 'PAR_DE.html',
-      # 'PGO_DE.html',
-      # 'PR-SW_DE.html',
-      # 'PRE_DE.html',
-      # 'SCR_DE.html',
-      # 'SFA_DE.html',
-      # 'SIT_DE.html',
-      # 'SSP_DE.html',
-      # 'SVI_DE.html',
-      # 'SVP_DE.html',
-      # 'TEF_DE.html',
-      # 'TWM_DE.html',
+      'JTG_DE.html',
+      'LOR_DE.html',
+      'MEW_DE.html',
+      'OBF_DE.html',
+      'PAF_DE.html',
+      'PAL_DE.html',
+      'PAR_DE.html',
+      'PGO_DE.html',
+      'PR-SW_DE.html',
+      'PRE_DE.html',
+      'SCR_DE.html',
+      'SFA_DE.html',
+      'SIT_DE.html',
+      'SSP_DE.html',
+      'SVI_DE.html',
+      'SVP_DE.html',
+      'TEF_DE.html',
+      'TWM_DE.html',
+      'WHT_DE.html',
     ]
 
 dCards_EN = {}
+
+lFiles_progress_bar = [sFile.split('_')[0] for sFile in lFiles]
 
 sEncoding = 'utf-8-sig'# if lang == 'de' else 'utf-8'
 with open(f'cards_{sDateTime}.csv', mode='w', newline='', encoding=sEncoding) as file_csv:
   writer = csv.writer(file_csv, delimiter=';', )
   writer.writerow(lHeader)
-# if 1:
   for idx, file_path in enumerate(lFiles):
-    progress_bar(idx + 1, len(lFiles), file_path.split('_')[0])
+    progress_bar(idx + 1, len(lFiles), str(lFiles_progress_bar))
+    lFiles_progress_bar.pop(0)
 
     file_path = f'html/{file_path}'
     with open(file_path, 'r', encoding='utf-8') as file:
@@ -369,6 +376,9 @@ with open(f'cards_{sDateTime}.csv', mode='w', newline='', encoding=sEncoding) as
         s_clean_en = ' '.join(attack1_en.split())
         attack1_en = ' '.join(s_clean_en.split(' ', 1))
         _, name_attack1_en, _ = split_attack(attack1_en)
+        # if number in ['52']:
+        #   print(f'{attack1_en = }')
+        #   print(f'{name_attack1_en = }')
         effect1_en = attacks_en[0].find('p', class_='card-text-attack-effect').text.strip()
         attack2_en = attacks_en[1].find('p', class_='card-text-attack-info').text.strip() if len(attacks_en) > 1 else ''
         s_clean_en = ' '.join(attack2_en.split())
@@ -474,6 +484,9 @@ with open(f'cards_{sDateTime}.csv', mode='w', newline='', encoding=sEncoding) as
         sCard_name = s_clean[0].strip() 
         sTyp = s_clean[1].strip()
         sKP = ''
+        if sTyp in ['60 HP', '60 KP']:
+          sTyp = 'Colorless'
+          sKP = '60'
       else:
         sCard_name = s_clean[0]
         sTyp = ''
@@ -525,16 +538,16 @@ with open(f'cards_{sDateTime}.csv', mode='w', newline='', encoding=sEncoding) as
       # Attacks and effects DE
       attacks = card.find_all('div', class_='card-text-attack')
       if attacks:
+        # if number == '4':
+        #   print(f'{attacks = }')
         attack1 = attacks[0].find('p', class_='card-text-attack-info').text.strip()
-        # if number == '257':
-        #   print(f'{attack1 = }')
         s_clean = ' '.join(attack1.split())
         attack1 = ' '.join(s_clean.split(' ', 1))
         color_attack1, name_attack1, damage_attack1 = split_attack(attack1)
-        # if number == '257':
+        # if number == '4':
         #   print(f'{attack1 = }')
         #   print(f'{s_clean = }')
-        #   print(split_attack(attack1))
+        #   print(f'{color_attack1}|{name_attack1}|{damage_attack1}|')
         effect1 = attacks[0].find('p', class_='card-text-attack-effect').text.strip()
         attack2 = attacks[1].find('p', class_='card-text-attack-info').text.strip() if len(attacks) > 1 else ''
         s_clean = ' '.join(attack2.split())
@@ -560,8 +573,6 @@ with open(f'cards_{sDateTime}.csv', mode='w', newline='', encoding=sEncoding) as
         regulation_text = regulation_mark_div.get_text(strip=True)
         sRegulation = regulation_text.split('•')[0].strip().replace(' Regelzeichen', '').replace(' Regulation Mark', '')
 
-      # In die CSV-Datei schreiben
-      # if lang == 'de':
       lResult_str = [
           "sCard_name",
           "dCards_EN[set_info]['sCard_name_en']",
@@ -607,8 +618,6 @@ with open(f'cards_{sDateTime}.csv', mode='w', newline='', encoding=sEncoding) as
           sCard_name,
           dCards_EN[set_info]['sCard_name_en'],
           dCards_EN[set_info]['card_type'],
-          # translate_text(dReplacements, card_type),
-          # sTyp,
           translate_text(dReplacements, sTyp),
           sTera,
           sKP,
@@ -630,12 +639,9 @@ with open(f'cards_{sDateTime}.csv', mode='w', newline='', encoding=sEncoding) as
           damage_attack2,
           effect2,
           dCards_EN[set_info]['effect2_en'],
-          # weakness,
           translate_text(dReplacements, weakness),
-          # resistance,
           translate_text(dReplacements, resistance),
           retreat,
-          # expansion,
           translate_text(dReplacements, expansion),
           number,
           sRegulation,

@@ -145,6 +145,9 @@ def reset_fields():
 #   # Füge das neue Element hinzu
 #   st.session_state.dDecklist.add(new_item)
 
+def get_names_with_id(df, card_id):
+  return (df.loc[(df['Set'] == card_id[0]) & (df['#'] == card_id[1]), ['Name DE','Name']].values[0])
+
 # Battlelog viewer START
 def get_language(text):
   global language_battlelog
@@ -384,7 +387,8 @@ def add_card_to_decklist(dDecklist, name, set_, num):
   return dDecklist
 
 def export_decklist(dDecklist):
-  text = f"\n{'\n'.join(f"{card['amount']} {card['name']} {card['set']} {card['number']}" for card in dDecklist.values())}\n"
+  # text = f"-n{'-n'.join(f"{card['amount']} {card['name']} {card['set']} {card['number']}" for card in dDecklist.values())}-n"
+  text = '-n'.join(f"{card['amount']} {card['name']} {card['set']} {card['number']}" for card in dDecklist.values())
   with st.popover('popover', icon="🚨"):
     st.code(text)
   # pyperclip.copy(text)
@@ -411,7 +415,7 @@ lUniqueNames = df['Name DE'].unique().tolist() + df['Name'].unique().tolist()
 
 # saved for later
 # tab1, tab2, tab3, tab4 = st.tabs(['Card selection', 'Saved selections', 'Import', 'Battle log viewer'])
-tab1, tab2, tab3 = st.tabs(['Card selection', 'Battlelog viewer', 'Decklist Viewer'])
+tab1, tab2, tab3, tab4 = st.tabs(['Card selection', 'Battlelog viewer', 'Decklist Viewer', 'Decklist translator'])
 
 # Card search
 with tab1:
@@ -719,7 +723,7 @@ with tab2:
   #     with open(battlelogfile, 'r', encoding='utf-8') as _battlelog:
   #       game_log = _battlelog.read()
   # else:
-  game_log = st.text_area('Paste battlelog here')
+  game_log = st.text_area('Paste battlelog here', key='game_log')
 
   if game_log:
     get_language(game_log)
@@ -774,7 +778,7 @@ with tab2:
         # </div>
         # """, unsafe_allow_html=True)
 
-        with st.expander(f'{c.dTranslations[language_battlelog]['turn']} {turn_info['turn_number']} - **:{color}-background[{player}]**', True):
+        with st.expander(f"{c.dTranslations[language_battlelog]['turn']} {turn_info['turn_number']} - **:{color}-background[{player}]**", True):
           # Display actions with colored player names
           for action in turn_info['actions']:
             if last_line in action:
@@ -847,39 +851,7 @@ with tab2:
 with tab3:
   if 'bAdded_Card' not in st.session_state:
     st.session_state['bAdded_Card'] = False
-  sDecklist = st.text_area('Paste decklist here')
-  if not sDecklist:
-    sDecklist = """Pokémon: 9
-1 Fezandipiti ex SFA 84
-2 Snorunt SIT 41
-4 Capsakid PAF 106
-2 Froslass TWM 53
-2 Cleffa OBF 80
-1 Scovillain ex SSP 37
-2 Scovillain ex SSP 216
-1 Radiant Greninja ASR 46
-1 Manaphy BRS 41
-
-Trainer: 16
-2 Boss's Orders RCL 189
-4 Buddy-Buddy Poffin TWM 223
-1 Damage Pump LOR 156
-1 Rescue Board TWM 225
-1 Professor's Research PR-SW 152
-1 Rigid Band MEW 165
-2 Nest Ball SVI 255
-2 Earthen Vessel SFA 96
-4 Ultra Ball PLF 122
-1 Hyper Aroma TWM 152
-2 Night Stretcher SSP 251
-1 Mela PAR 236
-4 Iono PAL 269
-1 Technical Machine: Evolution PAR 178
-4 Magma Basin BRS 185
-4 Arven SVI 249
-
-Energy: 1
-9 Basic {R} Energy BUS 167"""
+  sDecklist = st.text_area('Paste decklist here', key='sDecklist')
 
   if sDecklist:
     if not st.session_state['bAdded_Card']:
@@ -933,6 +905,29 @@ Energy: 1
 
     # Display the decklist
     dDecklist = display_decklist(dDecklist, not_found, num_columns)
-    text = f"\n{'\n'.join(f"{card['amount']} {card['name']} {card['set']} {card['number']}" for card in dDecklist.values())}\n"
+    # text = f"\n{'\n'.join(f"{card['amount']} {card['name']} {card['set']} {card['number']}" for card in dDecklist.values())}\n"
+    text = '-n'.join(f"{card['amount']} {card['name']} {card['set']} {card['number']}" for card in dDecklist.values())
+
     with st.popover('Show decklist', icon="📄"):
       st.code(text)
+
+# Decklist translator
+with tab4:
+  sDecklist_trans = st.text_area('Paste decklist here', key='sDecklist_trans')
+  if sDecklist_trans:
+    dDecklist_trans, not_found_trans = parse_decklist(sDecklist_trans)
+    print(dDecklist_trans)
+    lDecklist_DE = []
+    lDecklist_EN = []
+    for card in dDecklist_trans.values():
+      card_id = (card['set'], card['number'])
+      sName_DE, sName_EN = (get_names_with_id(df, card_id))
+      lDecklist_DE.append(f"{card['amount']} {sName_DE} {card['set']} {card['number']}")
+      lDecklist_EN.append(f"{card['amount']} {sName_EN} {card['set']} {card['number']}")
+
+    print(lDecklist_DE)
+    col_DE, col_EN = st.columns(2)
+    col_DE.header('Name DE')
+    col_DE.code('\n'.join(lDecklist_DE))
+    col_EN.header('Name EN')
+    col_EN.code('\n'.join(lDecklist_EN))
