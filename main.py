@@ -630,6 +630,8 @@ with tab1:
 
             url = card['URL']
             col_link.link_button('go to card on limitlessTCG', url)
+            with st.expander('card info ℹ️'):
+              st.write(card['Cardtype']
             st.image(url, width=iWidth)
 
         if st.session_state.num_images < len(df_selected_cards):
