@@ -633,8 +633,8 @@ with tab1:
             with st.expander('card info ℹ️'):
               
               container = st.container(border=True)
-              container.write(st.write(card['Ability']))
-              container.write(st.write(card['Ability text'])
+              container.write(card['Ability'])
+              container.write(card['Ability text'])
             st.image(url, width=iWidth)
 
         if st.session_state.num_images < len(df_selected_cards):
