@@ -223,7 +223,7 @@ def extract_turn_info(turn_text):
   # Extract turn number and player
   turn_header = turn_text.split('\n')[0]
   turn_num = int(re.search(r'Turn # (\d+)', turn_header).group(1))
-  player = re.search(c.dTranslations[language_battlelog]['turn_pattern'], turn_header).group(1)
+  player = re.search(c.dTranslations[language_battlelog]['turn_pattern'], turn_header).group()
 
   # Extract actions
   actions = [line.strip() for line in turn_text.split('\n')[1:] if line.strip()]

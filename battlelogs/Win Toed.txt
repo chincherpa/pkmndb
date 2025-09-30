@@ -1,0 +1,300 @@
+Vorbereitung
+ElButze hat Zahl für den Münzwurf am Anfang gewählt.
+Lord-Leiwand hat den Münzwurf gewonnen.
+Lord-Leiwand möchte als Zweiter dran sein.
+ElButze hat für die Starthand 7 Karten gezogen.
+- 7 gezogene Karten
+   • Basis-Pflanze-Energie, Befehl vom Boss, Basis-Pflanze-Energie, Mew-ex, Tenterra-ex, Hyperball, Basis-Pflanze-Energie
+Lord-Leiwand hat für die Starthand 7 Karten gezogen.
+- 7 gezogene Karten
+ElButze hat Mew-ex in die Aktive Position gelegt.
+Lord-Leiwand hat Keilflamme-ex in die Aktive Position gelegt.
+Lord-Leiwand hat Floink auf die Bank gelegt.
+Lord-Leiwand hat Eisenhand-ex auf die Bank gelegt.
+
+Turn # 1 - Zug von ElButze
+ElButze hat Energie-Umschalter gezogen.
+ElButze hat Hyperball gespielt.
+- ElButze hat 2 Karten auf den Ablagestapel gelegt.
+   • Basis-Pflanze-Energie, Befehl vom Boss
+- ElButze hat Türkisgrüne-Maske-Ogerpon-ex gezogen.
+- ElButze hat das eigene Deck gemischt.
+ElButze hat Türkisgrüne-Maske-Ogerpon-ex auf die Bank gelegt.
+Türkisgrüne-Maske-Ogerpon-ex von ElButze hat Türkisgrüner Tanz eingesetzt.
+- ElButze hat Basis-Pflanze-Energie an Türkisgrüne-Maske-Ogerpon-ex auf der Bank angelegt.
+- ElButze hat Basis-Pflanze-Energie gezogen.
+ElButze hat Basis-Pflanze-Energie an Türkisgrüne-Maske-Ogerpon-ex auf der Bank angelegt.
+ElButze hat den eigenen Zug beendet.
+
+Turn # 2 - Zug von Lord-Leiwand
+Lord-Leiwand hat eine Karte gezogen.
+Lord-Leiwand hat Pepper gespielt.
+- Lord-Leiwand hat 2 Karten gezogen.
+   • Irdengefäß, Luftballon
+- Lord-Leiwand hat das eigene Deck gemischt.
+Lord-Leiwand hat Irdengefäß gespielt.
+- Lord-Leiwand hat Basis-Feuer-Energie auf den Ablagestapel gelegt.
+- Lord-Leiwand hat 2 Karten gezogen.
+   • Basis-Elektro-Energie, Basis-Feuer-Energie
+- Lord-Leiwand hat das eigene Deck gemischt.
+Lord-Leiwand hat Basis-Feuer-Energie an Keilflamme-ex in der Aktiven Position angelegt.
+Lord-Leiwand hat den eigenen Zug beendet.
+
+Turn # 3 - Zug von ElButze
+ElButze hat Käfersammlerset gezogen.
+Türkisgrüne-Maske-Ogerpon-ex von ElButze hat Türkisgrüner Tanz eingesetzt.
+- ElButze hat Basis-Pflanze-Energie an Türkisgrüne-Maske-Ogerpon-ex auf der Bank angelegt.
+- ElButze hat Türkisgrüne-Maske-Ogerpon-ex gezogen.
+ElButze hat Türkisgrüne-Maske-Ogerpon-ex auf die Bank gelegt.
+ElButze hat Käfersammlerset gespielt.
+- ElButze hat 2 Karten gezogen.
+   • Basis-Pflanze-Energie, Basis-Pflanze-Energie
+- ElButze hat das eigene Deck gemischt.
+Türkisgrüne-Maske-Ogerpon-ex von ElButze hat Türkisgrüner Tanz eingesetzt.
+- ElButze hat Basis-Pflanze-Energie an Türkisgrüne-Maske-Ogerpon-ex auf der Bank angelegt.
+- ElButze hat Energie-Umschalter gezogen.
+ElButze hat Basis-Pflanze-Energie an Mew-ex in der Aktiven Position angelegt.
+ElButze hat Energie-Umschalter gespielt.
+- ElButze hat Basis-Pflanze-Energie an Türkisgrüne-Maske-Ogerpon-ex auf der Bank angelegt.
+Mew-ex von ElButze hat Neuanfang eingesetzt.
+- ElButze hat Knospi gezogen.
+ElButze hat Knospi auf die Bank gelegt.
+ElButze hat Mew-ex auf die Bank zurückgezogen.
+Knospi von ElButze ist jetzt in der Aktiven Position.
+Knospi von ElButze hat Juckende Pollen gegen Keilflamme-ex von Lord-Leiwand für 10 Schadenspunkte eingesetzt.
+
+Turn # 4 - Zug von Lord-Leiwand
+Lord-Leiwand hat eine Karte gezogen.
+Lord-Leiwand hat Basis-Elektro-Energie an Keilflamme-ex in der Aktiven Position angelegt.
+Keilflamme-ex von Lord-Leiwand hat Hitzestoß gegen Knospi von ElButze für 120 Schadenspunkte eingesetzt. Knospi von ElButze hat 60 Schadenspunkte mehr erhalten, weil es Schwäche gegen Feuer hat.
+- Schadensaufteilung:
+   • Grundschaden: 60 Schadenspunkte
+   • Schwäche gegen Feuer: 60 Schadenspunkte
+   • Gesamtschaden: 120 Schadenspunkte
+
+Knospi von ElButze wurde kampfunfähig gemacht!
+Lord-Leiwand hat eine Preiskarte aufgenommen.
+Eine Karte wurde zu der Hand von Lord-Leiwand hinzugefügt.
+Mew-ex von ElButze ist jetzt in der Aktiven Position.
+
+Turn # 5 - Zug von ElButze
+ElButze hat Tenterra-ex gezogen.
+ElButze hat den eigenen Zug beendet.
+
+Turn # 6 - Zug von Lord-Leiwand
+Lord-Leiwand hat eine Karte gezogen.
+Lord-Leiwand hat Sonderbonbon gespielt.
+- Lord-Leiwand hat Floink auf der Bank zu Flambirex entwickelt.
+Lord-Leiwand hat Hochwertiger Energie-Zugewinn gespielt.
+- Lord-Leiwand hat 2 Karten auf den Ablagestapel gelegt.
+   • Technische Maschine: Entwicklung, Luftballon
+- Lord-Leiwand hat Basis-Feuer-Energie von Lord-Leiwand auf die Hand von Lord-Leiwand gegeben.
+Lord-Leiwand hat Basis-Feuer-Energie an Keilflamme-ex in der Aktiven Position angelegt.
+Lord-Leiwand hat Befehl vom Boss gespielt.
+- Türkisgrüne-Maske-Ogerpon-ex von ElButze wurde mit Mew-ex von ElButze ausgetauscht, um das Aktive Pokémon zu sein.
+Türkisgrüne-Maske-Ogerpon-ex von ElButze ist jetzt in der Aktiven Position.
+Keilflamme-ex von Lord-Leiwand hat Feuerblitz gegen Türkisgrüne-Maske-Ogerpon-ex von ElButze für 520 Schadenspunkte eingesetzt. Türkisgrüne-Maske-Ogerpon-ex von ElButze hat 260 Schadenspunkte mehr erhalten, weil es Schwäche gegen Feuer hat.
+- Schadensaufteilung:
+   • Grundschaden: 260 Schadenspunkte
+   • Schwäche gegen Feuer: 260 Schadenspunkte
+   • Gesamtschaden: 520 Schadenspunkte
+
+Türkisgrüne-Maske-Ogerpon-ex von ElButze wurde kampfunfähig gemacht!
+- 2 Karten wurden von Türkisgrüne-Maske-Ogerpon-ex von ElButze auf den Ablagestapel gelegt.
+   • Basis-Pflanze-Energie, Basis-Pflanze-Energie
+Lord-Leiwand hat 2 Preiskarten aufgenommen.
+Eine Karte wurde zu der Hand von Lord-Leiwand hinzugefügt.
+Eine Karte wurde zu der Hand von Lord-Leiwand hinzugefügt.
+Mew-ex von ElButze ist jetzt in der Aktiven Position.
+
+Turn # 7 - Zug von ElButze
+ElButze hat Tentagra gezogen.
+ElButze hat Tentagra auf die Bank gelegt.
+ElButze hat Energie-Umschalter gespielt.
+- ElButze hat Basis-Pflanze-Energie an Tentagra auf der Bank angelegt.
+Mew-ex von ElButze hat Neuanfang eingesetzt.
+- ElButze hat Nestball gezogen.
+ElButze hat Nestball gespielt.
+- ElButze hat Beatori-ex gezogen und auf die Bank gelegt.
+- ElButze hat das eigene Deck gemischt.
+Beatori-ex von ElButze hat Umdichten eingesetzt.
+- ElButze hat 3 Karten gezogen.
+   • Basis-Pflanze-Energie, Türkisgrüne-Maske-Ogerpon-ex, Höhlensystem Null
+ElButze hat Höhlensystem Null auf das Stadion-Feld gespielt.
+ElButze hat Türkisgrüne-Maske-Ogerpon-ex auf die Bank gelegt.
+Türkisgrüne-Maske-Ogerpon-ex von ElButze hat Türkisgrüner Tanz eingesetzt.
+- ElButze hat Basis-Pflanze-Energie an Türkisgrüne-Maske-Ogerpon-ex auf der Bank angelegt.
+- ElButze hat Höhlensystem Null gezogen.
+ElButze hat den eigenen Zug beendet.
+
+Turn # 8 - Zug von Lord-Leiwand
+Lord-Leiwand hat eine Karte gezogen.
+Lord-Leiwand hat Fermanca City auf das Stadion-Feld gespielt.
+- ElButze hat Höhlensystem Null auf den Ablagestapel gelegt.
+Lord-Leiwand hat Hyperball gespielt.
+- Lord-Leiwand hat 2 Karten auf den Ablagestapel gelegt.
+   • Knattatox, Großer Luftballon
+- Lord-Leiwand hat Beatori-ex gezogen.
+- Lord-Leiwand hat das eigene Deck gemischt.
+Lord-Leiwand hat Beatori-ex auf die Bank gelegt.
+Keilflamme-ex von Lord-Leiwand hat Hitzestoß gegen Mew-ex von ElButze für 60 Schadenspunkte eingesetzt.
+
+Turn # 9 - Zug von ElButze
+ElButze hat Forschung des Professors gezogen.
+ElButze hat Tentagra auf der Bank zu Tenterra-ex entwickelt.
+ElButze hat Höhlensystem Null auf das Stadion-Feld gespielt.
+- Lord-Leiwand hat Fermanca City auf den Ablagestapel gelegt.
+ElButze hat Forschung des Professors gespielt.
+- ElButze hat Tenterra-ex auf den Ablagestapel gelegt.
+- ElButze hat 7 Karten gezogen.
+   • Tentagra, Tenterra, Käfersammlerset, Käfersammlerset, Energie-Umschalter, Eisenblatt-ex, Höhlensystem Null
+ElButze hat Tentagra auf die Bank gelegt.
+ElButze hat Käfersammlerset gespielt.
+- ElButze hat Basis-Pflanze-Energie gezogen.
+- ElButze hat das eigene Deck gemischt.
+Türkisgrüne-Maske-Ogerpon-ex von ElButze hat Türkisgrüner Tanz eingesetzt.
+- ElButze hat Basis-Pflanze-Energie an Türkisgrüne-Maske-Ogerpon-ex auf der Bank angelegt.
+- ElButze hat Enigmara gezogen.
+ElButze hat Käfersammlerset gespielt.
+- ElButze hat Basis-Pflanze-Energie gezogen.
+- ElButze hat das eigene Deck gemischt.
+Türkisgrüne-Maske-Ogerpon-ex von ElButze hat Türkisgrüner Tanz eingesetzt.
+- ElButze hat Basis-Pflanze-Energie an Türkisgrüne-Maske-Ogerpon-ex auf der Bank angelegt.
+- ElButze hat Superangel gezogen.
+ElButze hat Superangel gespielt.
+- ElButze hat 3 Karten in das eigene Deck gemischt.
+   • Tenterra-ex, Türkisgrüne-Maske-Ogerpon-ex, Basis-Pflanze-Energie
+ElButze hat Eisenblatt-ex auf die Bank gelegt.
+Eisenblatt-ex von ElButze hat Schnelle Justierung eingesetzt.
+- Eisenblatt-ex von ElButze wurde mit Mew-ex von ElButze ausgetauscht, um das Aktive Pokémon zu sein.
+- ElButze hat Basis-Pflanze-Energie an Eisenblatt-ex in der Aktiven Position angelegt.
+Eisenblatt-ex von ElButze ist jetzt in der Aktiven Position.
+ElButze hat Eisenblatt-ex auf die Bank zurückgezogen.
+- Eisenblatt-ex von ElButze hat Basis-Pflanze-Energie auf den Ablagestapel gelegt.
+Tenterra-ex von ElButze ist jetzt in der Aktiven Position.
+ElButze hat Energie-Umschalter gespielt.
+- ElButze hat Basis-Pflanze-Energie an Tenterra-ex in der Aktiven Position angelegt.
+Tenterra-ex von ElButze hat Kolonieansturm gegen Keilflamme-ex von Lord-Leiwand für 200 Schadenspunkte eingesetzt.
+- Schadensaufteilung:
+   • Grundschaden: 80 Schadenspunkte
+   • 3 Pokémon auf der Bank: 120 Schadenspunkte
+   • Gesamtschaden: 200 Schadenspunkte
+
+
+Turn # 10 - Zug von Lord-Leiwand
+Lord-Leiwand hat eine Karte gezogen.
+Keilflamme-ex von Lord-Leiwand hat Hitzestoß gegen Tenterra-ex von ElButze für 120 Schadenspunkte eingesetzt. Tenterra-ex von ElButze hat 60 Schadenspunkte mehr erhalten, weil es Schwäche gegen Feuer hat.
+- Schadensaufteilung:
+   • Grundschaden: 60 Schadenspunkte
+   • Schwäche gegen Feuer: 60 Schadenspunkte
+   • Gesamtschaden: 120 Schadenspunkte
+
+
+Turn # 11 - Zug von ElButze
+ElButze hat Heiteira-ex gezogen.
+ElButze hat Tentagra auf der Bank zu Tenterra entwickelt.
+ElButze hat Enigmara gespielt.
+- ElButze hat die eigenen Handkarten gemischt.
+- ElButze hat 2 Karten unter das eigene Deck gelegt.
+   • Heiteira-ex, Höhlensystem Null
+- Lord-Leiwand hat die eigenen Handkarten gemischt.
+- ElButze hat eine Karte unter das eigene Deck gelegt.
+- ElButze hat 6 Karten gezogen.
+   • Türkisgrüne-Maske-Ogerpon-ex, Enigmara, Befehl vom Boss, Basis-Pflanze-Energie, Enigmara, Basis-Pflanze-Energie
+- ElButze hat 3 Karten gezogen.
+ElButze hat Türkisgrüne-Maske-Ogerpon-ex auf die Bank gelegt.
+Türkisgrüne-Maske-Ogerpon-ex von ElButze hat Türkisgrüner Tanz eingesetzt.
+- ElButze hat Basis-Pflanze-Energie an Türkisgrüne-Maske-Ogerpon-ex auf der Bank angelegt.
+- ElButze hat Basis-Pflanze-Energie gezogen.
+Türkisgrüne-Maske-Ogerpon-ex von ElButze hat Türkisgrüner Tanz eingesetzt.
+- ElButze hat Basis-Pflanze-Energie an Türkisgrüne-Maske-Ogerpon-ex auf der Bank angelegt.
+- ElButze hat Forschung des Professors gezogen.
+ElButze hat Basis-Pflanze-Energie an Tenterra auf der Bank angelegt.
+Tenterra-ex von ElButze hat Kolonieansturm gegen Keilflamme-ex von Lord-Leiwand für 280 Schadenspunkte eingesetzt.
+- Schadensaufteilung:
+   • Grundschaden: 80 Schadenspunkte
+   • 5 Pokémon auf der Bank: 200 Schadenspunkte
+   • Gesamtschaden: 280 Schadenspunkte
+
+Keilflamme-ex von Lord-Leiwand wurde kampfunfähig gemacht!
+- 3 Karten wurden von Keilflamme-ex von Lord-Leiwand auf den Ablagestapel gelegt.
+   • Basis-Feuer-Energie, Basis-Elektro-Energie, Basis-Feuer-Energie
+ElButze hat 2 Preiskarten aufgenommen.
+Basis-Pflanze-Energie wurde zu der Hand von ElButze hinzugefügt.
+Superangel wurde zu der Hand von ElButze hinzugefügt.
+Eisenhand-ex von Lord-Leiwand ist jetzt in der Aktiven Position.
+
+Turn # 12 - Zug von Lord-Leiwand
+Lord-Leiwand hat eine Karte gezogen.
+Beatori-ex von Lord-Leiwand hat Umdichten eingesetzt.
+- Lord-Leiwand hat 3 Karten gezogen.
+Lord-Leiwand hat Nachttrage gespielt.
+Tenterra von ElButze hat Schleimpilzkolonie eingesetzt.
+- Basis-Feuer-Energie wurde nicht bewegt.
+Lord-Leiwand hat Reshiram-ex auf die Bank gelegt.
+Lord-Leiwand hat Nestball gespielt.
+- Lord-Leiwand hat Keilflamme-ex gezogen und auf die Bank gelegt.
+- Lord-Leiwand hat das eigene Deck gemischt.
+Lord-Leiwand hat Basis-Feuer-Energie an Keilflamme-ex auf der Bank angelegt.
+Flambirex von Lord-Leiwand hat Tango Inferno eingesetzt.
+- Lord-Leiwand hat Basis-Feuer-Energie an Keilflamme-ex auf der Bank angelegt.
+Lord-Leiwand hat Dicke-Freunde-Knursp gespielt.
+- Lord-Leiwand hat Knattox gezogen und auf die Bank gelegt.
+- Lord-Leiwand hat das eigene Deck gemischt.
+Lord-Leiwand hat den eigenen Zug beendet.
+
+Turn # 13 - Zug von ElButze
+ElButze hat Forschung des Professors gezogen.
+ElButze hat Befehl vom Boss gespielt.
+- Keilflamme-ex von Lord-Leiwand wurde mit Eisenhand-ex von Lord-Leiwand ausgetauscht, um das Aktive Pokémon zu sein.
+Keilflamme-ex von Lord-Leiwand ist jetzt in der Aktiven Position.
+ElButze hat Basis-Pflanze-Energie an Eisenblatt-ex auf der Bank angelegt.
+Tenterra-ex von ElButze hat Kolonieansturm gegen Keilflamme-ex von Lord-Leiwand für 320 Schadenspunkte eingesetzt.
+- Schadensaufteilung:
+   • Grundschaden: 80 Schadenspunkte
+   • 6 Pokémon auf der Bank: 240 Schadenspunkte
+   • Gesamtschaden: 320 Schadenspunkte
+
+Keilflamme-ex von Lord-Leiwand wurde kampfunfähig gemacht!
+- 2 Karten wurden von Keilflamme-ex von Lord-Leiwand auf den Ablagestapel gelegt.
+   • Basis-Feuer-Energie, Basis-Feuer-Energie
+ElButze hat 2 Preiskarten aufgenommen.
+Erstklassiger Fänger wurde zu der Hand von ElButze hinzugefügt.
+Energie-Umschalter wurde zu der Hand von ElButze hinzugefügt.
+Reshiram-ex von Lord-Leiwand ist jetzt in der Aktiven Position.
+
+Turn # 14 - Zug von Lord-Leiwand
+Lord-Leiwand hat eine Karte gezogen.
+Beatori-ex von Lord-Leiwand hat Umdichten eingesetzt.
+- Lord-Leiwand hat 3 Karten gezogen.
+Lord-Leiwand hat Irdengefäß gespielt.
+- Lord-Leiwand hat Dicke-Freunde-Knursp auf den Ablagestapel gelegt.
+- Lord-Leiwand hat 2 Karten gezogen.
+   • Basis-Feuer-Energie, Basis-Feuer-Energie
+- Lord-Leiwand hat das eigene Deck gemischt.
+Lord-Leiwand hat Floink auf die Bank gelegt.
+Lord-Leiwand hat Basis-Feuer-Energie an Reshiram-ex in der Aktiven Position angelegt.
+Flambirex von Lord-Leiwand hat Tango Inferno eingesetzt.
+- Lord-Leiwand hat Basis-Feuer-Energie an Reshiram-ex in der Aktiven Position angelegt.
+Reshiram-ex von Lord-Leiwand hat Schlitzer gegen Tenterra-ex von ElButze für 100 Schadenspunkte eingesetzt. Tenterra-ex von ElButze hat 50 Schadenspunkte mehr erhalten, weil es Schwäche gegen Feuer hat.
+- Schadensaufteilung:
+   • Grundschaden: 50 Schadenspunkte
+   • Schwäche gegen Feuer: 50 Schadenspunkte
+   • Gesamtschaden: 100 Schadenspunkte
+
+
+Turn # 15 - Zug von ElButze
+ElButze hat Tentagra gezogen.
+Tenterra-ex von ElButze hat Kolonieansturm gegen Reshiram-ex von Lord-Leiwand für 320 Schadenspunkte eingesetzt.
+- Schadensaufteilung:
+   • Grundschaden: 80 Schadenspunkte
+   • 6 Pokémon auf der Bank: 240 Schadenspunkte
+   • Gesamtschaden: 320 Schadenspunkte
+
+Reshiram-ex von Lord-Leiwand wurde kampfunfähig gemacht!
+- 2 Karten wurden von Reshiram-ex von Lord-Leiwand auf den Ablagestapel gelegt.
+   • Basis-Feuer-Energie, Basis-Feuer-Energie
+ElButze hat 2 Preiskarten aufgenommen.
+Cosima wurde zu der Hand von ElButze hinzugefügt.
+Türkisgrüne-Maske-Ogerpon-ex wurde zu der Hand von ElButze hinzugefügt.
+Alle Preiskarten genommen. ElButze hat gewonnen.
