@@ -8,6 +8,7 @@ from rich import print
 
 sDateTime = datetime.now().strftime("%Y-%m-%d %H-%M-%S")
 print(sDateTime)
+print(sDateTime)
 
 r'''
 Sub GetPic()
