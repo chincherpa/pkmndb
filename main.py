@@ -394,6 +394,7 @@ def export_decklist(dDecklist):
   # pyperclip.copy(text)
 
 col_lang_cards, col_lang_search, col_format, col_reset = st.columns(4)
+# st.write(st.session_state)
 with col_lang_cards:
   language_cards = st.segmented_control('Cards language', ['deutsch', 'english'], default='deutsch', key='seg_ctrl_lang_cards')
 with col_lang_search:
@@ -404,6 +405,13 @@ with col_reset:
   # Reset Button
   st.write('')
   bReset = st.button('Reset - not working as expected', key='reset', on_click=reset_fields)
+  # if bReset:
+  #   st.session_state = {
+  #     'seg_ctrl_lang': 'deutsch',
+  #     'num_images': 20,
+  #     'seg_ctrl_format': 'standard',
+  #     'dDecklist': dict(),
+  #   }
 
 # Load data
 df_orig = load_data()
@@ -486,26 +494,28 @@ with tab1:
         if sSame_name == 'yes':
           df = df[df['Name DE'] == df['Name']]
 
-  col_search_left1, col_search_right1 = st.columns(2)
-  with col_search_left1:
-    search_term_name = st_keyup('Find in Cards name:', key='search_term_name_key')
-    if search_term_name:
-      if language_search == 'english':
-        mask = df['Name'].str.contains(search_term_name, case=False, na=False)
-      elif language_search == 'deutsch':
-        mask = df['Name DE'].str.contains(search_term_name, case=False, na=False) | \
-          df['Name'].str.contains(search_term_name, case=False, na=False)
-      df = df[mask]
+  # col_search_left1, col_search_right1 = st.columns(2)
+  # with col_search_left1:
+  search_term_name = st_keyup('Find in Cards name:', key='search_term_name_key')
+  if search_term_name:
+    if language_search == 'english':
+      mask = df['Name'].str.contains(search_term_name, case=False, na=False)
+    else:
+      mask = df['Name DE'].str.contains(search_term_name, case=False, na=False) | \
+        df['Name'].str.contains(search_term_name, case=False, na=False)
+    df = df[mask]
 
-  with col_search_right1:
+  # with col_search_right1:
+  #   pass
+
+  col_search_left2, col_search_right2 = st.columns(2)
+  with col_search_left2:
     search_term_evolves_from = st_keyup("Find in 'Evolves from'", key='search_term_evolves_from_key')
     if search_term_evolves_from:
       mask = df['Evolves from'].str.contains(search_term_evolves_from, case=False, na=False) | \
           df['Evolves from DE'].str.contains(search_term_evolves_from, case=False, na=False)
       df = df[mask]
 
-  col_search_left2, col_search_right2 = st.columns(2)
-  with col_search_left2:
     search_term_ability = st_keyup('Find in ability (name or text):', key='search_term_ability_key')
     if search_term_ability:
       mask = df['Ability'].str.contains(search_term_ability, case=False, na=False) | \
@@ -513,6 +523,13 @@ with tab1:
       df = df[mask]
 
   with col_search_right2:
+    # Gorebyss -> Perlu
+    search_term_evolves_to = st_keyup("Find in 'Evolves to'", key='search_term_evolves_to_key')
+    if search_term_evolves_to:
+      mask = df['Name DE'].str.contains(search_term_evolves_to, case=False, na=False) | \
+          df['Name'].str.contains(search_term_evolves_to, case=False, na=False)
+      df = df[df['Name'].isin(list(df[mask]['Evolves from'].unique()))]
+
     search_term_ability_2 = st_keyup('and...', key='search_term_ability_2_key')
     if search_term_ability_2:
       mask = df['Ability'].str.contains(search_term_ability_2, case=False, na=False) | \
@@ -526,7 +543,7 @@ with tab1:
       if language_search == 'english':
         mask = df['Attack 1 name'].str.contains(search_term_attack, case=False, na=False) | \
           df['Attack 2 name'].str.contains(search_term_attack, case=False, na=False)
-      elif language_search == 'deutsch':
+      else:
         mask = df['Attack 1 name DE'].str.contains(search_term_attack, case=False, na=False) | \
           df['Attack 1 name'].str.contains(search_term_attack, case=False, na=False) | \
           df['Attack 2 name DE'].str.contains(search_term_attack, case=False, na=False) | \
@@ -538,7 +555,7 @@ with tab1:
       if language_search == 'english':
         mask = df['Effect Attack 1'].str.contains(search_term_att_eff, case=False, na=False) | \
           df['Effect Attack 2'].str.contains(search_term_att_eff, case=False, na=False)
-      elif language_search == 'deutsch':
+      else:
         mask = df['Effect Attack 1 DE'].str.contains(search_term_att_eff, case=False, na=False) | \
           df['Effect Attack 1'].str.contains(search_term_att_eff, case=False, na=False) | \
           df['Effect Attack 2 DE'].str.contains(search_term_att_eff, case=False, na=False) | \
@@ -621,7 +638,7 @@ with tab1:
           with cols[i % 4]:
             col_num, col_link = st.columns(2)
             card_id = (card['Set'], card['#'])
-            add_card = col_num.toggle('add card', value=card_id in st.session_state.dDecklist, key=card_id)
+            add_card = col_num.toggle('add card', value=card_id in st.session_state.dDecklist, key=str(card_id))
             if add_card:
               st.session_state.dDecklist[card_id] = 1
             else:
@@ -630,6 +647,12 @@ with tab1:
 
             url = card['URL']
             col_link.link_button('go to card on limitlessTCG', url)
+            if card['Ability']:
+              with st.expander('card info ℹ️'):
+                container = st.container(border=True)
+                container.write(card['Ability'])
+                container.write(card['Ability text'])
+
             st.image(url, width=iWidth)
 
         if st.session_state.num_images < len(df_selected_cards):
