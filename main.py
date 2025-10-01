@@ -590,6 +590,7 @@ with tab1:
     st.write(dFilters)
 
   if not df.empty:
+    df.sort_values('Name DE')
     df_with_urls = df #.reset_index(drop=True)
     # if language_search == 'english':
     #   df = df.drop(c.lColumns_DE, axis=1)
@@ -953,4 +954,5 @@ with tab4:
     col_DE.header('Name DE')
     col_DE.code('\n'.join(lDecklist_DE))
     col_EN.header('Name EN')
+
     col_EN.code('\n'.join(lDecklist_EN))
