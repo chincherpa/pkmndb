@@ -632,7 +632,7 @@ with tab1:
       print(username)
       if not df_selected_cards.empty:
         num_cards = min(st.session_state.num_images, len(df_selected_cards))
-        st.write(f'Show {num_cards} card{"s" if num_cards > 1 else ""}:')
+        # st.write(f'Show {num_cards} card{"s" if num_cards > 1 else ""}:')
         iWidth = 400  # st.slider('size', 100, 600, 400, 50)
         cols = st.columns(4)
         for i in range(num_cards):
@@ -660,7 +660,7 @@ with tab1:
         if st.session_state.num_images < len(df_selected_cards):
           if st.button('load more'):
             load_more()
-          st.write(f'Show: {min(st.session_state.num_images, len(df_selected_cards))} von {len(df_selected_cards)} Karten')
+          # st.write(f'Show: {min(st.session_state.num_images, len(df_selected_cards))} von {len(df_selected_cards)} Karten')
     else:
       for idx, row in df_selected_cards.iterrows():
         col_card, col_add = st.columns([1, 6])
