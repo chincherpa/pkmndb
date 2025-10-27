@@ -629,33 +629,36 @@ with tab1:
       # df_selected_cards['#'] = df_with_urls.loc[selected_cards, '#'].values
 
     if username != 'FV4TJAY':
-      print(username)
       if not df_selected_cards.empty:
         num_cards = min(st.session_state.num_images, len(df_selected_cards))
         # st.write(f'Show {num_cards} card{"s" if num_cards > 1 else ""}:')
         iWidth = 400  # st.slider('size', 100, 600, 400, 50)
-        cols = st.columns(4)
+        inum_of_columns = st.slider('Cols', 3, 10, 4, 1)
+        cols = st.columns(inum_of_columns)
         for i in range(num_cards):
           card = df_selected_cards.iloc[i]
-          with cols[i % 4]:
-            col_num, col_link = st.columns(2)
-            card_id = (card['Set'], card['#'])
-            add_card = col_num.toggle('add card', value=card_id in st.session_state.dDecklist, key=str(card_id))
-            if add_card:
-              st.session_state.dDecklist[card_id] = 1
-            else:
-              if card_id in st.session_state.dDecklist:
-                del st.session_state.dDecklist[card_id]
+          with cols[i % inum_of_columns]:
+            with st.container(border=True):
+              col_num, col_link = st.columns(2)
+              card_id = (card['Set'], card['#'])
+              add_card = col_num.toggle('add card', value=card_id in st.session_state.dDecklist, key=str(card_id))
+              if add_card:
+                st.session_state.dDecklist[card_id] = 1
+              else:
+                if card_id in st.session_state.dDecklist:
+                  del st.session_state.dDecklist[card_id]
 
-            url = card['URL']
-            col_link.link_button('go to card on limitlessTCG', url)
-            if card['Ability']:
-              with st.expander('card info ℹ️'):
-                container = st.container(border=True)
-                container.write(card['Ability'])
-                container.write(card['Ability text'])
+              url_limitless = card['URL']
+              col_link.link_button('limitlessTCG', url_limitless)
+              url_cardmarket = f'https://www.cardmarket.com/de/Pokemon/Products/Search?category=-1&searchString={card['Name DE']}&searchMode=v1'
+              col_link.link_button('cardmarket', url_cardmarket)
+              if card['Ability']:
+                with st.expander('card info ℹ️'):
+                  container = st.container(border=True)
+                  container.write(card['Ability'])
+                  container.write(card['Ability text'])
 
-            st.image(url, width=iWidth)
+              st.image(url_limitless, width=iWidth)
 
         if st.session_state.num_images < len(df_selected_cards):
           if st.button('load more'):
