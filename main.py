@@ -631,10 +631,11 @@ with tab1:
     if username != 'FV4TJAY':
       print(username)
       if not df_selected_cards.empty:
-        st.write(f'Show {min(st.session_state.num_images, len(df_selected_cards))} cards:')
+        num_cards = min(st.session_state.num_images, len(df_selected_cards))
+        st.write(f'Show {num_cards} card{"s" if num_cards > 1 else ""}:')
         iWidth = 400  # st.slider('size', 100, 600, 400, 50)
         cols = st.columns(4)
-        for i in range(min(st.session_state.num_images, len(df_selected_cards))):
+        for i in range(num_cards):
           card = df_selected_cards.iloc[i]
           with cols[i % 4]:
             col_num, col_link = st.columns(2)
