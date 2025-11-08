@@ -633,13 +633,14 @@ with tab1:
         num_cards = min(st.session_state.num_images, len(df_selected_cards))
         # st.write(f'Show {num_cards} card{"s" if num_cards > 1 else ""}:')
         iWidth = 400  # st.slider('size', 100, 600, 400, 50)
-        inum_of_columns = st.slider('Cols', 3, 10, 4, 1)
+        st.write(num_cards)
+        inum_of_columns = st.slider('Cols', 3, max(4, min(num_cards, 10)), min(num_cards, 4), 1)
         cols = st.columns(inum_of_columns)
         for i in range(num_cards):
           card = df_selected_cards.iloc[i]
           with cols[i % inum_of_columns]:
             with st.container(border=True):
-              col_num, col_link_limit, col_link_cm = st.columns([1, 2, 2])
+              col_num, col_link_limit, col_link_cm = st.columns([2,3,3])
               card_id = (card['Set'], card['#'])
               add_card = col_num.toggle('add card', value=card_id in st.session_state.dDecklist, key=str(card_id))
               if add_card:
@@ -649,11 +650,11 @@ with tab1:
                   del st.session_state.dDecklist[card_id]
 
               url_limitless = card['URL']
-              col_link_limit.link_button('limit', url_limitless)
+              col_link_limit.link_button('limitless', url_limitless, use_container_width=True)
               url_cardmarket = f'https://www.cardmarket.com/de/Pokemon/Products/Search?category=-1&searchString={card['Name DE']}&searchMode=v1'
-              col_link_cm.link_button('cm', url_cardmarket)
+              col_link_cm.link_button('cardmarket', url_cardmarket, use_container_width=True)
               if card['Ability']:
-                with st.popover('card info ℹ️'):
+                with st.popover('card info ℹ️', use_container_width=True):
                   container = st.container(border=True)
                   container.write(card['Ability'])
                   container.write(card['Ability text'])
