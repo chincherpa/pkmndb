@@ -639,7 +639,7 @@ with tab1:
           card = df_selected_cards.iloc[i]
           with cols[i % inum_of_columns]:
             with st.container(border=True):
-              col_num, col_link = st.columns(2)
+              col_num, col_link = st.columns([1, 2])
               card_id = (card['Set'], card['#'])
               add_card = col_num.toggle('add card', value=card_id in st.session_state.dDecklist, key=str(card_id))
               if add_card:
@@ -649,9 +649,9 @@ with tab1:
                   del st.session_state.dDecklist[card_id]
 
               url_limitless = card['URL']
-              col_link.link_button('limitlessTCG', url_limitless)
+              col_link.link_button('limit', url_limitless)
               url_cardmarket = f'https://www.cardmarket.com/de/Pokemon/Products/Search?category=-1&searchString={card['Name DE']}&searchMode=v1'
-              col_link.link_button('cardmarket', url_cardmarket)
+              col_link.link_button('cm', url_cardmarket)
               if card['Ability']:
                 with st.expander('card info ℹ️'):
                   container = st.container(border=True)
