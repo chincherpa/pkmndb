@@ -653,7 +653,7 @@ with tab1:
               url_cardmarket = f'https://www.cardmarket.com/de/Pokemon/Products/Search?category=-1&searchString={card['Name DE']}&searchMode=v1'
               col_link.link_button('cm', url_cardmarket)
               if card['Ability']:
-                with st.expander('card info ℹ️'):
+                with st.popover('card info ℹ️'):
                   container = st.container(border=True)
                   container.write(card['Ability'])
                   container.write(card['Ability text'])
