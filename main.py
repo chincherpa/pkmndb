@@ -114,24 +114,43 @@ def parse_card_entries(text):
   return results
 
 def reset_fields():
-  for k, v in st.session_state.items():
-    print(k, v)
-  st.session_state.seg_ctrl_lang = 'english'
+  # Language and format controls
+  st.session_state.seg_ctrl_lang_cards = 'deutsch'
+  st.session_state.seg_ctrl_lang_search = 'deutsch'
   st.session_state.seg_ctrl_format = 'standard'
-  st.session_state.search_term_name = None
+
+  # Search fields (st_keyup widgets)
+  st.session_state.search_term_name_key = ''
   st.session_state.search_term_evolves_from_key = ''
-  st.session_state.search_term_ability = ''
-  st.session_state.search_term_att_eff = ''
-  st.session_state.cardtype = 'All'
-  st.session_state.att_eff = None
-  st.session_state.evolves = None
-  st.session_state.selected_cards = {}
-  st.session_state.bAdded_Card = False
+  st.session_state.search_term_evolves_to_key = ''
+  st.session_state.search_term_ability_key = ''
+  st.session_state.search_term_ability_2_key = ''
+  st.session_state.search_term_attack_key = ''
+  st.session_state.search_term_att_eff_key = ''
+
+  # Multiselect fields
+  st.session_state.multiselect_key_attack_cost = []
+  st.session_state.multiselect_key_attack_damage = []
+  st.session_state.multiselect_key_set_filter = []
+  st.session_state.multiselect_key_num_filter = []
+  st.session_state.multiselect_key_regulation_filter = []
+  st.session_state.multiselect_key_lColumns_to_show = []
+
+  # Selectboxes
+  st.session_state.selectbox_cardtype = 'All'
+  st.session_state.selectbox_type = 'All'
+  st.session_state.selectbox_weakness = 'Choose an option'
+
+  # Toggle controls
+  st.session_state.sToggle_ex = "include 'ex'"
+  st.session_state.sToggle_V = "include 'V(STAR)'"
+  st.session_state.same_name_key = 'no'
+
+  # Other state variables
   st.session_state.num_images = 20
+  st.session_state.bAdded_Card = False
   st.session_state.name_decklist = ''
   st.session_state.not_found = []
-  for k, v in st.session_state.items():
-    print(k, v)
 
 # def update_quantity(old_item, new_quantity):
 #   """Aktualisiert die Anzahl eines Elements im Set"""
@@ -404,7 +423,7 @@ with col_format:
 with col_reset:
   # Reset Button
   st.write('')
-  bReset = st.button('Reset - not working as expected', key='reset', on_click=reset_fields)
+  bReset = st.button('Reset', key='reset', on_click=reset_fields)
   # if bReset:
   #   st.session_state = {
   #     'seg_ctrl_lang': 'deutsch',
@@ -433,7 +452,7 @@ with tab1:
   
     with col1:
       lCardtype_options = ['All', 'Ace Spec', 'Pokemon'] + sorted(df['Cardtype'].unique().tolist())
-      cardtype = st.selectbox('Cardtype', lCardtype_options)
+      cardtype = st.selectbox('Cardtype', lCardtype_options, key='selectbox_cardtype')
       if cardtype == 'Pokemon':
         df = df[df['Cardtype'].isin(['Basic', 'Stage 1', 'Stage 2'])]
       elif cardtype == 'Ace Spec':
@@ -441,11 +460,11 @@ with tab1:
       elif cardtype != 'All':
         df = df[df['Cardtype'] == cardtype]
       typ_options = ['All'] + sorted(df['Type'].unique().tolist())
-      type_filter = st.selectbox('Type', typ_options)
+      type_filter = st.selectbox('Type', typ_options, key='selectbox_type')
       if type_filter != 'All':
         df = df[df['Type'] == type_filter]
       lWeakness_options = ['Choose an option'] + sorted(df['Weakness'].unique().tolist())
-      weakness_filter = st.selectbox('Weakness', lWeakness_options)
+      weakness_filter = st.selectbox('Weakness', lWeakness_options, key='selectbox_weakness')
       if weakness_filter != 'Choose an option':
         df = df[df['Weakness'] == weakness_filter]
 
